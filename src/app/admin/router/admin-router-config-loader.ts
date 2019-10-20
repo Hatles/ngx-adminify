@@ -4,7 +4,7 @@ import {LoadChildren, LoadedRouterConfig, Route, Routes} from '@angular/router/c
 import {forkJoin, from, Observable, of} from 'rxjs';
 import {map, mergeMap, switchMap} from 'rxjs/operators';
 import {flatten, wrapIntoObservable} from '@angular/router/utils/collection';
-import {IRouterConfigLoader} from '@app/admin/core/routerConfigLoader';
+import {IRouterConfigLoader} from '@app/admin/router/router-config-loader';
 import {PRIMARY_OUTLET} from '@angular/router/shared';
 import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
 

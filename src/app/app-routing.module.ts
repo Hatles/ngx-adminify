@@ -1,9 +1,8 @@
 import {NgModule} from '@angular/core';
-import {AdminifyModule, RouteData} from './admin/core/adminify.module';
-import {AdminModule} from './modules/admin/admin.module';
-import {ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule, Routes} from '@angular/router';
-import {AdminOutletRouteProviders} from '@app/admin/core/adminOutletRouteProvider';
-import {AdminRouterConfigLoaderFactory} from '@app/admin/core/adminRouterConfigLoaderFactory';
+import {AdminifyModule, RouteData} from './admin/core/adminify-module';
+import {ActivatedRouteSnapshot, RouterModule, Routes} from '@angular/router';
+import {AdminOutletRouteProviders} from '@app/admin/router/admin-outlet-route-provider';
+import {AdminifyRouterModule} from '@app/admin/router/adminify-router-module';
 
 const routes: Routes = [
     {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
@@ -23,9 +22,10 @@ const providers: AdminOutletRouteProviders = [
         RouterModule.forRoot(
             routes
         ),
-        AdminifyModule.fotRoot(
-            providers
-        ),
+        AdminifyModule.fotRoot(),
+        AdminifyRouterModule.fotRoot({
+            providers: providers
+        }),
     ],
     exports: [
         RouterModule,

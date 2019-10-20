@@ -1,7 +1,7 @@
 /* tslint:disable */
 import {ErrorHandler, Navigation, NavigationExtras, NavigationTransition, RestoredState, Router, RouterHook} from '@angular/router/router';
 import {RouterConfigLoader} from '@angular/router/router_config_loader';
-import {RouterConfigLoaderFactory} from '@app/admin/core/routerConfigLoaderFactory';
+import {RouterConfigLoaderFactory} from '@app/admin/router/router-config-loader-factory';
 import {Compiler, Injector, isDevMode, NgModuleFactoryLoader, NgModuleRef, NgZone, Type, ɵConsole as Console} from '@angular/core';
 import {containsTree, createEmptyUrlTree, UrlSerializer, UrlTree} from '@angular/router/url_tree';
 import {ChildrenOutletContexts} from '@angular/router/router_outlet_context';
@@ -32,7 +32,7 @@ import {resolveData} from '@angular/router/operators/resolve_data';
 import {createRouterState} from '@angular/router/create_router_state';
 import {activateRoutes} from '@angular/router/operators/activate_routes';
 import {createUrlTree} from '@angular/router/create_url_tree';
-import {loadConfig} from '@app/admin/core/adminRouterConfigLoader';
+import {loadConfig} from '@app/admin/router/admin-router-config-loader';
 import {flatten} from '@angular/router/utils/collection';
 
 function defaultErrorHandler(error: any): any {

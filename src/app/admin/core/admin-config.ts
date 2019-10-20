@@ -1,5 +1,5 @@
 import {Route} from '@angular/router';
-import {AdminAction} from './adminAction';
+import {AdminAction} from './admin-action';
 
 export type RouteFinder = (Route) => boolean;
 

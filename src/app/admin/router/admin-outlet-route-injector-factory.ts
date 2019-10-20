@@ -1,4 +1,4 @@
-import {AdminOutletRouteProvider, AdminOutletRouteProviders} from '@app/admin/core/adminOutletRouteProvider';
+import {AdminOutletRouteProvider, AdminOutletRouteProviders} from '@app/admin/router/admin-outlet-route-provider';
 import {Injectable, Injector} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts} from '@angular/router';
 

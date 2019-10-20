@@ -18,7 +18,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts, Data, PRIMARY_OUTLET} from '@angular/router';
-import {AdminOutletRouteInjectorFactory} from '@app/admin/core/adminOutletRouteInjectorFactory';
+import {AdminOutletRouteInjectorFactory} from '@app/admin/router/admin-outlet-route-injector-factory';
 
 /**
  * @description

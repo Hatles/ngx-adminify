@@ -5,11 +5,11 @@ import {Observable, Subscription, from} from 'rxjs';
 import {concatMap, filter, map, mergeAll, mergeMap} from 'rxjs/operators';
 
 import {PreloadingStrategy} from '@angular/router/router_preloader';
-import {RouterConfigLoaderFactory} from '@app/admin/core/routerConfigLoaderFactory';
 import {RouterConfigLoader} from '@angular/router/router_config_loader';
 import {Router} from '@angular/router/router';
 import {LoadedRouterConfig, Route, Routes} from '@angular/router/config';
 import {NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart} from '@angular/router/events';
+import {RouterConfigLoaderFactory} from '@app/admin/router/router-config-loader-factory';
 
 /**
  * The preloader optimistically loads all router configurations to

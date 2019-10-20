@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
-import {removePostFix} from './removePostFix';
-import {removePreFix} from './removePreFix';
+import {removePostFix} from './remove-post-fix';
+import {removePreFix} from './remove-pre-fix';
 export interface RouteWithAbsoluteUrl {
     route: Route;
     url: string;

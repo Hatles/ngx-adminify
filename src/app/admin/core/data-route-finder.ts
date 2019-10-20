@@ -1,4 +1,4 @@
-import {RouteFinder} from './adminConfig';
+import {RouteFinder} from './admin-config';
 import {Route} from '@angular/router';
 
 export const dataRouteFinder = (dataName: string): RouteFinder => {

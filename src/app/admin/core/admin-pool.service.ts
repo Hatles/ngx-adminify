@@ -1,9 +1,9 @@
 import {Injectable, Injector} from '@angular/core';
 import {Route, Router, Routes} from '@angular/router';
 import {Admin} from './admin';
-import {AdminConfig, AdminsConfig} from './adminConfig';
-import {RouteWithAbsoluteUrl, RouteWithParent, routeWithParentToUrl} from './routeUtils';
-import {removePreFix} from './removePreFix';
+import {AdminConfig, AdminsConfig} from './admin-config';
+import {RouteWithAbsoluteUrl, RouteWithParent, routeWithParentToUrl} from './route-utils';
+import {removePreFix} from './remove-pre-fix';
 import {Subject} from 'rxjs';
 import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
 

@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
 import {AdminPoolService} from './admin-pool.service';
-import {AdminConfig} from './adminConfig';
+import {AdminConfig} from './admin-config';
 
 export class Admin {
     constructor(private pool: AdminPoolService, public config: AdminConfig) {

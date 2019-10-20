@@ -1,11 +1,11 @@
 import {NgModule, Type} from '@angular/core';
-import {AdminsConfig} from '../../admin/core/adminConfig';
-import {AdminifyModule} from '../../admin/core/adminify.module';
+import {AdminsConfig} from '../../admin/core/admin-config';
+import {AdminifyModule} from '../../admin/core/adminify-module';
 import {AdminRootComponent} from './components/admin-root/admin-root.component';
 import {AdminBaseComponent} from './components/admin-base/admin-base.component';
 import {AdminActionBaseComponent} from './components/admin-action-base/admin-action-base.component';
 import {AdminDashboardBaseComponent} from './components/admin-dashboard-base/admin-dashboard-base.component';
-import {dataRouteFinder} from '@app/admin/core/dataRouteFinder';
+import {dataRouteFinder} from '@app/admin/core/data-route-finder';
 
 export const adminComponents: Type<any>[] = [
     AdminRootComponent,
