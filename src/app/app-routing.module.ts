@@ -7,7 +7,7 @@ import {AdminRouterConfigLoaderFactory} from '@app/admin/core/adminRouterConfigL
 
 const routes: Routes = [
     {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
-    // {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminifyModule)},
+    {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)},
 ];
 
 const providers: AdminOutletRouteProviders = [
@@ -26,7 +26,6 @@ const providers: AdminOutletRouteProviders = [
         AdminifyModule.fotRoot(
             providers
         ),
-        AdminModule
     ],
     exports: [
         RouterModule,

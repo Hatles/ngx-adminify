@@ -1,10 +1,12 @@
 import {ROUTES} from '@angular/router/router_config_loader';
 import {Compiler, InjectionToken, Injector, NgModuleFactory, NgModuleFactoryLoader} from '@angular/core';
-import {LoadChildren, LoadedRouterConfig, Route, Routes, standardizeConfig} from '@angular/router/config';
+import {LoadChildren, LoadedRouterConfig, Route, Routes} from '@angular/router/config';
 import {forkJoin, from, Observable, of} from 'rxjs';
 import {map, mergeMap, switchMap} from 'rxjs/operators';
 import {flatten, wrapIntoObservable} from '@angular/router/utils/collection';
 import {IRouterConfigLoader} from '@app/admin/core/routerConfigLoader';
+import {PRIMARY_OUTLET} from '@angular/router/shared';
+import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
 
 /**
  * The [DI token](guide/glossary/#di-token) for a router configuration.
@@ -61,6 +63,7 @@ export class AdminRouterConfigLoader implements IRouterConfigLoader {
 
 export function loadConfig(injector: Injector): Observable<Routes[]> {
     const asyncRoutes = injector.get(ASYNC_ROUTES, []);
+    const test = injector.get(ROUTES);
 
     if (!asyncRoutes.length) {
         return of(injector.get(ROUTES));
@@ -79,4 +82,13 @@ export function loadConfig(injector: Injector): Observable<Routes[]> {
     return forkJoin(asyncRoutesObs).pipe(
         map(routes => ([...injector.get(ROUTES), ...routes]))
     );
+}
+
+export function standardizeConfig(r: Route): Route {
+    const children = r.children && r.children.map(standardizeConfig);
+    const c = children ? {...r, children} : {...r};
+    if (!c.component && (children || c.loadChildren) && (c.outlet && c.outlet !== PRIMARY_OUTLET)) {
+        c.component = AdminEmptyOutletComponent;
+    }
+    return c;
 }

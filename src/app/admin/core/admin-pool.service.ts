@@ -3,7 +3,6 @@ import {Route, Router, Routes} from '@angular/router';
 import {Admin} from './admin';
 import {AdminConfig, AdminsConfig} from './adminConfig';
 import {RouteWithAbsoluteUrl, RouteWithParent, routeWithParentToUrl} from './routeUtils';
-import {removePostFix} from './removePostFix';
 import {removePreFix} from './removePreFix';
 import {Subject} from 'rxjs';
 import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
@@ -18,22 +17,19 @@ export class AdminPoolService {
 
     private adminsConfig: AdminsConfig;
     private admins: AdminWithConfig[];
-    private router: Router;
     private rootRoute: RouteWithAbsoluteUrl;
 
     logRoute: Subject<any> = new Subject<any>();
 
-    constructor(private injector: Injector) {
-    }
+    constructor() { }
 
-    buildAdmins(router: Router, adminsConfig: AdminsConfig) {
-        this.router = router;
+    buildAdmins(adminsConfig: AdminsConfig): Routes {
         this.admins = [];
         this.adminsConfig = adminsConfig;
         const admins = adminsConfig.admins.map((admin) => this.buildAdmin(admin));
         const adminRoutes = admins.map(admin => this.buildAdminRoute(admin));
 
-        this.buildAdminsRoute(adminRoutes);
+        return this.wrapWithAdminRouter(this.buildAdminsRoute(adminRoutes));
     }
 
     private buildAdmin(config: AdminConfig): Admin {
@@ -62,7 +58,7 @@ export class AdminPoolService {
         return this.admins.find(a => a.config.name === admin);
     }
 
-    private buildAdminsRoute(adminRoutes: Route[]) {
+    private buildAdminsRoute(adminRoutes: Route[]): Routes {
         const route = this.getAdminRoutesFromConfig();
 
         if (!route.children) {
@@ -72,75 +68,36 @@ export class AdminPoolService {
         // Add admins routes
         route.children = [...adminRoutes, ...route.children];
 
-        if (!this.router) {
-            this.router = this.injector.get(Router);
-        }
-
-        const routerConfig = [...this.router.config];
-
-        let root = this.getRootRoute(routerConfig);
-        if (!root) {
-            root = this.generateDefaultRootRoute();
-
-            routerConfig.unshift(root.route);
-
-            if (route.path !== '') {
-
-                if (!root.route.children) {
-                    root.route.children = [];
-                }
-
-                root.route.children.unshift({
-                    path: '',
-                    redirectTo: removePostFix(root.url, '/') + '/' + removePreFix(route.path, '/'),
-                    pathMatch: 'full'
-                });
-            }
-
-            root.route.children.push({
-                path: '**',
-                redirectTo: removePostFix(root.url, '/') + '/' + removePreFix(route.path, '/'),
-            });
-        }
-        if (!root.route.children) {
-            root.route.children = [];
-        }
-        if (route.path !== '') {
-
-            root.url = removePostFix(root.url, '/') + '/' + removePreFix(route.path, '/');
-        }
-        this.rootRoute = root;
-
         // Add default admin redirect
         if (this.adminsConfig.defaultAdminName) {
             const defaultAdmin = this.getAdmin(this.adminsConfig.defaultAdminName);
             const defaultAdminUrl = defaultAdmin.getUrl();
 
             if (defaultAdminUrl !== '') {
-                route.children = [...route.children, {
-                    path: '', redirectTo: defaultAdmin.getAbsoluteUrl(), pathMatch: 'full'
-                }];
+                route.children = [
+                    ...route.children,
+                    {
+                        path: '',
+                        redirectTo: defaultAdmin.getRoute().path,
+                        pathMatch: 'full'
+                    }
+                ];
             }
         }
 
-        // Add wildcard route
-        if (this.adminsConfig.wildcardRoute) {
-            route.children = [...route.children, {...this.adminsConfig.wildcardRoute, path: '**'}];
-        } else if (this.adminsConfig.wildcardRedirectToAdminRoot) {
-            route.children = [...route.children, { path: '**', redirectTo: this.getAbsoluteRootUrl() }];
-        } else if (this.adminsConfig.wildcardRedirectToDefaultAdmin) {
-            const defaultAdmin = this.getAdmin(this.adminsConfig.defaultAdminName);
-            const defaultAdminUrl = defaultAdmin.getUrl();
-
-            if (defaultAdminUrl !== '') {
-                route.children = [...route.children, { path: '**', redirectTo: defaultAdmin.getAbsoluteUrl() }];
-            }
+        // Add redirect to admin root
+        if (route.path !== '') {
+            return [
+                route,
+                {
+                    path: '',
+                    redirectTo: route.path,
+                    pathMatch: 'full'
+                }
+            ];
         }
 
-        // Add admin route
-        root.route.children.unshift(route);
-
-        this.router.resetConfig(routerConfig);
+        return [route];
     }
 
     private getRootRoute(routes: Routes): RouteWithAbsoluteUrl {
@@ -161,7 +118,10 @@ export class AdminPoolService {
     }
 
     private getAdminRoutesFromConfig(): Route {
-        return this.adminsConfig;
+        return {
+            ...this.adminsConfig,
+            path: this.adminsConfig.path ? this.adminsConfig.path : ''
+        };
     }
 
     private generateDefaultRootRoute(): RouteWithAbsoluteUrl {
@@ -183,5 +143,13 @@ export class AdminPoolService {
 
     getAbsoluteRootUrl(): string {
         return this.rootRoute.url;
+    }
+
+    private wrapWithAdminRouter(routes: Routes): Routes {
+        return [{
+            path: '',
+            component: AdminEmptyOutletComponent,
+            children: routes
+        }];
     }
 }

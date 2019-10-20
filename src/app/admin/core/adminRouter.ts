@@ -184,7 +184,7 @@ export class AdminRouter {
     }
 
     public initRouter(injector: Injector): Promise<Routes> {
-        return loadConfig(injector).pipe(map(config => this.initRouterWithConfig(injector, flatten(config)))).toPromise()
+        return loadConfig(injector).pipe(map(config => this.initRouterWithConfig(injector, flatten(config).map(standardizeConfig)))).toPromise()
     }
 
     public initRouterWithConfig(injector: Injector, config: Routes): Routes {

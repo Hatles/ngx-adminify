@@ -1,4 +1,5 @@
 import {
+    ANALYZE_FOR_ENTRY_COMPONENTS,
     APP_INITIALIZER,
     ApplicationRef,
     Compiler,
@@ -13,7 +14,7 @@ import {
     Router, ROUTER_CONFIGURATION,
     RouteReuseStrategy,
     RouterModule,
-    RouterPreloader,
+    RouterPreloader, Routes,
     ROUTES,
     UrlHandlingStrategy,
     UrlSerializer
@@ -31,6 +32,8 @@ import {AdminRouterConfigLoaderFactory} from '@app/admin/core/adminRouterConfigL
 import {Location} from '@angular/common';
 import {flatten} from '@angular/router/utils/collection';
 import {ɵgetDOM as getDOM} from '@angular/platform-browser';
+import {ASYNC_ROUTES} from '@app/admin/core/adminRouterConfigLoader';
+import {Observable} from 'rxjs';
 
 // tslint:disable-next-line:interface-over-type-literal
 export class RouteData {
@@ -91,7 +94,9 @@ export class AdminifyModule {
         return {
             ngModule: AdminifyModule,
             providers: [
-                {provide: APP_INITIALIZER, useFactory: buildConfigFactory(config), deps: [Injector, AdminPoolService], multi: true },
+                // {provide: APP_INITIALIZER, useFactory: buildConfigFactory(config), deps: [AdminPoolService], multi: true },
+                provideAdminAsyncRoutes(config),
+                // {provide: ASYNC_ROUTES, useFactory: buildConfigFactory(config), deps: [AdminPoolService], multi: true },
                 // { provide: APP_INITIALIZER, useFactory: buildProviders(config), deps: [Injector, AdminPoolService], multi: true}
             ]
         };
@@ -117,15 +122,41 @@ function exploreConfigForComponents(config: AdminsConfig) {
     return undefined;
 }
 
+export type AsyncRoutes = Promise<Routes> | Observable<Routes>;
+
+export function provideAsyncRoutes(routes: AsyncRoutes): Provider[] {
+    return [
+        { provide: ASYNC_ROUTES, multi: true, useValue: routes },
+    ];
+}
+
+export function provideAsyncRoutesFactory(factory: (...deps) => AsyncRoutes, deps?: any[]): Provider {
+    return { provide: ASYNC_ROUTES, multi: true, useFactory: factory, deps: deps };
+}
+
+export function provideAdminAsyncRoutes(config: AdminsConfig): Provider[] {
+    return [
+        provideAsyncRoutesFactory(buildConfigFactory(config), [AdminPoolService]),
+        { provide: ROUTES, multi: true, useValue: [] }
+    ];
+}
+
 export type AdminConfigFactory = (injector: Injector) => Promise<AdminsConfig>;
 
-export function buildConfigFactory(config: AdminsConfig): (injector: Injector, pool: AdminPoolService) => () => Promise<any> {
-    return (injector: Injector, pool: AdminPoolService) => {
-        return () => new Promise(resolve => {
-            buildAdmins(null, pool, config);
-            resolve();
+export function buildConfigFactory(config: AdminsConfig): (pool: AdminPoolService) => AsyncRoutes {
+    return (pool: AdminPoolService) => {
+        return new Promise(resolve => {
+            const routes = buildAdmins(pool, config);
+            resolve(routes);
         });
     };
+}
+
+export function buildConfig(pool: AdminPoolService, config: AdminsConfig): AsyncRoutes {
+    return new Promise(resolve => {
+        const routes = buildAdmins(pool, config);
+        resolve(routes);
+    });
 }
 
 // export function buildProviders(providers: AdminOutletRouteProviders): (: Injector, pool: AdminPoolService) => () => Promise<any> {
@@ -140,14 +171,14 @@ export function buildConfigFactory(config: AdminsConfig): (injector: Injector, p
 export function buildConfigFactoryPromise(factory: AdminConfigFactory): (injector: Injector, pool: AdminPoolService) => () => Promise<any> {
     return (injector: Injector, pool: AdminPoolService) => {
         return () => factory(injector).then(config => {
-            buildAdmins(null, pool, config);
+            buildAdmins(pool, config);
             return config;
         });
     };
 }
 
-export function buildAdmins(router: Router, pool: AdminPoolService, config: AdminsConfig) {
-    pool.buildAdmins(router, config);
+export function buildAdmins(pool: AdminPoolService, config: AdminsConfig): Routes {
+    return pool.buildAdmins(config);
 }
 
 export function setupRouter(
