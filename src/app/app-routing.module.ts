@@ -1,11 +1,21 @@
 import {NgModule} from '@angular/core';
-import {ActivatedRoute, Router, RouterModule, Routes} from '@angular/router';
-import {AdminifyModule} from './admin/core/adminify.module';
+import {AdminifyModule, RouteData} from './admin/core/adminify.module';
 import {AdminModule} from './modules/admin/admin.module';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule, Routes} from '@angular/router';
+import {AdminOutletRouteProviders} from '@app/admin/core/adminOutletRouteProvider';
+import {AdminRouterConfigLoaderFactory} from '@app/admin/core/adminRouterConfigLoaderFactory';
 
 const routes: Routes = [
-  {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
-  // {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminifyModule)},
+    {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
+    // {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminifyModule)},
+];
+
+const providers: AdminOutletRouteProviders = [
+    {
+        provide: RouteData,
+        factory: (route: ActivatedRouteSnapshot) => ({ data: route.data }),
+        deps: []
+    }
 ];
 
 @NgModule({
@@ -13,21 +23,16 @@ const routes: Routes = [
         RouterModule.forRoot(
             routes
         ),
-        AdminifyModule.fotRoot(),
+        AdminifyModule.fotRoot(
+            providers
+        ),
         AdminModule
     ],
     exports: [
         RouterModule,
     ],
-    providers: [
-        {provide: ActivatedRoute, useFactory: rootRoute, deps: [Router]},
-    ],
     declarations: [],
     entryComponents: []
 })
-export class AppRoutingModule { }
-
-export function rootRoute(router: Router): ActivatedRoute {
-    router.routerState.root['test'] = 'test';
-    return router.routerState.root;
+export class AppRoutingModule {
 }

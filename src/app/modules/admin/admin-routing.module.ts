@@ -6,8 +6,7 @@ import {AdminBaseComponent} from './components/admin-base/admin-base.component';
 import {AdminActionBaseComponent} from './components/admin-action-base/admin-action-base.component';
 import {AdminDashboardBaseComponent} from './components/admin-dashboard-base/admin-dashboard-base.component';
 import {AdminPoolService} from '../../admin/core/admin-pool.service';
-import {RouteConfigLoadEnd, Router, RouterModule, Routes} from '@angular/router';
-import {dataRouteFinder} from '../../admin/core/dataRouteFinder';
+import {dataRouteFinder} from '@app/admin/core/dataRouteFinder';
 
 export const adminComponents: Type<any>[] = [
     AdminRootComponent,
@@ -18,7 +17,7 @@ export const adminComponents: Type<any>[] = [
 
 const admins: AdminsConfig = {
     path: 'adminconfig',
-    data: {},
+    data: { test: 'test' },
     component: AdminRootComponent,
     rootFinder: dataRouteFinder('admin'),
     admins: [

@@ -6,6 +6,7 @@ import {RouteWithAbsoluteUrl, RouteWithParent, routeWithParentToUrl} from './rou
 import {removePostFix} from './removePostFix';
 import {removePreFix} from './removePreFix';
 import {Subject} from 'rxjs';
+import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -170,7 +171,8 @@ export class AdminPoolService {
                 path: typeof this.adminsConfig.defaultRoutePath === 'string' &&
                 this.adminsConfig.defaultRoutePath !== '' ?
                     this.adminsConfig.defaultRoutePath :
-                    'admin'
+                    'admin',
+                component: AdminEmptyOutletComponent
             };
 
         return {

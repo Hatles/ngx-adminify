@@ -9,11 +9,10 @@ import {AdminPoolService} from '../../../../admin/core/admin-pool.service';
 })
 export class AdminBaseComponent implements OnInit {
 
-    constructor(private route: ActivatedRoute, private pool: AdminPoolService) {
-    }
+    constructor(private route: ActivatedRoute, private pool: AdminPoolService) { }
 
     ngOnInit() {
-        this.pool.logRoute.subscribe(() => console.log('admin', this.route));
+        this.pool.logRoute.subscribe(() => console.log('admin', this.route.snapshot));
     }
 
 }
