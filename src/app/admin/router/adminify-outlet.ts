@@ -18,7 +18,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts, Data, PRIMARY_OUTLET} from '@angular/router';
-import {AdminOutletRouteInjectorFactory} from '@app/admin/router/admin-outlet-route-injector-factory';
+import {AdminifyOutletRouteInjectorFactory} from '@app/admin/router/adminify-outlet-route-injector-factory';
 
 /**
  * @description
@@ -49,7 +49,7 @@ import {AdminOutletRouteInjectorFactory} from '@app/admin/router/admin-outlet-ro
 // tslint:disable-next-line:directive-selector
 @Directive({selector: 'admin-outlet', exportAs: 'adminOutlet'})
 // tslint:disable-next-line:directive-class-suffix
-export class AdminOutlet implements OnDestroy, OnInit {
+export class AdminifyOutlet implements OnDestroy, OnInit {
     private activated: ComponentRef<any>|null = null;
     // tslint:disable-next-line:variable-name
     private _activatedRoute: ActivatedRoute|null = null;
@@ -61,7 +61,7 @@ export class AdminOutlet implements OnDestroy, OnInit {
     @Output('deactivate') deactivateEvents = new EventEmitter<any>();
 
     constructor(
-        private routeInjectorFactory: AdminOutletRouteInjectorFactory,
+        private routeInjectorFactory: AdminifyOutletRouteInjectorFactory,
         private parentContexts: ChildrenOutletContexts, private location: ViewContainerRef,
         private resolver: ComponentFactoryResolver, @Attribute('name') name: string,
         private changeDetector: ChangeDetectorRef) {

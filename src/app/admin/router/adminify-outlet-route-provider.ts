@@ -8,9 +8,9 @@
  */
 import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 
-export type AdminOutletRouteProviders = AdminOutletRouteProvider[];
+export type AdminOutletRouteProviders = AdminifyOutletRouteProvider[];
 
-export interface AdminOutletRouteProvider {
+export interface AdminifyOutletRouteProvider {
     /**
      * An injection token. (Typically an instance of `Type` or `InjectionToken`, but can be `any`).
      */

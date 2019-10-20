@@ -1,9 +1,9 @@
-import {AdminOutletRouteProvider, AdminOutletRouteProviders} from '@app/admin/router/admin-outlet-route-provider';
+import {AdminifyOutletRouteProvider, AdminOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
 import {Injectable, Injector} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts} from '@angular/router';
 
 @Injectable({providedIn: 'root'})
-export class AdminOutletRouteInjectorFactory {
+export class AdminifyOutletRouteInjectorFactory {
     private providers: AdminOutletRouteProviders;
 
     constructor(providers: AdminOutletRouteProviders) {
@@ -15,7 +15,7 @@ export class AdminOutletRouteInjectorFactory {
         return new AdminOutletInjector(route, childContexts, parent, this);
     }
 
-    getProvider(token: any): AdminOutletRouteProvider {
+    getProvider(token: any): AdminifyOutletRouteProvider {
         return this.providers.find(p => p.provide === token);
     }
 }
@@ -27,7 +27,7 @@ class AdminOutletInjector implements Injector {
         private route: ActivatedRoute,
         private childContexts: ChildrenOutletContexts,
         private parent: Injector,
-        private factory: AdminOutletRouteInjectorFactory) {}
+        private factory: AdminifyOutletRouteInjectorFactory) {}
 
     get(token: any, notFoundValue?: any): any {
         if (token === ActivatedRoute) {

@@ -5,7 +5,7 @@ import {AdminConfig, AdminsConfig} from './admin-config';
 import {RouteWithAbsoluteUrl, RouteWithParent, routeWithParentToUrl} from './route-utils';
 import {removePreFix} from './remove-pre-fix';
 import {Subject} from 'rxjs';
-import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
+import {AdminEmptyOutletComponent} from '@app/admin/router/components/adminify-empty-outlet.service';
 
 export interface AdminWithConfig {
     admin: Admin;

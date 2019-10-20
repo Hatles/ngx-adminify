@@ -32,7 +32,7 @@ import {resolveData} from '@angular/router/operators/resolve_data';
 import {createRouterState} from '@angular/router/create_router_state';
 import {activateRoutes} from '@angular/router/operators/activate_routes';
 import {createUrlTree} from '@angular/router/create_url_tree';
-import {loadConfig} from '@app/admin/router/admin-router-config-loader';
+import {loadConfig} from '@app/admin/router/adminify-router-config-loader';
 import {flatten} from '@angular/router/utils/collection';
 
 function defaultErrorHandler(error: any): any {
@@ -66,7 +66,7 @@ function defaultRouterHook(snapshot: RouterStateSnapshot, runExtras: {
  *
  * @publicApi
  */
-export class AdminRouter {
+export class AdminifyRouter {
 
     private currentUrlTree: UrlTree;
     private rawUrlTree: UrlTree;

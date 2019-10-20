@@ -24,7 +24,7 @@ import {RouterConfigLoaderFactory} from '@app/admin/router/router-config-loader-
  * @publicApi
  */
 @Injectable()
-export class AdminRouterPreloader implements OnDestroy {
+export class AdminifyRouterPreloader implements OnDestroy {
     private loader: RouterConfigLoader;
     // TODO(issue/24571): remove '!'.
     private subscription !: Subscription;

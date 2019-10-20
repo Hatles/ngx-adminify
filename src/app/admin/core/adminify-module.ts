@@ -2,7 +2,7 @@ import {APP_INITIALIZER, Injector, ModuleWithProviders, NgModule, Provider} from
 import {RouterModule, Routes, ROUTES} from '@angular/router';
 import {AdminPoolService} from './admin-pool.service';
 import {AdminsConfig} from './admin-config';
-import {AdminOutletRouteProviders} from '@app/admin/router/admin-outlet-route-provider';
+import {AdminOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
 import {AdminifyRouterModule, provideAsyncRoutesByFactory} from '@app/admin/router/adminify-router-module';
 import {AsyncRoutes} from '@app/admin/router/adminify-router-config';
 

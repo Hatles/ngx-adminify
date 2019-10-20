@@ -23,21 +23,21 @@ import {
     UrlHandlingStrategy,
     UrlSerializer
 } from '@angular/router';
-import {AdminOutlet} from '@app/admin/router/admin-outlet';
-import {AdminOutletRouteProviders} from '@app/admin/router/admin-outlet-route-provider';
-import {AdminOutletRouteInjectorFactory} from '@app/admin/router/admin-outlet-route-injector-factory';
-import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
+import {AdminifyOutlet} from '@app/admin/router/adminify-outlet';
+import {AdminOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
+import {AdminifyOutletRouteInjectorFactory} from '@app/admin/router/adminify-outlet-route-injector-factory';
+import {AdminEmptyOutletComponent} from '@app/admin/router/components/adminify-empty-outlet.service';
 import {RouterConfigLoaderFactory} from '@app/admin/router/router-config-loader-factory';
-import {AdminRouter} from '@app/admin/router/admin-router';
-import {AdminRouterPreloader} from '@app/admin/router/admin-router-preloader';
-import {AdminRouterConfigLoaderFactory} from '@app/admin/router/admin-router-config-loader-factory';
+import {AdminifyRouter} from '@app/admin/router/adminify-router';
+import {AdminifyRouterPreloader} from '@app/admin/router/adminify-router-preloader';
+import {AdminifyRouterConfigLoaderFactory} from '@app/admin/router/adminify-router-config-loader-factory';
 import {Location} from '@angular/common';
 import {ɵgetDOM as getDOM} from '@angular/platform-browser';
-import {ASYNC_ROUTES} from '@app/admin/router/admin-router-config-loader';
+import {ASYNC_ROUTES} from '@app/admin/router/adminify-router-config-loader';
 import {AdminifyRouterChildConfig, AdminifyRouterConfig, AsyncRoutes, AsyncRoutesFactory} from '@app/admin/router/adminify-router-config';
 
-function buildOutletRouteInjectorFactory(providers: AdminOutletRouteProviders): AdminOutletRouteInjectorFactory {
-    return new AdminOutletRouteInjectorFactory(providers);
+function buildOutletRouteInjectorFactory(providers: AdminOutletRouteProviders): AdminifyOutletRouteInjectorFactory {
+    return new AdminifyOutletRouteInjectorFactory(providers);
 }
 
 @NgModule({
@@ -46,10 +46,10 @@ function buildOutletRouteInjectorFactory(providers: AdminOutletRouteProviders): 
     ],
     exports: [
         RouterModule,
-        AdminOutlet
+        AdminifyOutlet
     ],
     declarations: [
-        AdminOutlet,
+        AdminifyOutlet,
         AdminEmptyOutletComponent
     ],
     entryComponents: [
@@ -64,16 +64,16 @@ export class AdminifyRouterModule {
             ngModule: AdminifyRouterModule,
             providers: [
                 {
-                    provide: AdminOutletRouteInjectorFactory,
+                    provide: AdminifyOutletRouteInjectorFactory,
                     useValue: buildOutletRouteInjectorFactory(config.providers)
                 },
                 config.routerConfigLoaderFactoryProvider ? config.routerConfigLoaderFactoryProvider :
                     {
                         provide: RouterConfigLoaderFactory,
-                        useClass: AdminRouterConfigLoaderFactory
+                        useClass: AdminifyRouterConfigLoaderFactory
                     },
                 {
-                    provide: AdminRouter,
+                    provide: AdminifyRouter,
                     useFactory: setupRouter,
                     deps: [
                         RouterConfigLoaderFactory, ApplicationRef, UrlSerializer, ChildrenOutletContexts, Location, Injector,
@@ -81,8 +81,8 @@ export class AdminifyRouterModule {
                         [UrlHandlingStrategy, new Optional()], [RouteReuseStrategy, new Optional()]
                     ]
                 },
-                {provide: Router, useExisting: AdminRouter},
-                {provide: RouterPreloader, useClass: AdminRouterPreloader},
+                {provide: Router, useExisting: AdminifyRouter},
+                {provide: RouterPreloader, useClass: AdminifyRouterPreloader},
                 {provide: APP_INITIALIZER, useFactory: initRouter, deps: [Injector], multi: true}
             ]
         };
@@ -119,7 +119,7 @@ export function setupRouter(
     location: Location, injector: Injector, loader: NgModuleFactoryLoader, compiler: Compiler,
     config: Route[][], opts: ExtraOptions = {}, urlHandlingStrategy?: UrlHandlingStrategy,
     routeReuseStrategy?: RouteReuseStrategy) {
-    const router = new AdminRouter(
+    const router = new AdminifyRouter(
         factory, null, urlSerializer, contexts, location);
 
     if (urlHandlingStrategy) {
@@ -170,7 +170,7 @@ export function setupRouter(
 
 export function initRouter(injector: Injector) {
     return () => new Promise(resolve => {
-        const router = injector.get(AdminRouter);
+        const router = injector.get(AdminifyRouter);
         router.initRouter(injector).then(config => {
             resolve(config);
         });

@@ -6,7 +6,7 @@ import {map, mergeMap, switchMap} from 'rxjs/operators';
 import {flatten, wrapIntoObservable} from '@angular/router/utils/collection';
 import {IRouterConfigLoader} from '@app/admin/router/router-config-loader';
 import {PRIMARY_OUTLET} from '@angular/router/shared';
-import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-outlet.service';
+import {AdminEmptyOutletComponent} from '@app/admin/router/components/adminify-empty-outlet.service';
 
 /**
  * The [DI token](guide/glossary/#di-token) for a router configuration.
@@ -15,7 +15,7 @@ import {AdminEmptyOutletComponent} from '@app/admin/core/components/admin-empty-
  */
 export const ASYNC_ROUTES = new InjectionToken<Route[][]>('ASYNC_ROUTES');
 
-export class AdminRouterConfigLoader implements IRouterConfigLoader {
+export class AdminifyRouterConfigLoader implements IRouterConfigLoader {
     constructor(
         private loader: NgModuleFactoryLoader, private compiler: Compiler,
         private onLoadStartListener?: (r: Route) => void,
