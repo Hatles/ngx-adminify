@@ -1,5 +1,5 @@
 import {Route} from '@angular/router';
-import {AdminAction} from './admin-action';
+import {AdminActionConfig} from '@app/admin/core/admin-action-config';
 
 export type RouteFinder = (Route) => boolean;
 
@@ -17,5 +17,5 @@ export interface AdminsConfig extends Route {
 export interface AdminConfig extends Route {
     name: string;
     defaultActionName?: string;
-    actions?: AdminAction[];
+    actions?: AdminActionConfig[];
 }

@@ -71,7 +71,7 @@ export class AdminPoolService {
         // Add default admin redirect
         if (this.adminsConfig.defaultAdminName) {
             const defaultAdmin = this.getAdmin(this.adminsConfig.defaultAdminName);
-            const defaultAdminUrl = defaultAdmin.getUrl();
+            const defaultAdminUrl = defaultAdmin.getCompiledUrl();
 
             if (defaultAdminUrl !== '') {
                 route.children = [

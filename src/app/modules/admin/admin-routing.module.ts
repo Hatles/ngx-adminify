@@ -42,9 +42,28 @@ const admins: AdminsConfig = {
     ]
 };
 
+export function buildConfigFactory(): Promise<AdminsConfig> {
+    return new Promise<AdminsConfig>(resolve => {
+        resolve(admins);
+    });
+}
+
 @NgModule({
     imports: [
         AdminifyModule.withConfig(admins),
+        // AdminifyModule.withConfigFactory(buildConfigFactory, []),
+        // AdminifyModule.withBuilder({
+        //     defaultAdminActionComponent: AdminActionBaseComponent,
+        //     defaultAdminComponent: AdminBaseComponent,
+        //     rootComponent: AdminRootComponent,
+        // }, (builder => {
+        //     builder
+        //         .initConfig('adminconfig', { test: 'test' })
+        //         .addDashboardAdmin(AdminDashboardBaseComponent, 'dashboard', 'dashboard')
+        //         .addAdmin('test')
+        //         .addAction('view')
+        //     ;
+        // }))
     ],
     exports: [
         AdminifyModule,
