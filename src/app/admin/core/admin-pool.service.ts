@@ -1,10 +1,7 @@
-import {Injectable, Injector} from '@angular/core';
-import {Route, Router, Routes} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Route, Routes} from '@angular/router';
 import {Admin} from './admin';
 import {AdminConfig, AdminsConfig} from './admin-config';
-import {RouteWithAbsoluteUrl, RouteWithParent, routeWithParentToUrl} from './route-utils';
-import {removePreFix} from './remove-pre-fix';
-import {Subject} from 'rxjs';
 import {AdminEmptyOutletComponent} from '@app/admin/router/components/adminify-empty-outlet.service';
 
 export interface AdminWithConfig {
@@ -17,9 +14,6 @@ export class AdminPoolService {
 
     private adminsConfig: AdminsConfig;
     private admins: AdminWithConfig[];
-    private rootRoute: RouteWithAbsoluteUrl;
-
-    logRoute: Subject<any> = new Subject<any>();
 
     constructor() { }
 
@@ -100,49 +94,15 @@ export class AdminPoolService {
         return [route];
     }
 
-    private getRootRoute(routes: Routes): RouteWithAbsoluteUrl {
-        const routesQueue: RouteWithParent[] = [...routes.map(r => ({route: r, parent: null}))];
-
-        if (this.adminsConfig.rootFinder) {
-            while (routesQueue.length) {
-                const route = routesQueue.shift();
-                if (this.adminsConfig.rootFinder(route)) {
-                    return routeWithParentToUrl(route);
-                } else if (route.route.children) {
-                    routesQueue.push(...route.route.children.map(r => ({route: r, parent: route})));
-                }
-            }
-        }
-
-        return null;
-    }
-
     private getAdminRoutesFromConfig(): Route {
         return {
             ...this.adminsConfig,
+            data: {
+                ...this.adminsConfig.data,
+                adminRoot: true
+            },
             path: this.adminsConfig.path ? this.adminsConfig.path : ''
         };
-    }
-
-    private generateDefaultRootRoute(): RouteWithAbsoluteUrl {
-        const defaultRoute = this.adminsConfig.defaultRoute ?
-            this.adminsConfig.defaultRoute :
-            {
-                path: typeof this.adminsConfig.defaultRoutePath === 'string' &&
-                this.adminsConfig.defaultRoutePath !== '' ?
-                    this.adminsConfig.defaultRoutePath :
-                    'admin',
-                component: AdminEmptyOutletComponent
-            };
-
-        return {
-            route: defaultRoute,
-            url: '/' + removePreFix(defaultRoute.path, '/')
-        };
-    }
-
-    getAbsoluteRootUrl(): string {
-        return this.rootRoute.url;
     }
 
     private wrapWithAdminRouter(routes: Routes): Routes {

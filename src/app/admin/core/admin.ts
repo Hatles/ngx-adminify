@@ -19,6 +19,10 @@ export class Admin {
     private buildRoute() {
         this.route = {
             ...this.config,
+            data: {
+                ...this.config.data,
+                admin: this.name
+            },
             path: this.config.path || this.config.path === '' ? this.config.path : this.config.name
         };
 
@@ -49,10 +53,6 @@ export class Admin {
         return this.route;
     }
 
-    getAbsoluteUrl(): string[] {
-        return [this.pool.getAbsoluteRootUrl(), ...this.getUrl()];
-    }
-
     private buildRouteSegment(path: string) {
         this.routeBuilder = new AdminRouteBuilder(path);
     }
@@ -75,5 +75,13 @@ export class Admin {
 
     getCompiledUrl(parameters?: any): string {
         return this.getUrl(parameters).join('/');
+    }
+
+    getActionUrl(action: string, ...parameters: string[]): string[];
+
+    getActionUrl(action: string, parameters?: string[] | RouteParametersValues): string[];
+
+    getActionUrl(action: string, parameters?: any): string[] {
+        return [...this.getUrl(), ...this.getAction(action).getUrl(parameters)];
     }
 }

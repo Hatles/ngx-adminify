@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
 import {AdminifyModule, RouteData} from './admin/core/adminify-module';
-import {ActivatedRouteSnapshot, RouterModule, Routes} from '@angular/router';
-import {AdminOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
+import {ActivatedRoute, ActivatedRouteSnapshot, RouterModule, Routes} from '@angular/router';
 import {AdminifyRouterModule} from '@app/admin/router/adminify-router-module';
+import {AdminifyOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
 
 const routes: Routes = [
     {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
     {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)},
 ];
 
-const providers: AdminOutletRouteProviders = [
+const providers: AdminifyOutletRouteProviders = [
     {
         provide: RouteData,
-        factory: (route: ActivatedRouteSnapshot) => ({ data: route.data }),
+        factory: (route: ActivatedRoute) => ({ data: route.snapshot.data }),
         deps: []
     }
 ];

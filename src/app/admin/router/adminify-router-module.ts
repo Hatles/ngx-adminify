@@ -1,7 +1,7 @@
 import {
     APP_INITIALIZER,
     ApplicationRef,
-    Compiler,
+    Compiler, Inject,
     Injector,
     ModuleWithProviders,
     NgModule,
@@ -24,7 +24,11 @@ import {
     UrlSerializer
 } from '@angular/router';
 import {AdminifyOutlet} from '@app/admin/router/adminify-outlet';
-import {AdminOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
+import {
+    ADMINIFY_PROVIDER,
+    AdminifyOutletRouteProvider,
+    AdminifyOutletRouteProviders,
+} from '@app/admin/router/adminify-outlet-route-provider';
 import {AdminifyOutletRouteInjectorFactory} from '@app/admin/router/adminify-outlet-route-injector-factory';
 import {AdminEmptyOutletComponent} from '@app/admin/router/components/adminify-empty-outlet.service';
 import {RouterConfigLoaderFactory} from '@app/admin/router/router-config-loader-factory';
@@ -36,7 +40,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
 import {ASYNC_ROUTES} from '@app/admin/router/adminify-router-config-loader';
 import {AdminifyRouterChildConfig, AdminifyRouterConfig, AsyncRoutes, AsyncRoutesFactory} from '@app/admin/router/adminify-router-config';
 
-function buildOutletRouteInjectorFactory(providers: AdminOutletRouteProviders): AdminifyOutletRouteInjectorFactory {
+function buildOutletRouteInjectorFactory(providers: AdminifyOutletRouteProviders): AdminifyOutletRouteInjectorFactory {
     return new AdminifyOutletRouteInjectorFactory(providers);
 }
 
@@ -65,13 +69,14 @@ export class AdminifyRouterModule {
             providers: [
                 {
                     provide: AdminifyOutletRouteInjectorFactory,
-                    useValue: buildOutletRouteInjectorFactory(config.providers)
+                    useValue: buildOutletRouteInjectorFactory([])
                 },
                 config.routerConfigLoaderFactoryProvider ? config.routerConfigLoaderFactoryProvider :
-                    {
-                        provide: RouterConfigLoaderFactory,
-                        useClass: AdminifyRouterConfigLoaderFactory
-                    },
+                {
+                    provide: RouterConfigLoaderFactory,
+                    useClass: AdminifyRouterConfigLoaderFactory
+                },
+                provideAdminifyProviders(config.providers || []),
                 {
                     provide: AdminifyRouter,
                     useFactory: setupRouter,
@@ -89,14 +94,40 @@ export class AdminifyRouterModule {
     }
 
     static forChild(config: AdminifyRouterChildConfig): ModuleWithProviders {
+        const providers = [];
+
+        if (config.routes) {
+            providers.push(provideAsyncRoutesFactory(config.routes));
+        }
+
+        if (config.providers) {
+            providers.push(provideAdminifyProviders(config.providers));
+        }
+
         return {
             ngModule: AdminifyRouterModule,
-            providers: [
-                provideAsyncRoutesFactory(config.routes)
-                // todo: update router outlet providers
-            ]
+            providers: providers
         };
     }
+
+    constructor(
+        injectorFactory: AdminifyOutletRouteInjectorFactory,
+        @Optional() @Inject(ADMINIFY_PROVIDER) providers: AdminifyOutletRouteProviders = []
+    ) {
+        if (!providers) {
+            return;
+        }
+
+        injectorFactory.addProviders(providers);
+    }
+}
+
+export function provideAdminifyProvider(provider: AdminifyOutletRouteProvider): Provider {
+    return {provide: ADMINIFY_PROVIDER, multi: true, useValue: provider};
+}
+
+export function provideAdminifyProviders(providers: AdminifyOutletRouteProviders): Provider[] {
+    return providers.map(provider => provideAdminifyProvider(provider));
 }
 
 export function provideAsyncRoutes(routes: AsyncRoutes): Provider[] {

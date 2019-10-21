@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AdminPoolService} from '../../../../admin/core/admin-pool.service';
+import {ActivatedRoute} from '@angular/router';
+import {AdminPoolService} from '@app/admin/core/admin-pool.service';
 import {RouteData} from '@app/admin/core/adminify-module';
 
 @Component({
@@ -17,10 +17,6 @@ export class AdminRootComponent implements OnInit {
     }
 
     ngOnInit(): void {
-    }
-
-    onLogRoute() {
-        this.pool.logRoute.next();
     }
 
 }

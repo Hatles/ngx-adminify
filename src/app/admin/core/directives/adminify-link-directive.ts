@@ -1,6 +1,7 @@
 import {Attribute, Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 import {ActivatedRoute, QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {AdminPoolService} from '@app/admin/core/admin-pool.service';
+import {AdminRootRoute} from '@app/admin/core/admin-root-route';
 
 
 // tslint:disable-next-line:directive-selector
@@ -17,7 +18,7 @@ export class AdminifyLinkDirective {
     private preserve: boolean;
 
     constructor(
-        private router: Router, private route: ActivatedRoute, private pool: AdminPoolService,
+        private router: Router, private route: AdminRootRoute, private pool: AdminPoolService,
         @Attribute('tabindex') tabIndex: string, renderer: Renderer2, el: ElementRef) {
         if (tabIndex == null) {
             renderer.setAttribute(el.nativeElement, 'tabindex', '0');
@@ -27,7 +28,7 @@ export class AdminifyLinkDirective {
     @Input()
     set adminifyLink(admin: string) {
         if (admin) {
-            this.commands = this.pool.getAdmin(admin).getAbsoluteUrl();
+            this.commands = this.pool.getAdmin(admin).getUrl();
         } else {
             this.commands = [];
         }

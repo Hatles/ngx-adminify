@@ -42,9 +42,7 @@ export class AdminifyActionLinkDirective {
                 parameters = action.parameters || {};
             }
 
-            const adminAction: AdminAction = this.admin.getAction(adminActionName);
-
-            this.commands = adminAction.getUrl(parameters);
+            this.commands = this.admin.getActionUrl(adminActionName, parameters);
         } else {
             this.commands = [];
         }

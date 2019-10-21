@@ -1,12 +1,12 @@
-import {AdminifyOutletRouteProvider, AdminOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
+import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
 import {Injectable, Injector} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts} from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class AdminifyOutletRouteInjectorFactory {
-    private providers: AdminOutletRouteProviders;
+    private providers: AdminifyOutletRouteProviders;
 
-    constructor(providers: AdminOutletRouteProviders) {
+    constructor(providers: AdminifyOutletRouteProviders) {
         this.providers = providers ? providers : [];
     }
 
@@ -18,9 +18,26 @@ export class AdminifyOutletRouteInjectorFactory {
     getProvider(token: any): AdminifyOutletRouteProvider {
         return this.providers.find(p => p.provide === token);
     }
+
+    addProvider(provider: AdminifyOutletRouteProvider) {
+        // Todo: implement check for unique provider and multi for multi
+        // if (this.getProvider(provider.provide)) {
+        //     throw new Error('Provider for token 'provider.provide.toString())
+        // }
+
+        // check if provider was already added
+        // tslint:disable-next-line:no-string-literal
+        if (!provider['_added'] === true) {
+            this.providers.push(provider);
+            // tslint:disable-next-line
+            provider['_added'] = true;
+        }
+    }
+
+    addProviders(providers: AdminifyOutletRouteProviders) {
+        providers.forEach(provider => this.addProvider(provider));
+    }
 }
-
-
 
 class AdminOutletInjector implements Injector {
     constructor(
@@ -40,7 +57,7 @@ class AdminOutletInjector implements Injector {
 
         const provider = this.factory.getProvider(token);
         if (provider) {
-            return provider.factory.apply(this, [this.route.snapshot, ...provider.deps]);
+            return provider.factory.apply(this, [this.route, ...provider.deps.map(dep => this.parent.get(dep))]);
         }
 
         return this.parent.get(token, notFoundValue);

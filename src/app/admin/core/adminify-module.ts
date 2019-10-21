@@ -1,24 +1,98 @@
 import {APP_INITIALIZER, Injector, ModuleWithProviders, NgModule, Provider} from '@angular/core';
-import {Routes, ROUTES} from '@angular/router';
+import {ActivatedRoute, Routes, ROUTES} from '@angular/router';
 import {AdminPoolService} from './admin-pool.service';
 import {AdminsConfig} from './admin-config';
 import {AdminifyRouterModule, provideAsyncRoutesByFactory, provideAsyncRoutesFactory} from '@app/admin/router/adminify-router-module';
 import {AsyncRoutes, AsyncRoutesFactory} from '@app/admin/router/adminify-router-config';
 import {AdminifyBuilder, AdminifyBuilderConfig, IAdminifyBuilder} from '@app/admin/core/adminify-builder';
+import {AdminifyLinkDirective} from '@app/admin/core/directives/adminify-link-directive';
+import {AdminifyActionLinkDirective} from '@app/admin/core/directives/adminify-action-link-directive';
+import {AdminifyOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
+import {Admin} from '@app/admin/core/admin';
+import {AdminRootRoute} from '@app/admin/core/admin-root-route';
+import {AdminActivatedRoute} from '@app/admin/core/admin-activated-route';
+import {AdminAction} from '@app/admin/core/admin-action';
 
 // tslint:disable-next-line:interface-over-type-literal
 export class RouteData {
     data: object;
 }
 
+const providers: AdminifyOutletRouteProviders = [
+    {
+        provide: RouteData,
+        factory: (route: ActivatedRoute) => ({ data: route.snapshot.data }),
+        deps: []
+    },
+    {
+        provide: Admin,
+        factory: (route: ActivatedRoute, pool: AdminPoolService) => {
+            return pool.getAdmin(route.snapshot.data.admin);
+        },
+        deps: [AdminPoolService]
+    },
+    {
+        provide: AdminAction,
+        factory: (route: ActivatedRoute, pool: AdminPoolService) => {
+            return pool.getAdmin(route.snapshot.data.admin).getAction(route.snapshot.data.action);
+        },
+        deps: [AdminPoolService]
+    },
+    {
+        provide: AdminRootRoute,
+        factory: (route: ActivatedRoute) => {
+            if (route.snapshot.data.adminRoot) {
+                return route;
+            }
+
+            while (route.parent) {
+                route = route.parent;
+
+                if (route.snapshot.data.adminRoot) {
+                    return route;
+                }
+            }
+
+            throw new Error('Can\'t find admin root');
+        },
+        deps: []
+    },
+    {
+        provide: AdminActivatedRoute,
+        factory: (route: ActivatedRoute) => {
+            if (route.snapshot.data.admin && (!route.parent || !route.parent.snapshot.data.admin)) {
+                return route;
+            }
+
+            while (route.parent) {
+                route = route.parent;
+
+                if (route.snapshot.data.admin && (!route.parent || !route.parent.snapshot.data.admin)) {
+                    return route;
+                }
+            }
+
+            throw new Error('Can\'t find admin activated route');
+        },
+        deps: []
+    }
+];
+
 @NgModule({
     imports: [
-        AdminifyRouterModule
+        AdminifyRouterModule.forChild({
+            providers: providers
+        }),
     ],
     exports: [
         AdminifyRouterModule,
+        AdminifyLinkDirective,
+        AdminifyActionLinkDirective
     ],
-    declarations: [],
+    declarations: [
+        AdminifyLinkDirective,
+        AdminifyActionLinkDirective
+    ],
     entryComponents: []
     // No provider
 })

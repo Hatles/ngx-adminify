@@ -1,6 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AdminPoolService} from '../../../../admin/core/admin-pool.service';
+import {AdminPoolService} from '@app/admin/core/admin-pool.service';
+import {Admin} from '@app/admin/core/admin';
+import {AdminAction} from '@app/admin/core/admin-action';
 
 @Component({
   selector: 'app-admin-action-base',
@@ -9,11 +11,10 @@ import {AdminPoolService} from '../../../../admin/core/admin-pool.service';
 })
 export class AdminActionBaseComponent implements OnInit {
 
-    constructor(private route: ActivatedRoute, private pool: AdminPoolService) {
-    }
+    constructor(private route: ActivatedRoute, private pool: AdminPoolService, private admin: Admin, private action: AdminAction) { }
 
     ngOnInit() {
-        this.pool.logRoute.subscribe(() => console.log('action', this.route.snapshot));
+        console.log(this.admin, this.action);
     }
 
 }

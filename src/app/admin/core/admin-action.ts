@@ -1,4 +1,3 @@
-import {AdminPoolService} from '@app/admin/core/admin-pool.service';
 import {AdminActionConfig} from '@app/admin/core/admin-action-config';
 import {AdminRouteBuilder, RouteParametersValues} from '@app/admin/core/admin-route-builder';
 import {Admin} from '@app/admin/core/admin';
@@ -15,6 +14,10 @@ export class AdminAction {
 
         this.route = {
             ...this.config,
+            data: {
+                ...this.config.data,
+                action: this.name
+            },
             path: this.config.path || this.config.path === '' ? this.config.path : this.config.name
         };
 

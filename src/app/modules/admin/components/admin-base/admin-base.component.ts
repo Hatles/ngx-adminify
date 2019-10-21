@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AdminPoolService} from '../../../../admin/core/admin-pool.service';
+import {AdminPoolService} from '@app/admin/core/admin-pool.service';
+import {Admin} from '@app/admin/core/admin';
 
 @Component({
     selector: 'app-admin-base',
@@ -9,10 +10,10 @@ import {AdminPoolService} from '../../../../admin/core/admin-pool.service';
 })
 export class AdminBaseComponent implements OnInit {
 
-    constructor(private route: ActivatedRoute, private pool: AdminPoolService) { }
+    constructor(private route: ActivatedRoute, private pool: AdminPoolService, private admin: Admin) { }
 
     ngOnInit() {
-        this.pool.logRoute.subscribe(() => console.log('admin', this.route.snapshot));
+        console.log(this.admin);
     }
 
 }

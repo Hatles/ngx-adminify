@@ -1,6 +1,7 @@
 import {AdminConfig, AdminsConfig} from '@app/admin/core/admin-config';
-import {Injectable, Type} from '@angular/core';
+import {Type} from '@angular/core';
 import {AdminAction} from '@app/admin/core/admin-action';
+import {AdminActionConfig} from '@app/admin/core/admin-action-config';
 
 export interface IAdminifyBuilder {
     getConfig(): AdminsConfig;
@@ -83,7 +84,7 @@ export class AdminifyBuilder implements IAdminifyBuilder {
             throw new Error('Admin with name "' + name + '" already have an action named "' + name + '"');
         }
 
-        const action: AdminAction = {
+        const action: AdminActionConfig = {
             name: name,
             path: path || name,
             component: component || this.builderConfig.defaultAdminActionComponent
