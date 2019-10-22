@@ -112,4 +112,8 @@ export class AdminPoolService {
             children: routes
         }];
     }
+
+    getAllAdmin(): Admin[] {
+        return this.admins.map(a => a.admin);
+    }
 }

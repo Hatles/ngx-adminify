@@ -84,4 +84,8 @@ export class Admin {
     getActionUrl(action: string, parameters?: any): string[] {
         return [...this.getUrl(), ...this.getAction(action).getUrl(parameters)];
     }
+
+    getAllActions(): AdminAction[] {
+        return this.actions.slice();
+    }
 }

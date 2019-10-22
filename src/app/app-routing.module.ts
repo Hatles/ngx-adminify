@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
-import {AdminifyModule, RouteData} from './admin/core/adminify-module';
-import {ActivatedRoute, ActivatedRouteSnapshot, RouterModule, Routes} from '@angular/router';
+import {AdminifyModule} from './admin/core/adminify-module';
+import {RouterModule, Routes} from '@angular/router';
 import {AdminifyRouterModule} from '@app/admin/router/adminify-router-module';
 import {AdminifyOutletRouteProviders} from '@app/admin/router/adminify-outlet-route-provider';
 
@@ -10,11 +10,6 @@ const routes: Routes = [
 ];
 
 const providers: AdminifyOutletRouteProviders = [
-    {
-        provide: RouteData,
-        factory: (route: ActivatedRoute) => ({ data: route.snapshot.data }),
-        deps: []
-    }
 ];
 
 @NgModule({

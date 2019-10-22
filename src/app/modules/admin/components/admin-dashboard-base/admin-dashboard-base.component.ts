@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AdminPoolService} from '@app/admin/core/admin-pool.service';
+import {Admin} from '@app/admin/core/admin';
 
 @Component({
   selector: 'app-admin-dashboard-base',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardBaseComponent implements OnInit {
 
-  constructor() { }
+    admins: Admin[];
+
+  constructor(private pool: AdminPoolService) { }
 
   ngOnInit() {
+      this.admins = this.pool.getAllAdmin();
   }
 
 }

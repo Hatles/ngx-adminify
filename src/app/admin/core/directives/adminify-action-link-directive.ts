@@ -2,7 +2,6 @@ import {Attribute, Directive, ElementRef, HostListener, Input, Renderer2} from '
 import {ActivatedRoute, QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {Admin} from '@app/admin/core/admin';
 import {RouteParametersValues} from '@app/admin/core/admin-route-builder';
-import {AdminAction} from '@app/admin/core/admin-action';
 
 
 // tslint:disable-next-line:directive-selector

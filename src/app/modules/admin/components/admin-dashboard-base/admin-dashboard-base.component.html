@@ -1,2 +1,2 @@
 <p>admin-dashboard-base works!</p>
-<a [routerLink]="['../test']">Admin test</a>
+<a *ngFor="let admin of admins" [routerLink]="['../'+admin.name]">Admin {{admin.name}}</a>
