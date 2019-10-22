@@ -85,6 +85,14 @@ export class Admin {
         return [...this.getUrl(), ...this.getAction(action).getUrl(parameters)];
     }
 
+    getActionTrueUrl(action: string, ...parameters: string[]): string[];
+
+    getActionTrueUrl(action: string, parameters?: string[] | RouteParametersValues): string[];
+
+    getActionTrueUrl(action: string, parameters?: any): string[] {
+        return this.getAction(action).getUrl(parameters);
+    }
+
     getAllActions(): AdminAction[] {
         return this.actions.slice();
     }

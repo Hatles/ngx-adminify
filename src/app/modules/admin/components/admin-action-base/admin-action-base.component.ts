@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {AdminPoolService} from '@app/admin/core/admin-pool.service';
 import {Admin} from '@app/admin/core/admin';
 import {AdminAction} from '@app/admin/core/admin-action';
 
@@ -11,7 +9,7 @@ import {AdminAction} from '@app/admin/core/admin-action';
 })
 export class AdminActionBaseComponent implements OnInit {
 
-    constructor(private route: ActivatedRoute, private pool: AdminPoolService, private admin: Admin, private action: AdminAction) { }
+    constructor(private admin: Admin, private action: AdminAction) { }
 
     ngOnInit() {
         console.log(this.admin, this.action);

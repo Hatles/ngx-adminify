@@ -2,6 +2,7 @@ import {Attribute, Directive, ElementRef, HostListener, Input, Renderer2} from '
 import {ActivatedRoute, QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {Admin} from '@app/admin/core/admin';
 import {RouteParametersValues} from '@app/admin/core/admin-route-builder';
+import {AdminActivatedRoute} from '@app/admin/core/admin-activated-route';
 
 
 // tslint:disable-next-line:directive-selector
@@ -18,7 +19,7 @@ export class AdminifyActionLinkDirective {
     private preserve: boolean;
 
     constructor(
-        private router: Router, private route: ActivatedRoute, private admin: Admin,
+        private router: Router, private route: AdminActivatedRoute, private admin: Admin,
         @Attribute('tabindex') tabIndex: string, renderer: Renderer2, el: ElementRef) {
         if (tabIndex == null) {
             renderer.setAttribute(el.nativeElement, 'tabindex', '0');
@@ -41,7 +42,7 @@ export class AdminifyActionLinkDirective {
                 parameters = action.parameters || {};
             }
 
-            this.commands = this.admin.getActionUrl(adminActionName, parameters);
+            this.commands = this.admin.getActionTrueUrl(adminActionName, parameters);
         } else {
             this.commands = [];
         }
