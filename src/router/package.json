@@ -1,0 +1,22 @@
+{
+    "name": "@ngx-adminify/router",
+    "version": "0.0.0-ADMINIFY-VERSION",
+    "license": "MIT",
+    "homepage": "https://github.com/Hatles/ngx-adminify#readme",
+    "description": "ngx-adminify is an Angular 2 module.",
+    "keywords": ["angular", "admin", "ng-adminify", "ngx-adminify", "adminify", "angular 2", "angular 2 admin", "json admin", "admin library", "dynamic-admin"],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hatles/ngx-adminify.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Hatles/ngx-adminify/issues"
+    },
+    "dependencies": {
+        "tslib": "^1.7.1"
+    },
+    "peerDependencies": {
+        "@angular/router": ">=8.0.0",
+        "rxjs": ">=6.4.0"
+    }
+}

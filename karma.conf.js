@@ -1,32 +1,84 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
+var path = require('path');
+
+var webpackConfig = require('./.config/webpack.test');
+
+var ENV = process.env.npm_lifecycle_event;
+var isTestWatch = ENV === 'test:watch';
 
 module.exports = function (config) {
-  config.set({
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
-    ],
-    client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, './coverage/ngx-admin'),
-      reports: ['html', 'lcovonly', 'text-summary'],
-      fixWebpackSourcePaths: true
-    },
-    reporters: ['progress', 'kjhtml'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
-  });
+    var _config = {
+
+        // base path that will be used to resolve all patterns (eg. files, exclude)
+        basePath: '/',
+
+        // frameworks to use
+        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: ['jasmine', '@angular-devkit/build-angular'],
+
+        // list of files / patterns to load in the browser
+        files: [
+            { pattern: './.config/karma-shim.js', watched: false }
+        ],
+
+        // list of files to exclude
+        exclude: [],
+
+        // preprocess matching files before serving them to the browser
+        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+        preprocessors: {
+            './.config/karma-shim.js': ['webpack', 'sourcemap']
+        },
+
+        webpack: webpackConfig,
+
+        webpackMiddleware: {
+            // webpack-dev-middleware configuration
+            // i. e.
+            stats: 'errors-only'
+        },
+
+        webpackServer: {
+            noInfo: true // please don't spam the console when running in karma!
+        },
+
+        // test results reporter to use
+        // possible values: 'dots', 'progress', 'mocha'
+        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+        reporters: ['mocha', 'coverage', 'remap-coverage'],
+
+        coverageReporter: {
+            type: 'in-memory'
+        },
+
+        remapCoverageReporter: {
+            'text-summary': null,
+            json: './coverage/report/coverage-final.json',
+            html: './coverage/html'
+        },
+
+        // web server port
+        port: 9876,
+
+        // enable / disable colors in the output (reporters and logs)
+        colors: true,
+
+        // level of logging
+        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+        logLevel: config.LOG_INFO,
+
+        // enable / disable watching file and executing tests whenever any file changes
+        autoWatch: false,
+
+        // start these browsers
+        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        customLaunchers: { ChromeHeadless: { base: 'Chrome', flags: ['--headless', '--no-sandbox', '--disable-gpu', '--remote-debugging-port=9222'] } },
+        browsers: isTestWatch ? ['Chrome'] : ['ChromeHeadless'],
+
+        // Continuous Integration mode
+        // if true, Karma captures browsers, runs the tests and exits
+        singleRun: true
+    };
+
+    config.set(_config);
 };
+

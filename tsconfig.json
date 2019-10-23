@@ -15,10 +15,12 @@
             "node_modules/@types"
         ],
         "paths": {
-            "@app/*": ["src/app/*"],
-            "@angular/router": ["src/router"],
-            "@angular/router/*": ["src/router/*"]
-//            "@router/*": ["src/router/*"]
+            "@ngx-adminify/*": [
+                "src/*/src/public_api"
+            ],
+            "@assets/*": [
+                "demo/src/assets/*"
+            ],
         },
         "lib": [
             "es2018",
@@ -28,5 +30,14 @@
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,
         "strictInjectionParameters": true
-    }
+    },
+    "exclude": [
+        "demo/src/assets/stackblitz/**/*.ts",
+        "src/schematics/src/*/files/**/*",
+        "index.ts",
+        // "dist/schematics/src/*/files/**/*",
+        // Skip all dist files
+        "dist/**/*",
+        "node_modules/**/*"
+    ]
 }
