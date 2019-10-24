@@ -1,6 +1,5 @@
 import {AdminConfig, AdminsConfig} from '../admin-config';
 import {Type} from '@angular/core';
-import {AdminAction} from '../admin-action';
 import {AdminActionConfig} from '../admin-action-config';
 
 export interface IAdminifyBuilder {

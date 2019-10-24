@@ -1,12 +1,14 @@
 {
     "name": "@ngx-adminify/common",
     "author": "Debard Etienne <etienne1995@orange.fr>",
-    "version": "0.0.0-ADMINIFY-VERSION",
+    "version": "0.0.1",
+    "_version": "0.0.0-ADMINIFY-VERSION",
     "scripts": {
         "contrib:generate": "githubcontrib --owner Hatles --repo ngx-adminify --cols 6 --sortOrder desc > CONTRIBUTORS.md",
         "lint": "tslint -p tsconfig.json",
         "lint:fix": "tslint --fix -p tsconfig.json",
         "commit": "npm run build && git-cz",
+        "barrels": "node .config/barrels.js",
         "bundlesize": "npm run build && bundlesize",
         "build": "npm run build:router && npm run build:core && npm run build:entity && npm run build:material && npm run build:schematics && node .config/build.js",
         "build:router": "ng build @ngx-adminify/router",
@@ -23,7 +25,7 @@
         "test:watch": "ng test @ngx-adminify/core --watch",
         "commitmsg": "commitlint -e $GIT_PARAMS",
         "github-release": "conventional-github-releaser -p angular -t $GH_TOKEN --draft",
-        "compile:server": "webpack --config projects/ssr/webpack.server.config.js --progress --colors",
+        "compile:server": "webpack --config projects/ssr/webpack.server.config.js --progress --colors"
     },
     "keywords": [
         "angular",
@@ -61,12 +63,16 @@
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.803.10",
+        "@angular-devkit/build-ng-packagr": "~0.803.10",
+        "@angular-devkit/core": "~8.3.10",
+        "@angular-devkit/schematics": "~8.3.10",
         "@angular/cli": "~8.3.10",
         "@angular/compiler-cli": "~8.2.11",
         "@angular/language-service": "~8.2.11",
-        "@types/node": "~8.9.4",
         "@types/jasmine": "~3.3.8",
         "@types/jasminewd2": "~2.0.3",
+        "@types/node": "~8.9.4",
+        "barrelsby": "^2.2.0",
         "codelyzer": "^5.0.0",
         "jasmine-core": "~3.4.0",
         "jasmine-spec-reporter": "~4.2.1",
@@ -78,6 +84,7 @@
         "ng-packagr": "^4.7.1",
         "protractor": "~5.4.0",
         "ts-node": "~7.0.0",
+        "tsickle": "^0.37.0",
         "tslint": "~5.15.0",
         "typescript": "~3.5.3"
     }

@@ -1,8 +1,8 @@
-import {IRouterConfigLoaderFactory, RouterConfigLoaderFactory} from '@angular/router/router-config-loader-factory';
 import {Compiler, Injectable, NgModuleFactoryLoader} from '@angular/core';
-import {Route} from '@angular/router/config';
-import {AdminifyRouterConfigLoader} from '@angular/router/adminify-router-config-loader';
-import {IRouterConfigLoader} from '@angular/router/router-config-loader';
+import {Route} from '../angular/router';
+import {IRouterConfigLoaderFactory} from "./router-config-loader-factory";
+import {IRouterConfigLoader} from "./router-config-loader";
+import {AdminifyRouterConfigLoader} from "./adminify-router-config-loader";
 
 @Injectable()
 export class AdminifyRouterConfigLoaderFactory implements IRouterConfigLoaderFactory {

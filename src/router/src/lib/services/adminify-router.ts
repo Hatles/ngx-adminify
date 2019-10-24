@@ -1,11 +1,10 @@
 /* tslint:disable */
-import {ErrorHandler, Navigation, NavigationExtras, NavigationTransition, RestoredState, Router, RouterHook} from '@angular/router';
-import {RouterConfigLoader} from '@angular/router/router_config_loader';
-import {RouterConfigLoaderFactory} from '@angular/router/router-config-loader-factory';
-import {Compiler, Injector, isDevMode, NgModuleFactoryLoader, NgModuleRef, NgZone, Type, ɵConsole as Console} from '@angular/core';
-import {containsTree, createEmptyUrlTree, UrlSerializer, UrlTree} from '@angular/router/url_tree';
-import {ChildrenOutletContexts} from '@angular/router/router_outlet_context';
-import {Route, Routes, standardizeConfig, validateConfig} from '@angular/router/config';
+import {ErrorHandler, Navigation, NavigationExtras, NavigationTransition, RestoredState, Router, RouterHook} from '../angular/router/router';
+
+import {Injector, isDevMode, NgModuleRef, NgZone, Type, ɵConsole as Console} from '@angular/core';
+import {containsTree, createEmptyUrlTree, UrlSerializer, UrlTree} from '../angular/router/url_tree';
+import {ChildrenOutletContexts} from '../angular/router';
+import {Route, Routes, standardizeConfig, validateConfig} from '../angular/router/config';
 import {
     Event,
     GuardsCheckEnd,
@@ -14,26 +13,30 @@ import {
     RouteConfigLoadEnd,
     RouteConfigLoadStart,
     RoutesRecognized
-} from '@angular/router/events';
+} from '../angular/router/events';
 import {BehaviorSubject, EMPTY, Observable, of, Subject, Subscription} from 'rxjs';
 import {Location} from '@angular/common';
-import {createEmptyState, RouterState, RouterStateSnapshot} from '@angular/router/router_state';
-import {DefaultUrlHandlingStrategy, UrlHandlingStrategy} from '@angular/router/url_handling_strategy';
-import {DefaultRouteReuseStrategy, RouteReuseStrategy} from '@angular/router/route_reuse_strategy';
+import {createEmptyState, RouterState, RouterStateSnapshot} from '../angular/router/router_state';
+import {DefaultUrlHandlingStrategy, UrlHandlingStrategy} from '../angular/router/url_handling_strategy';
+import {DefaultRouteReuseStrategy, RouteReuseStrategy} from '../angular/router/route_reuse_strategy';
 import {catchError, filter, finalize, map, switchMap, tap} from 'rxjs/operators';
-import {applyRedirects} from '@angular/router/operators/apply_redirects';
-import {recognize} from '@angular/router/operators/recognize';
-import {switchTap} from '@angular/router/operators/switch_tap';
-import {getAllRouteGuards} from '@angular/router/utils/preactivation';
-import {checkGuards} from '@angular/router/operators/check_guards';
-import {isUrlTree} from '@angular/router/utils/type_guards';
-import {isNavigationCancelingError, navigationCancelingError, Params} from '@angular/router/shared';
-import {resolveData} from '@angular/router/operators/resolve_data';
-import {createRouterState} from '@angular/router/create_router_state';
-import {activateRoutes} from '@angular/router/operators/activate_routes';
-import {createUrlTree} from '@angular/router/create_url_tree';
-import {loadConfig} from '@angular/router/adminify-router-config-loader';
-import {flatten} from '@angular/router/utils/collection';
+import {recognize} from '../angular/router/operators/recognize';
+import {switchTap} from '../angular/router/operators/switch_tap';
+import {getAllRouteGuards} from '../angular/router/utils/preactivation';
+import {checkGuards} from '../angular/router/operators/check_guards';
+import {isUrlTree} from '../angular/router/utils/type_guards';
+import {isNavigationCancelingError, navigationCancelingError, Params} from '../angular/router/shared';
+import {resolveData} from '../angular/router/operators/resolve_data';
+import {createRouterState} from '../angular/router/create_router_state';
+import {activateRoutes} from '../angular/router/operators/activate_routes';
+import {createUrlTree} from '../angular/router/create_url_tree';
+import {flatten} from '../angular/router/utils/collection';
+import {RouterConfigLoader} from "../angular/router/router_config_loader";
+import {RouterConfigLoaderFactory} from "./router-config-loader-factory";
+import {loadConfig} from "./adminify-router-config-loader";
+import {applyRedirects} from "../angular/router/operators/apply_redirects";
+
+
 
 function defaultErrorHandler(error: any): any {
     throw error;
@@ -44,6 +47,9 @@ function defaultMalformedUriErrorHandler(
     return urlSerializer.parse('/');
 }
 
+/**
+ * @internal
+ */
 function defaultRouterHook(snapshot: RouterStateSnapshot, runExtras: {
     appliedUrlTree: UrlTree,
     rawUrlTree: UrlTree,

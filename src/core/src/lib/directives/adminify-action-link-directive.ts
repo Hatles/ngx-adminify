@@ -4,7 +4,6 @@ import {Admin} from '../admin';
 import {RouteParametersValues} from '../services/admin-route-builder';
 import {AdminActivatedRoute} from '../admin-activated-route';
 
-
 // tslint:disable-next-line:directive-selector
 @Directive({selector: ':not(a):not(area)[adminifyActionLink]'})
 export class AdminifyActionLinkDirective {

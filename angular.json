@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "ngx-admin": {
+        "app": {
             "projectType": "application",
             "schematics": {},
             "root": "",
@@ -13,7 +13,7 @@
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
                         "outputPath": "dist/app",
-                        "index": "demon/src/index.html",
+                        "index": "demo/src/index.html",
                         "main": "demo/src/main.ts",
                         "polyfills": "demo/src/polyfills.ts",
                         "tsConfig": "demo/src/tsconfig.app.json",
@@ -107,7 +107,7 @@
                 }
             }
         },
-        "angx-adminifylrouter": {
+        "@ngx-adminify/router": {
             "root": "src/router",
             "sourceRoot": "src/router",
             "projectType": "library",
@@ -147,7 +147,7 @@
                 }
             }
         },
-        "angx-adminifylcore": {
+        "@ngx-adminify/core": {
             "root": "src/core",
             "sourceRoot": "src/core",
             "projectType": "library",
@@ -187,7 +187,7 @@
                 }
             }
         },
-        "angx-adminifylentity": {
+        "@ngx-adminify/entity": {
             "root": "src/entity",
             "sourceRoot": "src/entity/src",
             "projectType": "library",
@@ -227,7 +227,7 @@
                 }
             }
         },
-        "angx-adminifylmaterial": {
+        "@ngx-adminify/material": {
             "root": "src/material",
             "sourceRoot": "src/material/src",
             "projectType": "library",

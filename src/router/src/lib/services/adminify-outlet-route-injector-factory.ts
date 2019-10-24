@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {ActivatedRoute, ChildrenOutletContexts} from '@angular/router';
+import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
 import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
 
 @Injectable({providedIn: 'root'})

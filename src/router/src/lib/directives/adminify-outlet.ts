@@ -18,8 +18,8 @@ import {
     Output,
     ViewContainerRef
 } from '@angular/core';
-import {ActivatedRoute, ChildrenOutletContexts, Data, PRIMARY_OUTLET} from '@angular/router';
 import {AdminifyOutletRouteInjectorFactory} from '../services/adminify-outlet-route-injector-factory';
+import {ActivatedRoute, ChildrenOutletContexts, Data, PRIMARY_OUTLET} from "../angular/router";
 
 /**
  * @description

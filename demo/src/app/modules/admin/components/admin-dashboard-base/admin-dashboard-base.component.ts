@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AdminPoolService} from '@app/../../../../../../../src/core/admin-pool.service';
-import {Admin} from '@app/../../../../../../../src/core/admin';
+import {Admin, AdminPoolService} from "@ngx-adminify/core";
 
 @Component({
   selector: 'app-admin-dashboard-base',

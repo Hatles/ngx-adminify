@@ -13,10 +13,12 @@
         "url": "https://github.com/Hatles/ngx-adminify/issues"
     },
     "dependencies": {
-        "tslib": "^1.7.1"
     },
     "peerDependencies": {
-        "@angular/router": ">=8.0.0",
-        "rxjs": ">=6.4.0"
+        "@angular/core": ">=8.0.0",
+        "@angular/common": ">=8.0.0",
+        "@angular/platform-browser": ">=8.0.0",
+        "rxjs": "^6.5.3",
+        "tslib": "^1.10.0"
     }
 }

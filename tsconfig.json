@@ -20,7 +20,7 @@
             ],
             "@assets/*": [
                 "demo/src/assets/*"
-            ],
+            ]
         },
         "lib": [
             "es2018",

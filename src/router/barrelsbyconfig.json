@@ -1,0 +1,11 @@
+{
+  "directory": "./src/lib",
+  "exclude": [
+    "angular"
+  ],
+  "location": "branch",
+  "name": "router",
+  "structure": "flat",
+  "singleQuotes": true,
+  "verbose": true
+}

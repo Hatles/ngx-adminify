@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Route, Routes} from '@angular/router';
 import {Admin} from '../admin';
 import {AdminConfig, AdminsConfig} from '../admin-config';
-import {AdminEmptyOutletComponent} from '@angular/router/components/adminify-empty-outlet.service';
+import {AdminifyEmptyOutletComponent} from '@ngx-adminify/router';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -108,7 +108,7 @@ export class AdminPoolService {
     private wrapWithAdminRouter(routes: Routes): Routes {
         return [{
             path: '',
-            component: AdminEmptyOutletComponent,
+            component: AdminifyEmptyOutletComponent,
             children: routes
         }];
     }

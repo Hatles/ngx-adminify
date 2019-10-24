@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
-import {AdminifyModule} from './admin/core/adminify-module';
 import {RouterModule, Routes} from '@angular/router';
-import {AdminifyRouterModule} from 'src/router/src/lib/adminify-router-module';
-import {AdminifyOutletRouteProviders} from 'src/router/src/lib/adminify-outlet-route-provider';
+import {AdminifyOutletRouteProviders} from "../../../src/router/src/public_api";
+import {AdminifyRouterModule} from "../../../src/router/src/public_api";
+import {AdminifyModule} from "../../../src/core/src/public_api";
 
 const routes: Routes = [
     {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},

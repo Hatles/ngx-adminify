@@ -1,8 +1,12 @@
 import {Compiler, InjectionToken, Injector, NgModuleFactory, NgModuleFactoryLoader} from '@angular/core';
-import {LoadChildren, LoadedRouterConfig, ROUTES, Route, Routes} from '@angular/router';
+import {LoadChildren, ROUTES, Route, Routes, PRIMARY_OUTLET} from '../angular/router';
 import {forkJoin, from, Observable, of} from 'rxjs';
 import {map, mergeMap, switchMap} from 'rxjs/operators';
 import {IRouterConfigLoader} from './router-config-loader';
+import {LoadedRouterConfig} from "../angular/router/config";
+import {flatten, wrapIntoObservable} from "../angular/router/utils/collection";
+import {AdminifyEmptyOutletComponent} from "../components/adminify-empty-outlet-component";
+
 /**
  * The [DI token](guide/glossary/#di-token) for a router configuration.
  * @see `ROUTES`
@@ -83,7 +87,7 @@ export function standardizeConfig(r: Route): Route {
     const children = r.children && r.children.map(standardizeConfig);
     const c = children ? {...r, children} : {...r};
     if (!c.component && (children || c.loadChildren) && (c.outlet && c.outlet !== PRIMARY_OUTLET)) {
-        c.component = AdminEmptyOutletComponent;
+        c.component = AdminifyEmptyOutletComponent;
     }
     return c;
 }

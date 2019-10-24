@@ -22,7 +22,7 @@ import {
     ROUTES,
     UrlHandlingStrategy,
     UrlSerializer
-} from '@angular/router';
+} from './angular/router';
 import {ADMINIFY_PROVIDER, AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from './adminify-outlet-route-provider';
 import {AdminifyOutletRouteInjectorFactory} from './services/adminify-outlet-route-injector-factory';
 import {AdminifyOutlet} from './directives/adminify-outlet';
@@ -34,6 +34,8 @@ import {AdminifyRouter} from './services/adminify-router';
 import {AdminifyRouterPreloader} from './services/adminify-router-preloader';
 import {ASYNC_ROUTES} from './services/adminify-router-config-loader';
 import {ɵgetDOM as getDOM} from '@angular/platform-browser';
+import {Location} from '@angular/common';
+import * as router from '@angular/router';
 
 function buildOutletRouteInjectorFactory(providers: AdminifyOutletRouteProviders): AdminifyOutletRouteInjectorFactory {
     return new AdminifyOutletRouteInjectorFactory(providers);
@@ -81,7 +83,11 @@ export class AdminifyRouterModule {
                         [UrlHandlingStrategy, new Optional()], [RouteReuseStrategy, new Optional()]
                     ]
                 },
-                {provide: Router, useExisting: AdminifyRouter},
+                {provide: UrlSerializer, useExisting: router.UrlSerializer},
+                {provide: ChildrenOutletContexts, useExisting: router.ChildrenOutletContexts},
+                {provide: ROUTES, useExisting: router.ROUTES},
+                {provide: ROUTER_CONFIGURATION, useExisting: router.ROUTER_CONFIGURATION},
+                {provide: router.Router, useExisting: AdminifyRouter},
                 {provide: RouterPreloader, useClass: AdminifyRouterPreloader},
                 {provide: APP_INITIALIZER, useFactory: initRouter, deps: [Injector], multi: true}
             ]

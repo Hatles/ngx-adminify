@@ -1,5 +1,4 @@
-import {ActivatedRoute} from '@angular/router/router_state';
-import {AdminifyOutletRouteProviders} from '@angular/router/adminify-outlet-route-provider';
+import {ActivatedRoute, AdminifyOutletRouteProviders} from '@ngx-adminify/router';
 import {Admin} from '../admin';
 import {AdminPoolService} from '../services/admin-pool-service';
 import {AdminAction} from '../admin-action';
@@ -7,8 +6,6 @@ import {AdminRootRoute} from '../admin-root-route';
 import {AdminActivatedRoute} from '../admin-activated-route';
 import {RouteData} from '../route-data';
 import {getFisrtParentData} from './adminify-providers-utils';
-
-
 
 export const routeDataProvider = {
     provide: RouteData,

@@ -1,8 +1,7 @@
 import {Attribute, Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
-import {ActivatedRoute, QueryParamsHandling, Router, UrlTree} from '@angular/router';
+import {QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {AdminPoolService} from '../services/admin-pool-service';
 import {AdminRootRoute} from '../admin-root-route';
-
 
 // tslint:disable-next-line:directive-selector
 @Directive({selector: ':not(a):not(area)[adminifyLink]'})
