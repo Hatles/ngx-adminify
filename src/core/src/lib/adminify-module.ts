@@ -4,8 +4,11 @@ import {AdminPoolService} from './services/admin-pool-service';
 import {AdminsConfig} from './admin-config';
 import {AsyncRoutes, AsyncRoutesFactory, AdminifyRouterModule, provideAsyncRoutesByFactory, provideAsyncRoutesFactory} from '@ngx-adminify/router';
 import {AdminifyBuilder, AdminifyBuilderConfig, IAdminifyBuilder} from './services/adminify-builder';
-import {AdminifyLinkDirective} from './directives/adminify-link-directive';
-import {AdminifyActionLinkDirective} from './directives/adminify-action-link-directive';
+import {AdminifyLinkDirective, AdminifyLinkWithHrefDirective} from './directives/adminify-link-directive';
+import {
+    AdminifyActionLinkDirective,
+    AdminifyActionLinkWithHrefDirective
+} from './directives/adminify-action-link-directive';
 import {adminifyProviders} from './providers/admin-providers';
 
 @NgModule({
@@ -17,11 +20,15 @@ import {adminifyProviders} from './providers/admin-providers';
     exports: [
         AdminifyRouterModule,
         AdminifyLinkDirective,
-        AdminifyActionLinkDirective
+        AdminifyLinkWithHrefDirective,
+        AdminifyActionLinkDirective,
+        AdminifyActionLinkWithHrefDirective
     ],
     declarations: [
         AdminifyLinkDirective,
-        AdminifyActionLinkDirective
+        AdminifyLinkWithHrefDirective,
+        AdminifyActionLinkDirective,
+        AdminifyActionLinkWithHrefDirective
     ],
     entryComponents: []
     // No provider

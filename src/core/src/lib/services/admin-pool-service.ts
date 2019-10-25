@@ -12,12 +12,15 @@ export interface AdminWithConfig {
 @Injectable({providedIn: 'root'})
 export class AdminPoolService {
 
-    private adminsConfig: AdminsConfig;
-    private admins: AdminWithConfig[];
+    adminsConfig: AdminsConfig;
+    adminsWithConfig: AdminWithConfig[];
+    admins: Admin[];
+    defaultAdmin: Admin;
 
     constructor() { }
 
     buildAdmins(adminsConfig: AdminsConfig): Routes {
+        this.adminsWithConfig = [];
         this.admins = [];
         this.adminsConfig = adminsConfig;
         const admins = adminsConfig.admins.map((admin) => this.buildAdmin(admin));
@@ -27,11 +30,12 @@ export class AdminPoolService {
     }
 
     private buildAdmin(config: AdminConfig): Admin {
-        const admin = new Admin(this, config);
-        this.admins.push({
+        const admin = new Admin(this, config, this.adminsConfig.defaultAdminName === config.name);
+        this.adminsWithConfig.push({
             admin: admin,
             config: config
         });
+        this.admins.push(admin);
 
         return admin;
     }
@@ -49,7 +53,7 @@ export class AdminPoolService {
     }
 
     getAdminWithConfig(admin: string): AdminWithConfig {
-        return this.admins.find(a => a.config.name === admin);
+        return this.adminsWithConfig.find(a => a.config.name === admin);
     }
 
     private buildAdminsRoute(adminRoutes: Route[]): Routes {
@@ -65,6 +69,7 @@ export class AdminPoolService {
         // Add default admin redirect
         if (this.adminsConfig.defaultAdminName) {
             const defaultAdmin = this.getAdmin(this.adminsConfig.defaultAdminName);
+            this.defaultAdmin = defaultAdmin;
             const defaultAdminUrl = defaultAdmin.getCompiledUrl();
 
             if (defaultAdminUrl !== '') {
@@ -113,7 +118,7 @@ export class AdminPoolService {
         }];
     }
 
-    getAllAdmin(): Admin[] {
-        return this.admins.map(a => a.admin);
+    getAdmins(): Admin[] {
+        return this.admins.slice();
     }
 }

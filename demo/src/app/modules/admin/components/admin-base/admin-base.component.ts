@@ -10,10 +10,10 @@ export class AdminBaseComponent implements OnInit {
 
     actions: AdminAction[];
 
-    constructor(private admin: Admin) { }
+    constructor(public admin: Admin) { }
 
     ngOnInit() {
-        this.actions = this.admin.getAllActions();
+        this.actions = this.admin.getActions();
     }
 
 }

@@ -8,7 +8,7 @@ import {Admin, AdminAction} from "@ngx-adminify/core";
 })
 export class AdminActionBaseComponent implements OnInit {
 
-    constructor(private admin: Admin, private action: AdminAction) { }
+    constructor(public admin: Admin, public action: AdminAction) { }
 
     ngOnInit() {
 

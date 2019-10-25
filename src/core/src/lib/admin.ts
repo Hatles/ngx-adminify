@@ -4,8 +4,10 @@ import {AdminConfig} from './admin-config';
 import {AdminRouteBuilder, RouteParametersValues} from './services/admin-route-builder';
 import {AdminAction} from './admin-action';
 
+export type Admins = Admin[];
+
 export class Admin {
-    constructor(private pool: AdminPoolService, public config: AdminConfig) {
+    constructor(private pool: AdminPoolService, public config: AdminConfig, public defaultAdmin: boolean = false) {
         this.name = this.config.name;
     }
 
@@ -15,6 +17,7 @@ export class Admin {
     route: Route;
     routeBuilder: AdminRouteBuilder;
     actions: AdminAction[];
+
 
     private buildRoute() {
         this.route = {
@@ -93,7 +96,7 @@ export class Admin {
         return this.getAction(action).getUrl(parameters);
     }
 
-    getAllActions(): AdminAction[] {
+    getActions(): AdminAction[] {
         return this.actions.slice();
     }
 }

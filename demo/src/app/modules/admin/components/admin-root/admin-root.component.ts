@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AdminPoolService, RouteData} from "@ngx-adminify/core";
+import {Admin, AdminPoolService, RouteData} from "@ngx-adminify/core";
 
 @Component({
     selector: 'app-admin-root',
@@ -9,13 +9,18 @@ import {AdminPoolService, RouteData} from "@ngx-adminify/core";
 })
 export class AdminRootComponent implements OnInit {
 
-    dataStr: string;
+    data: any;
+    admins: Admin[];
 
-    constructor(private route: ActivatedRoute, private pool: AdminPoolService, public data: RouteData) {
-        this.dataStr = JSON.stringify(this.data.data);
+    constructor(public route: ActivatedRoute, public pool: AdminPoolService, data: RouteData) {
+        this.data = data.data;
+        this.admins = this.pool.getAdmins();
     }
 
     ngOnInit(): void {
     }
 
+    stringify(data: any) {
+        return JSON.stringify(data);
+    }
 }

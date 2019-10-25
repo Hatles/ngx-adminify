@@ -1,3 +1,6 @@
 <p>admin-root works!</p>
-<p>data: {{dataStr}}</p>
+<p>data: {{stringify(data)}}</p>
+<button [adminifyLink]>Adminify link root</button>
+<button *ngFor="let admin of admins" [adminifyLink]="admin.name">Adminify link {{admin.name}}</button>
+<a *ngFor="let admin of admins" [adminifyLink]="admin.name">Adminify link {{admin.name}}</a>
 <admin-outlet></admin-outlet>
