@@ -4,6 +4,8 @@ import {AdminBaseComponent} from './components/admin-base/admin-base.component';
 import {AdminActionBaseComponent} from './components/admin-action-base/admin-action-base.component';
 import {AdminDashboardBaseComponent} from './components/admin-dashboard-base/admin-dashboard-base.component';
 import {AdminifyModule, AdminsConfig, dataRouteFinder} from "@ngx-adminify/core";
+import {AdminifyMatModule} from "../material/adminify-mat.module";
+import {AdminifyMatRootComponent} from "../material/adminify-mat-root/adminify-mat-root.component";
 
 export const adminComponents: Type<any>[] = [
     AdminRootComponent,
@@ -15,7 +17,7 @@ export const adminComponents: Type<any>[] = [
 const admins: AdminsConfig = {
     path: 'adminconfig',
     data: { test: 'test' },
-    component: AdminRootComponent,
+    component: AdminifyMatRootComponent,
     rootFinder: dataRouteFinder('admin'),
     defaultAdminName: 'dashboard',
     admins: [
@@ -48,6 +50,7 @@ export function buildConfigFactory(): Promise<AdminsConfig> {
 
 @NgModule({
     imports: [
+        AdminifyMatModule,
         AdminifyModule.withConfig(admins),
         // AdminifyModule.withConfigFactory(buildConfigFactory, []),
         // AdminifyModule.withBuilder({
