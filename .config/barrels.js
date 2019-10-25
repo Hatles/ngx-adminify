@@ -8,6 +8,6 @@ const execSync = require('child_process').execSync,
 
 packages.map(package => {
     const packagePath = `${__dirname}/../src/${package}`;
-    console.log(packagePath);
+
     execSync(`cd ${packagePath} && barrelsby -c barrelsbyconfig.json`);
 });

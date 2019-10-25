@@ -11,7 +11,7 @@ export class AdminActionBaseComponent implements OnInit {
     constructor(private admin: Admin, private action: AdminAction) { }
 
     ngOnInit() {
-        console.log(this.admin, this.action);
+
     }
 
 }

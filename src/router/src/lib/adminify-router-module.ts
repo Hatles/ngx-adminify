@@ -88,6 +88,7 @@ export class AdminifyRouterModule {
                 {provide: ROUTES, useExisting: router.ROUTES},
                 {provide: ROUTER_CONFIGURATION, useExisting: router.ROUTER_CONFIGURATION},
                 {provide: router.Router, useExisting: AdminifyRouter},
+                {provide: Router, useExisting: router.Router},
                 {provide: RouterPreloader, useClass: AdminifyRouterPreloader},
                 {provide: APP_INITIALIZER, useFactory: initRouter, deps: [Injector], multi: true}
             ]
