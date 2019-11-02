@@ -7,8 +7,6 @@ import {Injector} from '@angular/core';
 import {AdminActionGuard} from './guards/admin-action-guard';
 import {AdminGuard} from './guards/admin-guard';
 
-export type Admins = Admin[];
-
 export class Admin {
 
     name: string;
@@ -23,6 +21,22 @@ export class Admin {
 
     constructor(protected pool: AdminPoolService, public config: AdminConfig, public defaultAdmin: boolean = false) {
         this.name = this.config.name;
+
+        this.processConfig();
+    }
+
+    private processConfig() {
+        if (!this.config.defaultActionRouteGuards) {
+            this.config.defaultActionRouteGuards = this.pool.adminsConfig.defaultActionRouteGuards || [];
+        }
+
+        if (!this.config.adminGuards) {
+            this.config.adminGuards = [];
+        }
+
+        if (!this.config.actionGuards) {
+            this.config.actionGuards = this.pool.adminsConfig.actionGuards || [];
+        }
     }
 
     resolveGuards(injector: Injector) {
@@ -130,6 +144,11 @@ export class Admin {
 
     getActions(): AdminAction[] {
         return this.actions.slice();
+    }
+
+    // routes without parameters
+    getStaticActions(): AdminAction[] {
+        return this.actions.filter(a => !a.hasParameters);
     }
 
     canAccessAction(actionName: string): boolean {

@@ -32,12 +32,17 @@ const admins: AdminsConfig = {
             component: AdminBaseComponent,
             actions: [
                 {
+                    name: 'list',
+                    path: 'list',
+                    component: AdminActionBaseComponent
+                },
+                {
                     name: 'view',
-                    path: 'view',
+                    path: 'view/:id',
                     component: AdminActionBaseComponent
                 }
             ],
-            defaultActionName: 'view'
+            defaultActionName: 'list'
         }
     ]
 };

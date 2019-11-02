@@ -13,7 +13,7 @@ export class AdminBaseComponent implements OnInit {
     constructor(public admin: Admin) { }
 
     ngOnInit() {
-        this.actions = this.admin.getActions();
+        this.actions = this.admin.getStaticActions();
     }
 
 }

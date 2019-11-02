@@ -10,6 +10,8 @@ import {
     AdminifyActionLinkWithHrefDirective
 } from './directives/adminify-action-link-directive';
 import {adminifyProviders} from './providers/admin-providers';
+import {AdminRouteGuard} from './guards/admin-route-guard';
+import {AdminActionRouteGuard} from './guards/admin-action-route-guard';
 
 @NgModule({
     imports: [
@@ -40,6 +42,8 @@ export class AdminifyModule {
             ngModule: AdminifyModule,
             providers: [
                 AdminPoolService,
+                AdminRouteGuard,
+                AdminActionRouteGuard
             ]
         };
     }
@@ -84,7 +88,7 @@ export class AdminifyModule {
 
 export function provideAdminAsyncRoutes(config: AdminsConfig): Provider[] {
     return [
-        provideAsyncRoutesByFactory(buildConfigFactory(config), [AdminPoolService]),
+        provideAsyncRoutesByFactory(buildConfigFactory(config), [AdminPoolService, Injector]),
         {provide: ROUTES, multi: true, useValue: []}
     ];
 }
@@ -99,18 +103,33 @@ export function provideAdminAsyncRoutesFactory(factory: (...deps: any[]) => Prom
 // tslint:disable-next-line:max-line-length
 export function createAsyncRoutesFromAdminsConfig(configFactory: (...deps: any[]) => Promise<AdminsConfig>, deps: any[]): AsyncRoutesFactory {
     return {
-        factory: (pool: AdminPoolService, ...fdeps: any[]) => {
+        factory: (pool: AdminPoolService, injector: Injector, ...fdeps: any[]) => {
             return new Promise<Routes>(resolve => {
                 const promise: Promise<AdminsConfig> = configFactory.call(null, fdeps.slice(1));
                 promise.then(result => {
-                    const routes = pool.buildAdmins(result);
+                    const config = processConfig(result);
+                    const routes = pool.buildAdmins(config, injector);
                     resolve(routes);
                 });
             });
         },
-        deps: [AdminPoolService, ...deps]
+        deps: [AdminPoolService, Injector, ...deps]
     };
 }
+
+
+function processConfig(adminsConfig: AdminsConfig) {
+    if (!adminsConfig.defaultAdminRouteGuards) {
+        adminsConfig.defaultAdminRouteGuards = [AdminRouteGuard];
+    }
+
+    if (!adminsConfig.defaultActionRouteGuards) {
+        adminsConfig.defaultActionRouteGuards = [AdminActionRouteGuard];
+    }
+
+    return adminsConfig;
+}
+
 
 // tslint:disable-next-line:max-line-length
 export function createAdminifyBuilder(builderConfig: AdminifyBuilderConfig, builderFn: (builder: AdminifyBuilder) => void): AdminifyBuilder {
@@ -127,15 +146,15 @@ export function provideAdminAsyncRoutesWithBuilder(builder: IAdminifyBuilder): P
 
 export type AdminConfigFactory = (...deps: any[]) => Promise<AdminsConfig>;
 
-export function buildConfigFactory(config: AdminsConfig): (pool: AdminPoolService) => AsyncRoutes {
-    return (pool: AdminPoolService) => {
-        return buildConfig(pool, config);
+export function buildConfigFactory(config: AdminsConfig): (pool: AdminPoolService, injector: Injector) => AsyncRoutes {
+    return (pool: AdminPoolService, injector: Injector) => {
+        return buildConfig(pool, injector, config);
     };
 }
 
-export function buildConfig(pool: AdminPoolService, config: AdminsConfig): AsyncRoutes {
+export function buildConfig(pool: AdminPoolService, injector: Injector, config: AdminsConfig): AsyncRoutes {
     return new Promise(resolve => {
-        const routes = buildAdmins(pool, config);
+        const routes = buildAdmins(pool, injector, config);
         resolve(routes);
     });
 }
@@ -143,12 +162,13 @@ export function buildConfig(pool: AdminPoolService, config: AdminsConfig): Async
 export function buildConfigFactoryPromise(factory: AdminConfigFactory): (injector: Injector, pool: AdminPoolService) => () => Promise<any> {
     return (injector: Injector, pool: AdminPoolService) => {
         return () => factory(injector).then(config => {
-            buildAdmins(pool, config);
+            buildAdmins(pool, injector, config);
             return config;
         });
     };
 }
 
-export function buildAdmins(pool: AdminPoolService, config: AdminsConfig): Routes {
-    return pool.buildAdmins(config);
+export function buildAdmins(pool: AdminPoolService, injector: Injector, config: AdminsConfig): Routes {
+    config = processConfig(config);
+    return pool.buildAdmins(config, injector);
 }

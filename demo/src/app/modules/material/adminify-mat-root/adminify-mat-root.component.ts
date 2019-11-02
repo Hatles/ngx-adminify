@@ -36,7 +36,7 @@ export class AdminifyMatRootComponent extends AdminRootComponent implements OnIn
         this.menu = this.pool.getAdmins().map(admin => ({
                 path: admin.getUrl(),
                 title: admin.name,
-                links: admin.getActions().map(action => ({
+                links: admin.getStaticActions().map(action => ({
                     path: action.getAdminRelativeUrl(),
                     title: action.name,
                 }))

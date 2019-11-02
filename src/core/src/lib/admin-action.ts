@@ -8,15 +8,21 @@ export class AdminAction {
     name: string;
     routeBuilder: AdminRouteBuilder;
     route: Route;
+    hasParameters: boolean;
 
     constructor(private admin: Admin, public config: AdminActionConfig) {
         this.name = this.config.name;
 
+        this.buildRoute();
+    }
+
+    protected buildRoute() {
         this.route = {
             ...this.config,
             data: {
                 ...this.config.data,
-                action: this.name
+                action: this.name,
+                actionAdmin: this.admin.name
             },
             path: this.config.path || this.config.path === '' ? this.config.path : this.config.name
         };
@@ -26,6 +32,7 @@ export class AdminAction {
         }
 
         this.routeBuilder = new AdminRouteBuilder(this.route.path);
+        this.hasParameters = this.routeBuilder.hasParameters();
     }
 
     getUrl(...parameters: string[]): string[];

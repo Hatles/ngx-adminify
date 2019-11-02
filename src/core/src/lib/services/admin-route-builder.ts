@@ -43,6 +43,7 @@ export class AdminRouteBuilder {
     }
 
     private processPath() {
+        this.parameters = [];
         this.segmentsAndParameters = this.path.split('/').map(segment => {
             if (segment.startsWith(':')) {
                 const parameter = removePreFix(segment, ':');
@@ -82,5 +83,9 @@ export class AdminRouteBuilder {
                 return segmentOrParameter.value;
             }
         });
+    }
+
+    hasParameters(): boolean {
+        return this.parameters.length > 0;
     }
 }

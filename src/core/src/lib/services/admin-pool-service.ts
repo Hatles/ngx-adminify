@@ -5,6 +5,8 @@ import {AdminConfig, AdminsConfig} from '../admin-config';
 import {AdminifyEmptyOutletComponent} from '@ngx-adminify/router';
 import {AdminFactory, defaultAdminFactory} from '../admin-factory';
 import {AdminGuard} from '../guards/admin-guard';
+import {AdminRouteGuard} from '../guards/admin-route-guard';
+import {AdminActionRouteGuard} from '../guards/admin-action-route-guard';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -36,14 +38,24 @@ export class AdminPoolService {
         return this.wrapWithAdminRouter(this.buildAdminsRoute(adminRoutes));
     }
 
-    resolveGuards(injector: Injector) {
-        this.adminGuards = this.adminsConfig.adminGuards.map(guardToken => injector.get(guardToken)) || [];
-    }
 
     private processConfig() {
         if (!this.adminsConfig.defaultAdminFactory) {
             this.adminsConfig.defaultAdminFactory = defaultAdminFactory;
         }
+
+        if (!this.adminsConfig.adminGuards) {
+            this.adminsConfig.adminGuards = [];
+        }
+
+        if (!this.adminsConfig.defaultActionGuards) {
+            this.adminsConfig.defaultActionGuards = [];
+        }
+    }
+
+    private resolveGuards(injector: Injector) {
+        this.adminGuards = this.adminsConfig.adminGuards.map(guardToken => injector.get(guardToken)) || [];
+
     }
 
     private buildAdmin(config: AdminConfig, injector: Injector): Admin {

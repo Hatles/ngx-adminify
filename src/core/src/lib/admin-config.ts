@@ -9,6 +9,7 @@ export type RouteFinder = (Route) => boolean;
 export interface AdminsConfig extends Route {
     admins: AdminConfig[];
     adminGuards?: any[];
+    defaultActionGuards?: any[];
     rootFinder?: RouteFinder;
     defaultRoute?: Route;
     defaultRoutePath?: string;
@@ -18,6 +19,7 @@ export interface AdminsConfig extends Route {
     wildcardRedirectToAdminRoot?: boolean;
     wildcardRedirectToDefaultAdmin?: boolean;
     defaultAdminRouteGuards?: any[]; // CanActivate
+    defaultActionRouteGuards?: any[]; // CanActivate
 }
 
 export interface AdminConfig extends Route {
