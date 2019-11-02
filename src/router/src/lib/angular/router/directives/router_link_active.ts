@@ -72,10 +72,10 @@ import {RouterLink, RouterLinkWithHref} from './router_link';
  *
  * @publicApi
  */
-@Directive({
-  selector: '[routerLinkActive]',
-  exportAs: 'routerLinkActive',
-})
+// @Directive({
+//   selector: '[routerLinkActive]',
+//   exportAs: 'routerLinkActive',
+// })
 export class RouterLinkActive implements OnChanges,
     OnDestroy, AfterContentInit {
   // TODO(issue/24571): remove '!'.

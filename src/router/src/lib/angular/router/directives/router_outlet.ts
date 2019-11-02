@@ -39,7 +39,7 @@ import {PRIMARY_OUTLET} from '../shared';
  *
  * @publicApi
  */
-@Directive({selector: 'router-outlet', exportAs: 'outlet'})
+// @Directive({selector: 'router-outlet', exportAs: 'outlet'})
 export class RouterOutlet implements OnDestroy, OnInit {
   private activated: ComponentRef<any>|null = null;
   private _activatedRoute: ActivatedRoute|null = null;

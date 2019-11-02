@@ -1,21 +1,29 @@
-import {Component} from '@angular/core';
-import {AdminRootComponent} from "../../admin/components/admin-root/admin-root.component";
-import {ActivatedRoute} from "@angular/router";
-import {AdminPoolService, RouteData} from "@ngx-adminify/core";
-import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {map} from "rxjs/operators";
+import {Component, OnInit} from '@angular/core';
+import {AdminRootComponent} from '../../admin/components/admin-root/admin-root.component';
+import {ActivatedRoute, UrlTree} from '@angular/router';
+import {AdminPoolService, RouteData} from '@ngx-adminify/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {map} from 'rxjs/operators';
+
+export interface MenuItem {
+    path: string | any[];
+    title: string;
+    links?: MenuItem[];
+}
+
+export type Menu = MenuItem[];
 
 @Component({
-    selector: 'demo-adminify-mat-root',
+    selector: 'adminify-mat-root',
     templateUrl: './adminify-mat-root.component.html',
     styleUrls: ['./adminify-mat-root.component.scss']
 })
-export class AdminifyMatRootComponent extends AdminRootComponent {
+export class AdminifyMatRootComponent extends AdminRootComponent implements OnInit {
     isSmallDevice$ = this.breakpointObserver.observe([Breakpoints.XSmall]).pipe(
         map(result => result.matches),
     );
 
-    menu = [];
+    menu: Menu;
 
     constructor(route: ActivatedRoute, pool: AdminPoolService, data: RouteData,
                 private breakpointObserver: BreakpointObserver) {
@@ -24,6 +32,16 @@ export class AdminifyMatRootComponent extends AdminRootComponent {
 
     ngOnInit() {
         super.ngOnInit();
+
+        this.menu = this.pool.getAdmins().map(admin => ({
+                path: admin.getUrl(),
+                title: admin.name,
+                links: admin.getActions().map(action => ({
+                    path: action.getAdminRelativeUrl(),
+                    title: action.name,
+                }))
+            })
+        );
     }
 
 }

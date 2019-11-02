@@ -1,5 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
+import {ActivatedRoute as AActivatedRoute} from '@angular/router';
 import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
 
 @Injectable({providedIn: 'root'})
@@ -47,7 +48,7 @@ class AdminOutletInjector implements Injector {
         private factory: AdminifyOutletRouteInjectorFactory) {}
 
     get(token: any, notFoundValue?: any): any {
-        if (token === ActivatedRoute) {
+        if (token === ActivatedRoute || token === AActivatedRoute) {
             return this.route;
         }
 

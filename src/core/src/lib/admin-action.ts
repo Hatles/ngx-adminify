@@ -21,6 +21,10 @@ export class AdminAction {
             path: this.config.path || this.config.path === '' ? this.config.path : this.config.name
         };
 
+        if (!this.route.canActivate) {
+            this.route.canActivate = this.admin.config.defaultActionRouteGuards || [];
+        }
+
         this.routeBuilder = new AdminRouteBuilder(this.route.path);
     }
 
@@ -32,11 +36,23 @@ export class AdminAction {
         return this.routeBuilder.getUrl(parameters);
     }
 
+    getAdminRelativeUrl(...parameters: string[]): string[];
+
+    getAdminRelativeUrl(parameters?: string[] | RouteParametersValues): string[];
+
+    getAdminRelativeUrl(parameters?: any): string[] {
+        return [...this.admin.getUrl(), ...this.getUrl()];
+    }
+
     getCompiledUrl(...parameters: string[]): string;
 
     getCompiledUrl(parameters?: string[] | RouteParametersValues): string;
 
     getCompiledUrl(parameters?: any): string {
         return this.getUrl(parameters).join('/');
+    }
+
+    getRoute() {
+        return this.route;
     }
 }

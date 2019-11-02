@@ -1,5 +1,5 @@
 /* tslint:disable */
-import {ErrorHandler, Navigation, NavigationExtras, NavigationTransition, RestoredState, Router, RouterHook} from '../angular/router/router';
+import {ErrorHandler, Navigation, NavigationExtras, NavigationTransition, RestoredState, RouterHook} from '../angular/router/router';
 
 import {Injector, isDevMode, NgModuleRef, NgZone, Type, ɵConsole as Console} from '@angular/core';
 import {containsTree, createEmptyUrlTree, UrlSerializer, UrlTree} from '../angular/router/url_tree';
@@ -9,11 +9,11 @@ import {
     Event,
     GuardsCheckEnd,
     GuardsCheckStart, NavigationCancel, NavigationEnd, NavigationError,
-    NavigationStart, NavigationTrigger, ResolveEnd, ResolveStart,
+    NavigationStart, ResolveEnd, ResolveStart,
     RouteConfigLoadEnd,
     RouteConfigLoadStart,
     RoutesRecognized
-} from '../angular/router/events';
+} from '@angular/router';
 import {BehaviorSubject, EMPTY, Observable, of, Subject, Subscription} from 'rxjs';
 import {Location} from '@angular/common';
 import {createEmptyState, RouterState, RouterStateSnapshot} from '../angular/router/router_state';
@@ -35,6 +35,7 @@ import {RouterConfigLoader} from "../angular/router/router_config_loader";
 import {RouterConfigLoaderFactory} from "./router-config-loader-factory";
 import {loadConfig} from "./adminify-router-config-loader";
 import {applyRedirects} from "../angular/router/operators/apply_redirects";
+import {NavigationTrigger} from '../angular/router/events';
 
 
 

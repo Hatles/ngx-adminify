@@ -15,9 +15,9 @@ import {
     ExtraOptions,
     Route,
     Router,
+    RouterModule,
     ROUTER_CONFIGURATION,
     RouteReuseStrategy,
-    RouterModule,
     RouterPreloader,
     ROUTES,
     UrlHandlingStrategy,
@@ -36,6 +36,7 @@ import {ASYNC_ROUTES} from './services/adminify-router-config-loader';
 import {ɵgetDOM as getDOM} from '@angular/platform-browser';
 import {Location} from '@angular/common';
 import * as router from '@angular/router';
+import {RouterModule as ARouterModule} from '@angular/router';
 
 function buildOutletRouteInjectorFactory(providers: AdminifyOutletRouteProviders): AdminifyOutletRouteInjectorFactory {
     return new AdminifyOutletRouteInjectorFactory(providers);
@@ -43,10 +44,10 @@ function buildOutletRouteInjectorFactory(providers: AdminifyOutletRouteProviders
 
 @NgModule({
     imports: [
-        RouterModule
+        ARouterModule
     ],
     exports: [
-        RouterModule,
+        ARouterModule,
         AdminifyOutlet
     ],
     declarations: [

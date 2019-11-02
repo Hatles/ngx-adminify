@@ -1,8 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {Route, Routes} from '@angular/router';
 import {Admin} from '../admin';
 import {AdminConfig, AdminsConfig} from '../admin-config';
 import {AdminifyEmptyOutletComponent} from '@ngx-adminify/router';
+import {AdminFactory, defaultAdminFactory} from '../admin-factory';
+import {AdminGuard} from '../guards/admin-guard';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -16,21 +18,43 @@ export class AdminPoolService {
     adminsWithConfig: AdminWithConfig[];
     admins: Admin[];
     defaultAdmin: Admin;
+    adminGuards: AdminGuard[];
 
     constructor() { }
 
-    buildAdmins(adminsConfig: AdminsConfig): Routes {
+    buildAdmins(adminsConfig: AdminsConfig, injector: Injector): Routes {
         this.adminsWithConfig = [];
         this.admins = [];
         this.adminsConfig = adminsConfig;
-        const admins = adminsConfig.admins.map((admin) => this.buildAdmin(admin));
+
+        this.processConfig();
+        this.resolveGuards(injector);
+
+        const admins = adminsConfig.admins.map((admin) => this.buildAdmin(admin, injector));
         const adminRoutes = admins.map(admin => this.buildAdminRoute(admin));
 
         return this.wrapWithAdminRouter(this.buildAdminsRoute(adminRoutes));
     }
 
-    private buildAdmin(config: AdminConfig): Admin {
-        const admin = new Admin(this, config, this.adminsConfig.defaultAdminName === config.name);
+    resolveGuards(injector: Injector) {
+        this.adminGuards = this.adminsConfig.adminGuards.map(guardToken => injector.get(guardToken)) || [];
+    }
+
+    private processConfig() {
+        if (!this.adminsConfig.defaultAdminFactory) {
+            this.adminsConfig.defaultAdminFactory = defaultAdminFactory;
+        }
+    }
+
+    private buildAdmin(config: AdminConfig, injector: Injector): Admin {
+        let factory: AdminFactory;
+        if (config.factory) {
+            factory = config.factory;
+        } else {
+            factory = this.adminsConfig.defaultAdminFactory;
+        }
+        const admin = factory(this, config, this.adminsConfig.defaultAdminName === config.name);
+        admin.resolveGuards(injector);
         this.adminsWithConfig.push({
             admin: admin,
             config: config
@@ -46,6 +70,14 @@ export class AdminPoolService {
 
     getAdmin(admin: string): Admin {
         return this.getAdminWithConfig(admin).admin;
+    }
+
+    getTypedAdmin<T extends Admin>(adminName: string): T {
+        const admin = this.getAdminWithConfig(adminName).admin as T;
+        if (!admin) {
+            throw new Error('Admin with name "' + adminName + '" is not assignable to type //todo');
+        }
+        return admin as T;
     }
 
     getAdminConfig(admin: string): AdminConfig {
@@ -120,5 +152,17 @@ export class AdminPoolService {
 
     getAdmins(): Admin[] {
         return this.admins.slice();
+    }
+
+    canAccess(adminName: string): boolean {
+        const admin = this.getAdmin(adminName);
+
+        for (const adminGuard of this.adminGuards) {
+            if (!adminGuard.canAccessAdmin(admin)) {
+                return false;
+            }
+        }
+
+        return admin.canAccess();
     }
 }
