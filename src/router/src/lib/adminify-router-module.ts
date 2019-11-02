@@ -74,22 +74,23 @@ export class AdminifyRouterModule {
                     useClass: AdminifyRouterConfigLoaderFactory
                 },
                 provideAdminifyProviders(config.providers || []),
+
+                {provide: ROUTES, useExisting: router.ROUTES},
+                {provide: UrlSerializer, useExisting: router.UrlSerializer},
+                {provide: ChildrenOutletContexts, useExisting: router.ChildrenOutletContexts},
+                {provide: ROUTER_CONFIGURATION, useExisting: router.ROUTER_CONFIGURATION},
+                {provide: RouterPreloader, useClass: AdminifyRouterPreloader},
                 {
                     provide: AdminifyRouter,
                     useFactory: setupRouter,
                     deps: [
                         RouterConfigLoaderFactory, ApplicationRef, UrlSerializer, ChildrenOutletContexts, Location, Injector,
-                        NgModuleFactoryLoader, Compiler, ROUTES, ROUTER_CONFIGURATION,
+                        ROUTES, ROUTER_CONFIGURATION,
                         [UrlHandlingStrategy, new Optional()], [RouteReuseStrategy, new Optional()]
                     ]
                 },
-                {provide: UrlSerializer, useExisting: router.UrlSerializer},
-                {provide: ChildrenOutletContexts, useExisting: router.ChildrenOutletContexts},
-                {provide: ROUTES, useExisting: router.ROUTES},
-                {provide: ROUTER_CONFIGURATION, useExisting: router.ROUTER_CONFIGURATION},
                 {provide: router.Router, useExisting: AdminifyRouter},
                 {provide: Router, useExisting: router.Router},
-                {provide: RouterPreloader, useClass: AdminifyRouterPreloader},
                 {provide: APP_INITIALIZER, useFactory: initRouter, deps: [Injector], multi: true}
             ]
         };
@@ -99,11 +100,11 @@ export class AdminifyRouterModule {
         const providers = [];
 
         if (config.routes) {
-            providers.push(provideAsyncRoutesFactory(config.routes));
+            providers.push(...provideAsyncRoutesFactory(config.routes));
         }
 
         if (config.providers) {
-            providers.push(provideAdminifyProviders(config.providers));
+            providers.push(...provideAdminifyProviders(config.providers));
         }
 
         return {
@@ -138,18 +139,24 @@ export function provideAsyncRoutes(routes: AsyncRoutes): Provider[] {
     ];
 }
 
-export function provideAsyncRoutesByFactory(factory: (...deps) => AsyncRoutes, deps?: any[]): Provider {
-    return {provide: ASYNC_ROUTES, multi: true, useFactory: factory, deps: deps};
+export function provideAsyncRoutesByFactory(factory: (...deps) => AsyncRoutes, deps?: any[]): Provider[] {
+    return [
+        {provide: ASYNC_ROUTES, multi: true, useFactory: factory, deps: deps},
+        {provide: ROUTES, multi: true, useValue: []}
+    ];
 }
 
-export function provideAsyncRoutesFactory(factory: AsyncRoutesFactory): Provider {
-    return {provide: ASYNC_ROUTES, multi: true, useFactory: factory.factory, deps: factory.deps};
+export function provideAsyncRoutesFactory(factory: AsyncRoutesFactory): Provider[] {
+    return [
+        {provide: ASYNC_ROUTES, multi: true, useFactory: factory.factory, deps: factory.deps},
+        {provide: ROUTES, multi: true, useValue: []}
+    ];
 }
 
 export function setupRouter(
     factory: RouterConfigLoaderFactory,
     ref: ApplicationRef, urlSerializer: UrlSerializer, contexts: ChildrenOutletContexts,
-    location: Location, injector: Injector, loader: NgModuleFactoryLoader, compiler: Compiler,
+    location: Location, injector: Injector,
     config: Route[][], opts: ExtraOptions = {}, urlHandlingStrategy?: UrlHandlingStrategy,
     routeReuseStrategy?: RouteReuseStrategy) {
     const router = new AdminifyRouter(

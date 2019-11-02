@@ -6,6 +6,7 @@ import {AdminifyModule} from "@ngx-adminify/core";
 const routes: Routes = [
     {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
     {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)},
+    {path: '', redirectTo: 'admin', pathMatch: 'full'},
 
 ];
 
