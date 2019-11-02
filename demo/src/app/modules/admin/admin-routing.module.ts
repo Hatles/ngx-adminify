@@ -32,6 +32,11 @@ const admins: AdminsConfig = {
             component: AdminBaseComponent,
             actions: [
                 {
+                    name: 'dashboard',
+                    path: 'dashboard',
+                    component: AdminActionBaseComponent
+                },
+                {
                     name: 'list',
                     path: 'list',
                     component: AdminActionBaseComponent
@@ -42,7 +47,7 @@ const admins: AdminsConfig = {
                     component: AdminActionBaseComponent
                 }
             ],
-            defaultActionName: 'list'
+            defaultActionName: 'dashboard'
         }
     ]
 };

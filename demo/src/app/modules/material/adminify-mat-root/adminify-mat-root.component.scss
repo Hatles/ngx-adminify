@@ -47,11 +47,19 @@
             top: 0;
             background: white;
             z-index: 1;
+
+            &.active-link {
+                background-color: aqua;
+            }
         }
 
         .menu-subitem, .menu-subheader {
             padding-left: 30px;
             color: #6e6e6e;
+
+            &.active-link {
+                background-color: red;
+            }
         }
 
         .menu-subheader {
