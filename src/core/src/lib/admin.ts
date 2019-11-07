@@ -35,7 +35,7 @@ export class Admin {
         }
 
         if (!this.config.actionGuards) {
-            this.config.actionGuards = this.pool.adminsConfig.actionGuards || [];
+            this.config.actionGuards = this.pool.adminsConfig.defaultActionGuards || [];
         }
     }
 

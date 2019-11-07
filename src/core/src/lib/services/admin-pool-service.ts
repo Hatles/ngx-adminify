@@ -65,7 +65,7 @@ export class AdminPoolService {
         } else {
             factory = this.adminsConfig.defaultAdminFactory;
         }
-        const admin = factory(this, config, this.adminsConfig.defaultAdminName === config.name);
+        const admin = factory(injector, this, config, this.adminsConfig.defaultAdminName === config.name);
         admin.resolveGuards(injector);
         this.adminsWithConfig.push({
             admin: admin,

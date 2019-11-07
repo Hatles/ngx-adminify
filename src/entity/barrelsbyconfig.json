@@ -1,0 +1,9 @@
+{
+  "directory": "./src/lib",
+  "exclude": [],
+  "location": "branch",
+  "name": "entity",
+  "structure": "flat",
+  "singleQuotes": true,
+  "verbose": true
+}

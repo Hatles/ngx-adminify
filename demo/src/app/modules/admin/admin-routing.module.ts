@@ -6,6 +6,8 @@ import {AdminDashboardBaseComponent} from './components/admin-dashboard-base/adm
 import {AdminifyModule, AdminsConfig, dataRouteFinder} from '@ngx-adminify/core';
 import {AdminifyMatModule} from '../material/adminify-mat.module';
 import {AdminifyMatRootComponent} from '../material/adminify-mat-root/adminify-mat-root.component';
+import {EntityConfig, EntityServiceProvider} from '../../../../../src/entity/src/lib/entity-config';
+import {AdminifyEntityModule} from '../../../../../src/entity/src/lib/adminify-entity-module';
 
 export const adminComponents: Type<any>[] = [
     AdminRootComponent,
@@ -52,6 +54,15 @@ const admins: AdminsConfig = {
     ]
 };
 
+const entityProviders: EntityServiceProvider[] = [
+
+];
+
+const entities: EntityConfig = {
+    admin: admins,
+    entities: entityProviders
+};
+
 export function buildConfigFactory(): Promise<AdminsConfig> {
     return new Promise<AdminsConfig>(resolve => {
         resolve(admins);
@@ -61,7 +72,8 @@ export function buildConfigFactory(): Promise<AdminsConfig> {
 @NgModule({
     imports: [
         AdminifyMatModule,
-        AdminifyModule.withConfig(admins),
+        // AdminifyModule.withConfig(admins),
+        AdminifyEntityModule.forChild(entities),
         // AdminifyModule.withConfigFactory(buildConfigFactory, []),
         // AdminifyModule.withBuilder({
         //     defaultAdminActionComponent: AdminActionBaseComponent,

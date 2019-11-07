@@ -1,5 +1,5 @@
 {
-    "name": "@ngx-adminify/core",
+    "name": "@ngx-adminify/entity",
     "version": "0.0.0-ADMINIFY-VERSION",
     "license": "MIT",
     "homepage": "https://github.com/Hatles/ngx-adminify#readme",
@@ -13,6 +13,6 @@
         "url": "https://github.com/Hatles/ngx-adminify/issues"
     },
     "peerDependencies": {
-        "@ngx-adminify/router": "0.0.0-ADMINIFY-VERSION"
+        "@ngx-adminify/core": "0.0.0-ADMINIFY-VERSION"
     }
 }

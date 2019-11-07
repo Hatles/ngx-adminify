@@ -2,7 +2,7 @@ const execSync = require('child_process').execSync,
     packages = [
         'router',
         'core',
-        // 'entity',
+        'entity',
         // 'material',
     ];
 
