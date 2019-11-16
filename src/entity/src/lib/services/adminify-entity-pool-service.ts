@@ -1,4 +1,4 @@
-import {Injectable, InjectionToken, Injector, StaticProvider, ɵcreateInjector as createInjector} from '@angular/core';
+import {Injectable, InjectionToken, Injector, Optional, StaticProvider, Type, ɵcreateInjector as createInjector} from '@angular/core';
 import {EntityServiceProvider} from '../entity-config';
 import {IAdminifyEntityService} from '../adminify-entity-service';
 
@@ -6,6 +6,17 @@ export interface RegisteredEntityServiceToken {
     name: string;
     token: any;
 }
+
+export declare class EntityInjectionToken<T> {
+    protected _desc: string;
+    readonly ngInjectableDef: never | undefined;
+    constructor(_desc: string, options?: {
+        providedIn?: Type<any> | 'root' | null;
+        factory: () => T;
+    });
+    toString(): string;
+}
+
 
 function createEntityServiceToken(name: string): InjectionToken<IAdminifyEntityService> {
     return new InjectionToken<IAdminifyEntityService>('ENTITY_SERVICE_' + name);
@@ -25,9 +36,11 @@ export class AdminifyEntityPoolService implements Injector {
             throw new Error('Service AdminifyEntityPoolService is already initialized.');
         }
 
+        this.tokens = [];
         const entityProviders = providers.map(p => {
-            const token = createEntityServiceToken(p.name);
-            return {...p.provider, provide: token} as StaticProvider;
+            const token = createEntityServiceToken(p.provide);
+            this.tokens.push({name: p.provide, token: token});
+            return {...p, provide: token} as StaticProvider;
         });
 
         this.injector = createInjector(AdminifyEntityPoolService, this.parent, entityProviders);

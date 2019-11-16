@@ -1,1 +1,15 @@
 <p>admin-action-base works!</p>
+<p>{{dataS | async}}</p>
+<p>action: {{actionData}}</p>
+
+<div *ngIf="entities | withLoading | async as es">
+    <ng-template [ngIf]="es.value">
+        <div *ngFor="let e of es.value">
+            {{e}}
+        </div>
+    </ng-template>
+    <ng-template [ngIf]="es.error">Error {{ es.error }}</ng-template>
+    <ng-template [ngIf]="es.loading">Loading...</ng-template>
+</div>
+
+<button (click)="create()" [disabled]="creating">create</button>

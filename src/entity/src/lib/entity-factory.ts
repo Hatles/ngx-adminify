@@ -7,6 +7,6 @@ import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service
 
 export const entityFactory: AdminFactory = (injector: Injector, pool: AdminPoolService, config: EntityAdminConfig, isDefaultAdmin: boolean) => {
     const entityPool = injector.get(AdminifyEntityPoolService);
-    const entityService = entityPool.get(config.entityService);
+    const entityService = entityPool.getEntityService(config.entityService);
     return new EntityAdmin(pool, config, isDefaultAdmin, entityService);
 };

@@ -3,7 +3,7 @@ import {Route, Routes} from '@angular/router';
 import {Admin} from '../admin';
 import {AdminConfig, AdminsConfig} from '../admin-config';
 import {AdminifyEmptyOutletComponent} from '@ngx-adminify/router';
-import {AdminFactory, defaultAdminFactory} from '../admin-factory';
+import {AdminFactory, defaultAdminFactory, IAdminFactory} from '../admin-factory';
 import {AdminGuard} from '../guards/admin-guard';
 import {AdminRouteGuard} from '../guards/admin-route-guard';
 import {AdminActionRouteGuard} from '../guards/admin-action-route-guard';
@@ -63,9 +63,17 @@ export class AdminPoolService {
         if (config.factory) {
             factory = config.factory;
         } else {
-            factory = this.adminsConfig.defaultAdminFactory;
+            if (config.factoryToken) {
+                factory = injector.get(config.factoryToken);
+            } else {
+                factory = this.adminsConfig.defaultAdminFactory;
+            }
         }
-        const admin = factory(injector, this, config, this.adminsConfig.defaultAdminName === config.name);
+
+        const admin = typeof factory === 'function' ?
+            factory(injector, this, config, this.adminsConfig.defaultAdminName === config.name) :
+            (factory as IAdminFactory).build(injector, this, config, this.adminsConfig.defaultAdminName === config.name);
+
         admin.resolveGuards(injector);
         this.adminsWithConfig.push({
             admin: admin,

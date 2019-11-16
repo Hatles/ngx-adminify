@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Admin, AdminAction} from "@ngx-adminify/core";
+import {Admin, AdminAction} from '@ngx-adminify/core';
 
 @Component({
     selector: 'app-admin-base',

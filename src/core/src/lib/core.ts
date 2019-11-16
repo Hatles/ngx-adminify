@@ -14,7 +14,7 @@ export * from './build-admin-root-with-data';
 export * from './data-route-finder';
 export * from './remove-post-fix';
 export * from './remove-pre-fix';
-export * from './route-data';
+export * from './route-data-snapshot';
 export * from './route-utils';
 export * from './type-guard';
 export * from './directives/adminify-action-link-directive';

@@ -1,7 +1,12 @@
 import {Injectable, Injector} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
 import {ActivatedRoute as AActivatedRoute} from '@angular/router';
-import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
+import {
+    AdminifyOutletRouteProvider,
+    AdminifyOutletRouteProviders,
+    FnAdminifyOutletRouteProvider,
+    TokenAdminifyOutletRouteProvider
+} from '../adminify-outlet-route-provider';
 
 @Injectable({providedIn: 'root'})
 export class AdminifyOutletRouteInjectorFactory {
@@ -17,7 +22,17 @@ export class AdminifyOutletRouteInjectorFactory {
     }
 
     getProvider(token: any): AdminifyOutletRouteProvider {
-        return this.providers.find(p => p.provide === token);
+        return this.providers.find(p => {
+            const providerFn = p as FnAdminifyOutletRouteProvider;
+            if (providerFn.provideFn) {
+                return providerFn.provideFn(token);
+            }
+            const providerToken = p as TokenAdminifyOutletRouteProvider;
+            if (providerToken.provide) {
+                return providerToken.provide === token;
+            }
+            throw new Error('Provider must have at least a provide or a provideFn property');
+        });
     }
 
     addProvider(provider: AdminifyOutletRouteProvider) {
@@ -58,7 +73,7 @@ class AdminOutletInjector implements Injector {
 
         const provider = this.factory.getProvider(token);
         if (provider) {
-            return provider.factory.apply(this, [this.route, ...provider.deps.map(dep => this.parent.get(dep))]);
+            return provider.factory.apply(this, [this.route, token, ...provider.deps.map(dep => this.parent.get(dep))]);
         }
 
         return this.parent.get(token, notFoundValue);

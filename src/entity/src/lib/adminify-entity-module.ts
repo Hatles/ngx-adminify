@@ -1,18 +1,15 @@
-import {Inject, Injector, ModuleWithProviders, NgModule, Optional, Provider} from '@angular/core';
+import {Inject, ModuleWithProviders, NgModule, Optional, Provider} from '@angular/core';
 import {
     AdminifyModule,
     provideAdminAsyncRoutes
 } from '@ngx-adminify/core';
-import {AdminifyEntityPoolService, ENTITY_POOL_SERVICE_PROVIDER} from './services/adminify-entity-pool-service';
+import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service';
 import {ENTITY_SERVICE_PROVIDER, EntityConfig, EntityServiceProvider} from './entity-config';
-
-export function provideEntityPool(injector: Injector): AdminifyEntityPoolService {
-    return new AdminifyEntityPoolService(injector);
-}
+import {AdminifyRouterModule} from '@ngx-adminify/router';
+import {adminifyEntityGenericProviders} from './providers/entity-service-generic-providers';
 
 export function provideEntityServiceProviders(providers: EntityServiceProvider[]): Provider[] {
     return providers.map(e => provideEntityServiceProvider(e));
-
 }
 
 export function provideEntityServiceProvider(provider: EntityServiceProvider): Provider {
@@ -22,6 +19,9 @@ export function provideEntityServiceProvider(provider: EntityServiceProvider): P
 @NgModule({
     imports: [
         AdminifyModule,
+        AdminifyRouterModule.forChild({
+            providers: adminifyEntityGenericProviders
+        }),
     ],
     exports: [
         AdminifyModule,
@@ -37,9 +37,7 @@ export class AdminifyEntityModule {
         return {
             ngModule: AdminifyEntityModule,
             providers: [
-                {
-                    provide: AdminifyEntityPoolService, useFactory: provideEntityPool, deps: [Injector]
-                },
+                AdminifyEntityPoolService,
                 ...provideEntityServiceProviders(entities || []),
             ]
         };
@@ -49,9 +47,7 @@ export class AdminifyEntityModule {
         return {
             ngModule: AdminifyEntityModule,
             providers: [
-                {
-                    provide: AdminifyEntityPoolService, useFactory: provideEntityPool, deps: [Injector]
-                },
+                AdminifyEntityPoolService,
                 ...provideEntityServiceProviders(config.entities || []),
                 provideAdminAsyncRoutes(config.admin),
             ]

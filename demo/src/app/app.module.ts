@@ -7,10 +7,10 @@ import {SharedModule} from './shared/shared.module';
 import {AdminifyModule} from '@ngx-adminify/core';
 import {AdminifyRouterModule, AdminifyOutletRouteProviders} from '@ngx-adminify/router';
 import {AdminifyEntityModule, IAdminifyEntityService} from '@ngx-adminify/entity';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {delay, map} from 'rxjs/operators';
 
-class EntityService implements IAdminifyEntityService {
+export class EntityService implements IAdminifyEntityService {
 
     private entities: BehaviorSubject<any[]>;
 
@@ -20,24 +20,24 @@ class EntityService implements IAdminifyEntityService {
 
     create(input: any): Observable<any> {
         this.entities.next([...this.entities.value, input]);
-        return of(input);
+        return of(input).pipe(delay(1000));
     }
 
     delete(input: any): Observable<any> {
         this.entities.next(this.entities.value.filter(e => e.id !== input));
-        return of();
+        return of().pipe(delay(1000));
     }
 
     get(input: any): Observable<any> {
-        return this.entities.pipe(map(entities => entities.find(e => e.id === input)));
+        return this.entities.pipe(map(entities => entities.find(e => e.id === input)), delay(1000));
     }
 
     getAll(): Observable<any> {
-        return this.entities.asObservable();
+        return this.entities.asObservable().pipe(delay(1000));
     }
 
     update(input: any): Observable<any> {
-        return of(input);
+        return of(input).pipe(delay(1000));
     }
 }
 
@@ -70,11 +70,8 @@ const providers: AdminifyOutletRouteProviders = [
         }),
         AdminifyEntityModule.fotRoot([
             {
-                name: 'test',
-                provider: {
-                    provide: 'test',
-                    useValue: entity
-                }
+                provide: 'test',
+                useValue: entity
             }
         ])
     ],

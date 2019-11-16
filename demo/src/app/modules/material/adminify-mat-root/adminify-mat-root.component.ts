@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AdminRootComponent} from '../../admin/components/admin-root/admin-root.component';
 import {ActivatedRoute, UrlTree} from '@angular/router';
-import {AdminPoolService, RouteData} from '@ngx-adminify/core';
+import {AdminPoolService, RouteDataSnapshot} from '@ngx-adminify/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ export class AdminifyMatRootComponent extends AdminRootComponent implements OnIn
 
     menu: Menu;
 
-    constructor(route: ActivatedRoute, pool: AdminPoolService, data: RouteData,
+    constructor(route: ActivatedRoute, pool: AdminPoolService, data: RouteDataSnapshot,
                 private breakpointObserver: BreakpointObserver) {
         super(route, pool, data);
     }

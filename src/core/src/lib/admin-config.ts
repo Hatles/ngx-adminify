@@ -29,5 +29,6 @@ export interface AdminConfig extends Route {
     adminGuards?: any[];
     actionGuards?: any[];
     factory?: AdminFactory;
+    factoryToken?: any;
     defaultActionRouteGuards?: any[]; // CanActivate
 }

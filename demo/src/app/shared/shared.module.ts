@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
+import {WithLoadingPipe} from './pipes/with-loading.pipe';
 
 @NgModule({
     imports: [
@@ -25,8 +26,11 @@ import { MatMenuModule } from '@angular/material/menu';
         MatButtonModule,
         MatTabsModule,
         MatMenuModule,
+
+        WithLoadingPipe
     ],
     declarations: [
+        WithLoadingPipe
     ],
     providers: [
     ],

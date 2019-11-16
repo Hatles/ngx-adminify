@@ -8,6 +8,10 @@ import {AdminifyMatModule} from '../material/adminify-mat.module';
 import {AdminifyMatRootComponent} from '../material/adminify-mat-root/adminify-mat-root.component';
 import {EntityConfig, EntityServiceProvider} from '../../../../../src/entity/src/lib/entity-config';
 import {AdminifyEntityModule} from '../../../../../src/entity/src/lib/adminify-entity-module';
+import {IAdminifyEntityService} from '../../../../../src/entity/src/lib/adminify-entity-service';
+import {EntityService} from '../../app.module';
+import {EntityAdminsConfig} from '../../../../../src/entity/src/lib/entity-admin-config';
+import {entityFactory} from '../../../../../src/entity/src/lib/entity-factory';
 
 export const adminComponents: Type<any>[] = [
     AdminRootComponent,
@@ -16,7 +20,7 @@ export const adminComponents: Type<any>[] = [
     AdminActionBaseComponent
 ];
 
-const admins: AdminsConfig = {
+const admins: EntityAdminsConfig = {
     path: 'adminconfig',
     data: { test: 'test' },
     component: AdminifyMatRootComponent,
@@ -26,7 +30,7 @@ const admins: AdminsConfig = {
         {
             name: 'dashboard',
             path: 'dashboard',
-            component: AdminDashboardBaseComponent
+            component: AdminDashboardBaseComponent,
         },
         {
             name: 'test',
@@ -49,13 +53,29 @@ const admins: AdminsConfig = {
                     component: AdminActionBaseComponent
                 }
             ],
-            defaultActionName: 'dashboard'
+            defaultActionName: 'dashboard',
+            entityService: 'test_2',
+            factory: entityFactory
         }
     ]
 };
 
-const entityProviders: EntityServiceProvider[] = [
+const entity: IAdminifyEntityService = new EntityService([
+    {
+        id: 1,
+        title: 'test 2 1'
+    },
+    {
+        id: 2,
+        title: 'test 2 2'
+    },
+]);
 
+const entityProviders: EntityServiceProvider[] = [
+    {
+        provide: 'test_2',
+        useValue: entity
+    }
 ];
 
 const entities: EntityConfig = {
@@ -68,6 +88,7 @@ export function buildConfigFactory(): Promise<AdminsConfig> {
         resolve(admins);
     });
 }
+
 
 @NgModule({
     imports: [
@@ -86,7 +107,7 @@ export function buildConfigFactory(): Promise<AdminsConfig> {
         //         .addAdmin('test')
         //         .addAction('view')
         //     ;
-        // }))
+        // })),
     ],
     exports: [
         AdminifyModule,
