@@ -61,7 +61,7 @@ function buildOutletRouteInjectorFactory(providers: AdminifyOutletRouteProviders
 })
 export class AdminifyRouterModule {
     // save admin components with key for json config
-    static fotRoot(config: AdminifyRouterConfig): ModuleWithProviders {
+    static fotRoot(config: AdminifyRouterConfig = {}): ModuleWithProviders {
         return {
             ngModule: AdminifyRouterModule,
             providers: [

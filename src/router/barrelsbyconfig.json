@@ -3,7 +3,7 @@
   "exclude": [
     "angular"
   ],
-  "location": "branch",
+  "location": "top",
   "name": "router",
   "structure": "flat",
   "singleQuotes": true,

@@ -16,7 +16,7 @@ export class AdminifyEntityService implements IAdminifyEntityService {
         return undefined;
     }
 
-    getAll(): Observable<any> {
+    getAll(input: any): Observable<any> {
         return undefined;
     }
 
@@ -25,9 +25,10 @@ export class AdminifyEntityService implements IAdminifyEntityService {
     }
 }
 
+// tslint:disable-next-line:max-line-length
 export interface IBaseAdminifyEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput> {
-    get(input: TGetAllInput): Observable<TEntity>;
-    getAll(): Observable<TGetAllResult>;
+    get(input: TGetInput): Observable<TEntity>;
+    getAll(input: TGetAllInput): Observable<TGetAllResult>;
     create(input: TCreateInput): Observable<TEntity>;
     update(input: TUpdateInput): Observable<TEntity>;
     delete(input: TDeleteInput): Observable<any>;

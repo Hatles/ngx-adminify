@@ -1,7 +1,7 @@
 {
   "directory": "./src/lib",
   "exclude": [],
-  "location": "branch",
+  "location": "top",
   "name": "entity",
   "structure": "flat",
   "singleQuotes": true,

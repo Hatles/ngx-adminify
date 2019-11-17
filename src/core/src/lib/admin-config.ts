@@ -1,12 +1,14 @@
 import {Route} from '@angular/router';
 import {AdminActionConfig} from './admin-action-config';
 import {AdminFactory} from './admin-factory';
-import {AdminActionGuard} from './guards/admin-action-guard';
-import {AdminGuard} from './guards/admin-guard';
 
 export type RouteFinder = (Route) => boolean;
 
-export interface AdminsConfig extends Route {
+export interface AdminsConfig extends BaseAdminsConfig {
+    [key: string]: any;
+}
+
+interface BaseAdminsConfig extends Route {
     admins: AdminConfig[];
     adminGuards?: any[];
     defaultActionGuards?: any[];
@@ -22,7 +24,11 @@ export interface AdminsConfig extends Route {
     defaultActionRouteGuards?: any[]; // CanActivate
 }
 
-export interface AdminConfig extends Route {
+export interface AdminConfig extends BaseAdminConfig {
+    [key: string]: any;
+}
+
+export interface BaseAdminConfig extends Route {
     name: string;
     defaultActionName?: string;
     actions?: AdminActionConfig[];

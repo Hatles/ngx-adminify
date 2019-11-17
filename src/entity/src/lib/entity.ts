@@ -8,6 +8,13 @@ export * from './entity-admin-config';
 export * from './entity-admin';
 export * from './entity-config';
 export * from './entity-factory';
+export * from './entity-services/rest/data-service-error';
+export * from './entity-services/rest/entity-rest.module';
+export * from './entity-services/rest/http-url-generator';
+export * from './entity-services/rest/request-data';
+export * from './entity-services/rest/rest-entity-service';
+export * from './providers/entity-service-generic-providers';
+export * from './providers/entity-service-providers';
 export * from './services/adminify-entity-builder';
 export * from './services/adminify-entity-pool-service';
-
+export * from './utils/pluralizer';

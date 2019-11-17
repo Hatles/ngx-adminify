@@ -11,14 +11,14 @@ import {map} from 'rxjs/operators';
 })
 export class AdminActionBaseComponent implements OnInit {
 
-    entities: Observable<any[]>;
+    entities: Observable<{value: any, string: string}[]>;
     dataS: Observable<any>;
     creating: boolean;
 
     constructor(public admin: Admin, public action: AdminAction, public entity: AdminifyEntityService, public data: RouteData, @Inject(RoutePropertySnapshot('action')) public actionData: string) { }
 
     ngOnInit() {
-        this.entities = this.entity.getAll().pipe(map(es => es.map(e => JSON.stringify(e))));
+        this.entities = this.entity.getAll({}).pipe(map(es => es.map(e => ({value: e, string: JSON.stringify(e)}))));
         this.dataS = this.data.data.pipe(map(d => JSON.stringify(d)));
     }
 

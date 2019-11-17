@@ -6,18 +6,57 @@ import {AdminDashboardBaseComponent} from './components/admin-dashboard-base/adm
 import {AdminifyModule, AdminsConfig, dataRouteFinder} from '@ngx-adminify/core';
 import {AdminifyMatModule} from '../material/adminify-mat.module';
 import {AdminifyMatRootComponent} from '../material/adminify-mat-root/adminify-mat-root.component';
-import {EntityConfig, EntityServiceProvider} from '../../../../../src/entity/src/lib/entity-config';
-import {AdminifyEntityModule} from '../../../../../src/entity/src/lib/adminify-entity-module';
-import {IAdminifyEntityService} from '../../../../../src/entity/src/lib/adminify-entity-service';
-import {EntityService} from '../../app.module';
-import {EntityAdminsConfig} from '../../../../../src/entity/src/lib/entity-admin-config';
-import {entityFactory} from '../../../../../src/entity/src/lib/entity-factory';
+import {
+    AdminifyEntityModule, DefaultRestEntityServiceFactory,
+    EntityAdminsConfig,
+    EntityConfig,
+    entityFactory,
+    EntityServiceProvider,
+    IAdminifyEntityService, RestEntityService
+} from '@ngx-adminify/entity';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {delay, map} from 'rxjs/operators';
+import {AdminViewActionBaseComponent} from './components/admin-view-action-base/admin-view-action-base.component';
+import {AdminListActionBaseComponent} from './components/admin-list-action-base/admin-list-action-base.component';
+
+export class EntityService implements IAdminifyEntityService {
+
+    private entities: BehaviorSubject<any[]>;
+
+    constructor(entityList: any[]) {
+        this.entities = new BehaviorSubject(entityList);
+    }
+
+    create(input: any): Observable<any> {
+        this.entities.next([...this.entities.value, input]);
+        return of(input).pipe(delay(1000));
+    }
+
+    delete(input: any): Observable<any> {
+        this.entities.next(this.entities.value.filter(e => e.id !== input));
+        return of().pipe(delay(1000));
+    }
+
+    get(input: any): Observable<any> {
+        return this.entities.pipe(map(entityList => entityList.find(e => e.id === input)), delay(1000));
+    }
+
+    getAll(): Observable<any> {
+        return this.entities.asObservable().pipe(delay(1000));
+    }
+
+    update(input: any): Observable<any> {
+        return of(input).pipe(delay(1000));
+    }
+}
 
 export const adminComponents: Type<any>[] = [
     AdminRootComponent,
     AdminDashboardBaseComponent,
     AdminBaseComponent,
-    AdminActionBaseComponent
+    AdminActionBaseComponent,
+    AdminListActionBaseComponent,
+    AdminViewActionBaseComponent
 ];
 
 const admins: EntityAdminsConfig = {
@@ -54,7 +93,57 @@ const admins: EntityAdminsConfig = {
                 }
             ],
             defaultActionName: 'dashboard',
-            entityService: 'test_2',
+            entityService: 'test',
+            factory: entityFactory
+        },
+        {
+            name: 'todos',
+            path: 'todos',
+            component: AdminBaseComponent,
+            actions: [
+                {
+                    name: 'dashboard',
+                    path: 'dashboard',
+                    component: AdminActionBaseComponent
+                },
+                {
+                    name: 'list',
+                    path: 'list',
+                    component: AdminListActionBaseComponent
+                },
+                {
+                    name: 'view',
+                    path: 'view/:id',
+                    component: AdminViewActionBaseComponent
+                }
+            ],
+            defaultActionName: 'dashboard',
+            entityService: 'todos',
+            factory: entityFactory
+        },
+        {
+            name: 'users',
+            path: 'users',
+            component: AdminBaseComponent,
+            actions: [
+                {
+                    name: 'dashboard',
+                    path: 'dashboard',
+                    component: AdminActionBaseComponent
+                },
+                {
+                    name: 'list',
+                    path: 'list',
+                    component: AdminListActionBaseComponent
+                },
+                {
+                    name: 'view',
+                    path: 'view/:id',
+                    component: AdminViewActionBaseComponent
+                }
+            ],
+            defaultActionName: 'dashboard',
+            entityService: 'users',
             factory: entityFactory
         }
     ]
@@ -73,10 +162,37 @@ const entity: IAdminifyEntityService = new EntityService([
 
 const entityProviders: EntityServiceProvider[] = [
     {
-        provide: 'test_2',
+        provide: 'test',
         useValue: entity
-    }
+    },
+    {
+        provide: 'test_rest',
+        useFactory: entityRestFactory('test_rest'),
+        deps: [DefaultRestEntityServiceFactory]
+    },
+    provideRestEntity('todos'),
+    provideRestEntity('users')
 ];
+
+export function provideEntityService(entityName: string, entityService: IAdminifyEntityService): EntityServiceProvider {
+    return {
+        provide: entityName,
+        useValue: entityService
+    };
+}
+
+
+export function provideRestEntity<TEntity>(entityName: string): EntityServiceProvider {
+    return {
+        provide: entityName,
+        useFactory: entityRestFactory<TEntity>(entityName),
+        deps: [DefaultRestEntityServiceFactory]
+    };
+}
+
+export function entityRestFactory<TEntity>(entityName: string): (factory: DefaultRestEntityServiceFactory) => RestEntityService<TEntity> {
+    return (factory: DefaultRestEntityServiceFactory) => factory.create<TEntity>(entityName);
+}
 
 const entities: EntityConfig = {
     admin: admins,
@@ -89,12 +205,19 @@ export function buildConfigFactory(): Promise<AdminsConfig> {
     });
 }
 
+export function buildEntityConfigFactory(): Promise<EntityConfig> {
+    return new Promise<EntityConfig>(resolve => {
+        resolve(entities);
+    });
+}
+
 
 @NgModule({
     imports: [
         AdminifyMatModule,
         // AdminifyModule.withConfig(admins),
-        AdminifyEntityModule.forChild(entities),
+        // AdminifyEntityModule.forChild(entities),
+        AdminifyEntityModule.withConfigFactory(buildEntityConfigFactory, []),
         // AdminifyModule.withConfigFactory(buildConfigFactory, []),
         // AdminifyModule.withBuilder({
         //     defaultAdminActionComponent: AdminActionBaseComponent,

@@ -118,7 +118,7 @@ export function createAsyncRoutesFromAdminsConfig(configFactory: (...deps: any[]
 }
 
 
-function processConfig(adminsConfig: AdminsConfig) {
+export function processConfig(adminsConfig: AdminsConfig) {
     if (!adminsConfig.defaultAdminRouteGuards) {
         adminsConfig.defaultAdminRouteGuards = [AdminRouteGuard];
     }

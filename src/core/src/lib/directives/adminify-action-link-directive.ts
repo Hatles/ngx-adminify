@@ -121,7 +121,7 @@ export class AdminifyActionLinkWithHrefDirective implements OnChanges, OnDestroy
     }
 
     @Input()
-    set adminifyActionLink(action: string | { action: string, parameters?: RouteParametersValues | string[] } | string[]) {
+    set adminifyActionLink(action: string | { action: string, parameters?: RouteParametersValues | string[] } | any[]) {
         if (action) {
             let adminActionName: string;
             let parameters: RouteParametersValues | string[];

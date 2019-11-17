@@ -9,5 +9,5 @@ const execSync = require('child_process').execSync,
 packages.map(package => {
     const packagePath = `${__dirname}/../src/${package}`;
 
-    execSync(`cd ${packagePath} && barrelsby -c barrelsbyconfig.json`);
+    execSync(`cd ${packagePath} && barrelsby --delete -c barrelsbyconfig.json`);
 });

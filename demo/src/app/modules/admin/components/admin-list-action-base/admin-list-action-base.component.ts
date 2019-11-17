@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
-import {Admin, AdminAction} from '@ngx-adminify/core';
+import {Admin, AdminAction, RouteData, RoutePropertySnapshot} from '@ngx-adminify/core';
 import {AdminifyEntityService} from '@ngx-adminify/entity';
 
 @Component({
@@ -11,8 +11,8 @@ import {AdminifyEntityService} from '@ngx-adminify/entity';
 export class AdminListActionBaseComponent extends AdminActionBaseComponent implements OnInit {
 
 
-    constructor(admin: Admin, action: AdminAction, entity: AdminifyEntityService, ) {
-        super(admin, action, entity);
+    constructor(admin: Admin, action: AdminAction, entity: AdminifyEntityService, data: RouteData, @Inject(RoutePropertySnapshot('action')) actionData: string) {
+        super(admin, action, entity, data, actionData);
     }
 
     ngOnInit() {

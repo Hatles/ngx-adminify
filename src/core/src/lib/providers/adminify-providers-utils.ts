@@ -1,4 +1,4 @@
-import {ActivatedRoute} from '@ngx-adminify/router';
+import {ActivatedRoute} from '@angular/router';
 
 export function getFisrtParent(route: ActivatedRoute, conditionFn: (route: ActivatedRoute) => boolean): ActivatedRoute {
     if (conditionFn(route)) {

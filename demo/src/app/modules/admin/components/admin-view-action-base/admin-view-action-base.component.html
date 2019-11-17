@@ -1,4 +1,4 @@
-<p>admin-list-action-base works!</p>
+<p>admin-view-action-base works!</p>
 <p>{{dataS | async}}</p>
 <p>action: {{actionData}}</p>
 
@@ -12,3 +12,17 @@
     <ng-template [ngIf]="es.error">Error {{ es.error }}</ng-template>
     <ng-template [ngIf]="es.loading">Loading...</ng-template>
 </div>
+
+<p>idS:{{idS | async}}</p>
+<p>id: {{id}}</p>
+
+<div *ngIf="entityValue | withLoading | async as e">
+    <ng-template [ngIf]="e.value">
+        <p>
+            {{e.value}}
+        </p>
+    </ng-template>
+    <ng-template [ngIf]="e.error">Error {{ e.error }}</ng-template>
+    <ng-template [ngIf]="e.loading">Loading...</ng-template>
+</div>
+

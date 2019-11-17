@@ -1,8 +1,25 @@
-import {IBaseAdminifyEntityService} from '../adminify-entity-service';
-import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {IBaseAdminifyEntityService} from '../../adminify-entity-service';
+import {Inject, Injectable, InjectionToken, Optional} from '@angular/core';
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpParams,
+} from '@angular/common/http';
 
-export interface DefaultRestEntityServiceConfig {
+import {Observable, of, throwError} from 'rxjs';
+import {catchError, delay, map, timeout} from 'rxjs/operators';
+
+import {DataServiceError} from './data-service-error';
+import {
+    HttpMethods,
+    QueryParams,
+    RequestData,
+} from './request-data';
+import {EntityHttpResourceUrls, HttpUrlGenerator} from './http-url-generator';
+
+export const REST_ENTITY_SERVICE_CONFIG = new InjectionToken<RestEntityServiceConfig>('REST_ENTITY_SERVICE_CONFIG');
+
+export interface RestEntityServiceConfig {
     /** root path of the web api (default: 'api') */
     root?: string;
     /**
@@ -16,38 +33,24 @@ export interface DefaultRestEntityServiceConfig {
     getDelay?: number;
     /** Simulate save method (PUT/POST/DELETE) latency in a demo (default: 0) */
     saveDelay?: number;
-    /** request timeout in MS (default: 0)*/
+    /** request timeout in MS (default: 0) */
     timeout?: number; //
 }
 
-import { Injectable, Optional } from '@angular/core';
-import {
-    HttpClient,
-    HttpErrorResponse,
-    HttpParams,
-} from '@angular/common/http';
-
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, delay, map, timeout } from 'rxjs/operators';
-
-import { Update } from '@ngrx/entity';
-
-import { DataServiceError } from './data-service-error';
-import {
-    EntityCollectionDataService,
-    HttpMethods,
-    QueryParams,
-    RequestData,
-} from './interfaces';
-import { HttpUrlGenerator } from './http-url-generator';
+export interface Update<TUpdateInput, TPrimaryKey> {
+    id: TPrimaryKey;
+    changes: TUpdateInput;
+}
 
 /**
  * A basic, generic entity data service
  * suitable for persistence of most entities.
  * Assumes a common REST-y web API
  */
-export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput> implements IBaseAdminifyEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput> {
+// tslint:disable-next-line:max-line-length
+export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput> implements IBaseAdminifyEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllInput, TCreateInput, Update<TUpdateInput, TPrimaryKey>, TGetInput, TDeleteInput> {
 
+    // tslint:disable-next-line:variable-name
     protected _name: string;
     protected delete404OK: boolean;
     protected entityName: string;
@@ -65,7 +68,7 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
         entityName: string,
         protected http: HttpClient,
         protected httpUrlGenerator: HttpUrlGenerator,
-        config?: DefaultRestEntityServiceConfig
+        config?: RestEntityServiceConfig
     ) {
         this._name = `${entityName} DefaultDataService`;
         this.entityName = entityName;
@@ -85,45 +88,36 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
         this.timeout = to;
     }
 
-    add(entity: T): Observable<T> {
+    create(entity: TCreateInput): Observable<TEntity> {
         const entityOrError =
             entity || new Error(`No "${this.entityName}" entity to add`);
         return this.execute('POST', this.entityUrl, entityOrError);
     }
 
-    delete(key: number | string): Observable<number | string> {
+    delete(entity: TDeleteInput): Observable<TDeleteInput> {
         let err: Error | undefined;
-        if (key == null) {
+        if (entity == null) {
             err = new Error(`No "${this.entityName}" key to delete`);
         }
-        return this.execute('DELETE', this.entityUrl + key, err).pipe(
+        return this.execute('DELETE', this.entityUrl + entity, err).pipe(
             // forward the id of deleted entity as the result of the HTTP DELETE
-            map(result => key as number | string)
+            map(result => entity)
         );
     }
 
-    getAll(): Observable<T[]> {
+    getAll(entities: TGetAllInput): Observable<TGetAllResult> {
         return this.execute('GET', this.entitiesUrl);
     }
 
-    getById(key: number | string): Observable<T> {
+    get(entity: TGetInput): Observable<TEntity> {
         let err: Error | undefined;
-        if (key == null) {
+        if (entity == null) {
             err = new Error(`No "${this.entityName}" key to get`);
         }
-        return this.execute('GET', this.entityUrl + key, err);
+        return this.execute('GET', this.entityUrl + entity, err);
     }
 
-    getWithQuery(queryParams: QueryParams | string): Observable<T[]> {
-        const qParams =
-            typeof queryParams === 'string'
-                ? { fromString: queryParams }
-                : { fromObject: queryParams };
-        const params = new HttpParams(qParams);
-        return this.execute('GET', this.entitiesUrl, undefined, { params });
-    }
-
-    update(update: Update<T>): Observable<T> {
+    update(update: Update<TUpdateInput, TPrimaryKey>): Observable<TEntity> {
         const id = update && update.id;
         const updateOrError =
             id == null
@@ -132,20 +126,13 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
         return this.execute('PUT', this.entityUrl + id, updateOrError);
     }
 
-    // Important! Only call if the backend service supports upserts as a POST to the target URL
-    upsert(entity: T): Observable<T> {
-        const entityOrError =
-            entity || new Error(`No "${this.entityName}" entity to upsert`);
-        return this.execute('POST', this.entityUrl, entityOrError);
-    }
-
     protected execute(
         method: HttpMethods,
         url: string,
         data?: any, // data, error, or undefined/null
         options?: any
     ): Observable<any> {
-        const req: RequestData = { method, url, data, options };
+        const req: RequestData = {method, url, data, options};
 
         if (data instanceof Error) {
             return this.handleError(req)(data);
@@ -217,8 +204,8 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
     }
 }
 
-export class RestEntityService extends BaseRestEntityService<any, any, any, any, any, any, any, any> {
-
+// tslint:disable-next-line:max-line-length
+export class RestEntityService<TEntity> extends BaseRestEntityService<TEntity, any, any, any, Partial<TEntity>, Partial<TEntity>, any, any> {
 }
 
 /**
@@ -227,22 +214,22 @@ export class RestEntityService extends BaseRestEntityService<any, any, any, any,
  * Assumes a common REST-y web API
  */
 @Injectable()
-export class DefaultDataServiceFactory {
+export class DefaultRestEntityServiceFactory {
     constructor(
         protected http: HttpClient,
         protected httpUrlGenerator: HttpUrlGenerator,
-        @Optional() protected config?: DefaultRestEntityServiceConfig
+        @Optional() @Inject(REST_ENTITY_SERVICE_CONFIG) protected config?: RestEntityServiceConfig
     ) {
-        config = config || {};
-        httpUrlGenerator.registerHttpResourceUrls(config.entityHttpResourceUrls);
+        this.config = config || {};
+        httpUrlGenerator.registerHttpResourceUrls(this.config.entityHttpResourceUrls);
     }
 
     /**
      * Create a default {EntityCollectionDataService} for the given entity type
-     * @param entityName {string} Name of the entity type for this data service
+     * @param entityName Name of the entity type for this data service
      */
-    create<T>(entityName: string): EntityCollectionDataService<T> {
-        return new DefaultDataService<T>(
+    create<TEntity>(entityName: string): RestEntityService<TEntity> {
+        return new RestEntityService<TEntity>(
             entityName,
             this.http,
             this.httpUrlGenerator,
