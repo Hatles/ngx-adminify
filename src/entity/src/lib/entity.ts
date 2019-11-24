@@ -10,7 +10,7 @@ export * from './entity-config';
 export * from './entity-factory';
 // export * from './actions/entity-create-config';
 export * from './actions/entity-list-config';
-// export * from './actions/entity-view-config';
+export * from './actions/entity-view-config';
 // export * from './actions/entiy-edit-config';
 export * from './entity-services/rest/data-service-error';
 export * from './entity-services/rest/entity-rest.module';

@@ -16,7 +16,12 @@ export class AdminActionBaseComponent implements OnInit {
     dataS: Observable<any>;
     creating: boolean;
 
-    constructor(public admin: Admin, public action: AdminAction, public entity: AdminifyEntityService, public data: RouteData, @Inject(RoutePropertySnapshot('action')) public actionData: string) { }
+    constructor(
+        public admin: Admin,
+        public action: AdminAction,
+        public entity: AdminifyEntityService,
+        public data: RouteData,
+        @Inject(RoutePropertySnapshot('action')) public actionData: string) { }
 
     ngOnInit() {
         this.entities = this.entity.getAll({}).pipe(map(es => es.map(e => ({value: e, string: JSON.stringify(e)}))));

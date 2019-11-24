@@ -10,7 +10,7 @@ import {
     AdminifyEntityModule, DefaultRestEntityServiceFactory,
     EntityAdminsConfig,
     EntityConfig,
-    entityFactory,
+    entityFactory, EntityListConfigs,
     EntityServiceProvider,
     IAdminifyEntityService, RestEntityService
 } from '@ngx-adminify/entity';
@@ -59,6 +59,16 @@ export const adminComponents: Type<any>[] = [
     AdminViewActionBaseComponent
 ];
 
+const todoListConfigs: EntityListConfigs = [
+    {name: 'title'},
+    {name: 'completed'},
+];
+
+const userListConfigs: EntityListConfigs = [
+    {name: 'title'},
+    {name: 'completed'},
+];
+
 const admins: EntityAdminsConfig = {
     path: 'adminconfig',
     data: { test: 'test' },
@@ -80,7 +90,7 @@ const admins: EntityAdminsConfig = {
             component: AdminBaseComponent,
             adminData: {
                 test: 'admin test',
-                list: 'list'
+                listConfigs: 'list'
             },
             actions: [
                 {
@@ -88,16 +98,16 @@ const admins: EntityAdminsConfig = {
                     path: 'dashboard',
                     component: AdminActionBaseComponent
                 },
-                {
-                    name: 'list',
-                    path: 'list',
-                    component: AdminActionBaseComponent
-                },
-                {
-                    name: 'view',
-                    path: 'view/:id',
-                    component: AdminActionBaseComponent
-                }
+                // {
+                //     name: 'list',
+                //     path: 'list',
+                //     component: AdminActionBaseComponent
+                // },
+                // {
+                //     name: 'view',
+                //     path: 'view/:id',
+                //     component: AdminActionBaseComponent
+                // }
             ],
             defaultActionName: 'dashboard',
             entityService: 'test',
@@ -116,12 +126,18 @@ const admins: EntityAdminsConfig = {
                 {
                     name: 'list',
                     path: 'list',
-                    component: AdminListActionBaseComponent
+                    component: AdminListActionBaseComponent,
+                    actionData: {
+                        entityList: todoListConfigs
+                    }
                 },
                 {
                     name: 'view',
                     path: 'view/:id',
-                    component: AdminViewActionBaseComponent
+                    component: AdminViewActionBaseComponent,
+                    actionData: {
+                        entityView: todoListConfigs
+                    }
                 }
             ],
             defaultActionName: 'dashboard',
@@ -141,12 +157,18 @@ const admins: EntityAdminsConfig = {
                 {
                     name: 'list',
                     path: 'list',
-                    component: AdminListActionBaseComponent
+                    component: AdminListActionBaseComponent,
+                    actionData: {
+                        entityList: userListConfigs
+                    }
                 },
                 {
                     name: 'view',
                     path: 'view/:id',
-                    component: AdminViewActionBaseComponent
+                    component: AdminViewActionBaseComponent,
+                    actionData: {
+                        entityView: userListConfigs
+                    }
                 }
             ],
             defaultActionName: 'dashboard',

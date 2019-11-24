@@ -4,10 +4,19 @@
 
 <div *ngIf="entities | withLoading | async as es">
     <ng-template [ngIf]="es.value">
-        <div *ngFor="let e of es.value">
-            {{e.string}}
-            <a [adminifyActionLink]="['view', e.value.id]">{{e.value.id}}</a>
-        </div>
+        <table>
+            <thead>
+            <tr>
+                <th *ngFor="let listConfig of listConfigs">{{listConfig.name}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let e of es.value">
+                <td *ngFor="let listConfig of listConfigs">{{e.value[listConfig.name]}}</td>
+                <td><a [adminifyActionLink]="['view', e.value.id]">{{e.value.id}}</a></td>
+            </tr>
+            </tbody>
+        </table>
     </ng-template>
     <ng-template [ngIf]="es.error">Error {{ es.error }}</ng-template>
     <ng-template [ngIf]="es.loading">Loading...</ng-template>

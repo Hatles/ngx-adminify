@@ -2,25 +2,25 @@
 <p>{{dataS | async}}</p>
 <p>action: {{actionData}}</p>
 
-<div *ngIf="entities | withLoading | async as es">
-    <ng-template [ngIf]="es.value">
-        <div *ngFor="let e of es.value">
-            {{e.string}}
-            <a [adminifyActionLink]="['view', e.value.id]">{{e.value.id}}</a>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="es.error">Error {{ es.error }}</ng-template>
-    <ng-template [ngIf]="es.loading">Loading...</ng-template>
-</div>
-
 <p>idS:{{idS | async}}</p>
 <p>id: {{id}}</p>
 
 <div *ngIf="entityValue | withLoading | async as e">
     <ng-template [ngIf]="e.value">
-        <p>
-            {{e.value}}
-        </p>
+        <table>
+            <thead>
+            <tr>
+                <th>property</th>
+                <th>value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let viewConfig of viewConfigs">
+                <td>{{viewConfig.name}}</td>
+                <td>{{e.value[viewConfig.name]}}</td>
+            </tr>
+            </tbody>
+        </table>
     </ng-template>
     <ng-template [ngIf]="e.error">Error {{ e.error }}</ng-template>
     <ng-template [ngIf]="e.loading">Loading...</ng-template>

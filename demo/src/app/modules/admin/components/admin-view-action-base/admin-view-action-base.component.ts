@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
 import {AdminAction, Admin} from '@ngx-adminify/core';
-import {AdminifyEntityService} from '@ngx-adminify/entity';
+import {AdminifyEntityService, EntityViewConfigs, EntityViewConfigsToken} from '@ngx-adminify/entity';
 import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
 import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
@@ -20,7 +20,8 @@ export class AdminViewActionBaseComponent extends AdminActionBaseComponent imple
 
     constructor(admin: Admin, action: AdminAction, entity: AdminifyEntityService, data: RouteData,
                 @Inject(RoutePropertySnapshot('action')) actionData: string,
-                public route: ActivatedRoute) {
+                public route: ActivatedRoute,
+                @Inject(EntityViewConfigsToken) public viewConfigs: EntityViewConfigs) {
         super(admin, action, entity, data, actionData);
     }
 
@@ -30,7 +31,7 @@ export class AdminViewActionBaseComponent extends AdminActionBaseComponent imple
         this.id = this.route.snapshot.params.id;
         this.idS = this.route.params.pipe(map(p => p.id));
 
-        this.entityValue = this.idS.pipe(switchMap(id => this.entity.get(id)), map(e => JSON.stringify(e)));
+        this.entityValue = this.idS.pipe(switchMap(id => this.entity.get(id)));
     }
 
 }

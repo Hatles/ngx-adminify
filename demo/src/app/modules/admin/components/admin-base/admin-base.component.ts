@@ -11,17 +11,7 @@ export class AdminBaseComponent implements OnInit {
 
     actions: AdminAction[];
 
-    constructor(public admin: Admin,
-                @Inject(AdminsDataProperty('test')) dataTest: string,
-                @Inject(AdminDataProperty('test')) adminTest: string,
-                @Inject(EntityListConfigsToken) list: string,
-                // @Inject(ActionDataProperty('test')) actionTest: string
-    ) {
-
-        console.log('admins', dataTest);
-        console.log('admin', adminTest);
-        console.log('list', list);
-        // console.log('action', actionTest);
+    constructor(public admin: Admin) {
     }
 
     ngOnInit() {
