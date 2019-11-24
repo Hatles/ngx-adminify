@@ -65,6 +65,9 @@ const admins: EntityAdminsConfig = {
     component: AdminifyMatRootComponent,
     rootFinder: dataRouteFinder('admin'),
     defaultAdminName: 'dashboard',
+    adminsData: {
+        test: 'test admins'
+    },
     admins: [
         {
             name: 'dashboard',
@@ -75,6 +78,10 @@ const admins: EntityAdminsConfig = {
             name: 'test',
             path: 'test',
             component: AdminBaseComponent,
+            adminData: {
+                test: 'admin test',
+                list: 'list'
+            },
             actions: [
                 {
                     name: 'dashboard',

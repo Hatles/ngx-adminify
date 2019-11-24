@@ -1,9 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
-import {Admin} from '../../../../../../../src/core/src/lib/admin';
-import {AdminAction} from '../../../../../../../src/core/src/lib/admin-action';
-import {AdminifyEntityService} from '../../../../../../../src/entity/src/lib/adminify-entity-service';
-import {RouteData, RoutePropertySnapshot} from '../../../../../../../src/core/src/lib/route-data-snapshot';
+import {AdminAction, Admin} from '@ngx-adminify/core';
+import {AdminifyEntityService} from '@ngx-adminify/entity';
+import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
 import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {map, switchMap} from 'rxjs/operators';

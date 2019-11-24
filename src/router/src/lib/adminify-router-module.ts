@@ -37,6 +37,8 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
 import {Location} from '@angular/common';
 import * as router from '@angular/router';
 import {RouterModule as ARouterModule} from '@angular/router';
+import {dataProviders} from './providers/data-providers';
+import {paramsProviders} from './providers/params-providers';
 
 function buildOutletRouteInjectorFactory(providers: AdminifyOutletRouteProviders): AdminifyOutletRouteInjectorFactory {
     return new AdminifyOutletRouteInjectorFactory(providers);
@@ -74,6 +76,8 @@ export class AdminifyRouterModule {
                     provide: RouterConfigLoaderFactory,
                     useClass: AdminifyRouterConfigLoaderFactory
                 },
+                provideAdminifyProviders(dataProviders),
+                provideAdminifyProviders(paramsProviders),
                 provideAdminifyProviders(config.providers || []),
 
                 {provide: ROUTES, useExisting: router.ROUTES},

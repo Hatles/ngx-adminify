@@ -4,7 +4,7 @@
     "angular"
   ],
   "location": "top",
-  "name": "router",
+  "name": "router-barrels",
   "structure": "flat",
   "singleQuotes": true,
   "verbose": true

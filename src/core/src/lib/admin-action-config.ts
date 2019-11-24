@@ -1,5 +1,6 @@
-import {Route} from '@angular/router';
+import {Data, Route} from '@angular/router';
 
 export interface AdminActionConfig extends Route {
-  name: string;
+    name: string;
+    actionData?: Data;
 }

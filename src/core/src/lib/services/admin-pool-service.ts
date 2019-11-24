@@ -1,12 +1,10 @@
 import {Injectable, Injector} from '@angular/core';
-import {Route, Routes} from '@angular/router';
+import {Data, Route, Routes} from '@angular/router';
 import {Admin} from '../admin';
 import {AdminConfig, AdminsConfig} from '../admin-config';
-import {AdminifyEmptyOutletComponent} from '@ngx-adminify/router';
+import {AdminifyEmptyOutletComponent, IDataProvider} from '@ngx-adminify/router';
 import {AdminFactory, defaultAdminFactory, IAdminFactory} from '../admin-factory';
 import {AdminGuard} from '../guards/admin-guard';
-import {AdminRouteGuard} from '../guards/admin-route-guard';
-import {AdminActionRouteGuard} from '../guards/admin-action-route-guard';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -14,7 +12,7 @@ export interface AdminWithConfig {
 }
 
 @Injectable({providedIn: 'root'})
-export class AdminPoolService {
+export class AdminPoolService implements IDataProvider {
 
     adminsConfig: AdminsConfig;
     adminsWithConfig: AdminWithConfig[];
@@ -50,6 +48,10 @@ export class AdminPoolService {
 
         if (!this.adminsConfig.defaultActionGuards) {
             this.adminsConfig.defaultActionGuards = [];
+        }
+
+        if (!this.adminsConfig.adminsData) {
+            this.adminsConfig.adminsData = {};
         }
     }
 
@@ -184,5 +186,16 @@ export class AdminPoolService {
         }
 
         return admin.canAccess();
+    }
+
+    getData(): Data;
+    getData<T>(dataName: string, defaultValue?: T): T;
+    getData(dataName?: string, defaultValue?: any): any {
+        if (!dataName) {
+            return this.adminsConfig.adminsData;
+        } else {
+            const dataValue = this.adminsConfig.adminsData[dataName];
+            return dataValue ? dataValue : defaultValue;
+        }
     }
 }

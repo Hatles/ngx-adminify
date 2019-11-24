@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 import {Type} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Data, Params, UrlSegment} from "@ngx-adminify/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Data, Params, UrlSegment} from '@ngx-adminify/router';
 
 export class AdminActivatedRoute extends ActivatedRoute {
     constructor(

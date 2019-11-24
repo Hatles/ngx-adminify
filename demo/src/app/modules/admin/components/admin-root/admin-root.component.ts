@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Admin, AdminPoolService, RouteDataSnapshot} from "@ngx-adminify/core";
+import {Admin, AdminPoolService} from '@ngx-adminify/core';
+import {RouteDataSnapshot} from '@ngx-adminify/router';
 
 @Component({
     selector: 'app-admin-root',

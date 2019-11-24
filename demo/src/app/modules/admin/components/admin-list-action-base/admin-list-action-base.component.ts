@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
-import {Admin, AdminAction, RouteData, RoutePropertySnapshot} from '@ngx-adminify/core';
+import {Admin, AdminAction} from '@ngx-adminify/core';
 import {AdminifyEntityService} from '@ngx-adminify/entity';
-
+import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
 @Component({
   selector: 'demo-admin-list-action-base',
   templateUrl: './admin-list-action-base.component.html',

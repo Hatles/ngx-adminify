@@ -1,8 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Admin, AdminAction, RouteData, RoutePropertySnapshot, RoutePropertySnapshotToken} from '@ngx-adminify/core';
+import {Admin, AdminAction} from '@ngx-adminify/core';
 import {AdminifyEntityService} from '@ngx-adminify/entity';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
 
 @Component({
   selector: 'app-admin-action-base',

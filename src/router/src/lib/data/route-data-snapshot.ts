@@ -23,7 +23,7 @@ export class RouteDataPropertySnapshot<T> {
 }
 
 export class RouteDataProperty<T> {
-    data: T;
+    data: Observable<T>;
 }
 
 export class RouteDataPropertySnapshotToken {

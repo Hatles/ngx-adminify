@@ -1,11 +1,12 @@
-import {Route} from '@angular/router';
+import {Data, Route} from '@angular/router';
 import {AdminActionConfig} from './admin-action-config';
 import {AdminFactory} from './admin-factory';
 
 export type RouteFinder = (Route) => boolean;
 
 export interface AdminsConfig extends BaseAdminsConfig {
-    [key: string]: any;
+    // [key: string]: any;
+    adminsData?: Data;
 }
 
 interface BaseAdminsConfig extends Route {
@@ -25,7 +26,8 @@ interface BaseAdminsConfig extends Route {
 }
 
 export interface AdminConfig extends BaseAdminConfig {
-    [key: string]: any;
+    // [key: string]: any;
+    adminData?: Data;
 }
 
 export interface BaseAdminConfig extends Route {

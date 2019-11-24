@@ -1,9 +1,10 @@
 import {AdminActionConfig} from './admin-action-config';
 import {AdminRouteBuilder, RouteParametersValues} from './services/admin-route-builder';
 import {Admin} from './admin';
-import {Route} from '@angular/router';
+import {Data, Route} from '@angular/router';
+import {IDataProvider} from '../../../router/src/lib/data/data-provider';
 
-export class AdminAction {
+export class AdminAction implements IDataProvider {
 
     name: string;
     routeBuilder: AdminRouteBuilder;
@@ -13,7 +14,14 @@ export class AdminAction {
     constructor(private admin: Admin, public config: AdminActionConfig) {
         this.name = this.config.name;
 
+        this.processConfig();
         this.buildRoute();
+    }
+
+    private processConfig() {
+        if (!this.config.actionData) {
+            this.config.actionData = {};
+        }
     }
 
     protected buildRoute() {
@@ -61,5 +69,16 @@ export class AdminAction {
 
     getRoute() {
         return this.route;
+    }
+
+    getData(): Data;
+    getData<T>(dataName: string, defaultValue?: T): T;
+    getData(dataName?: string, defaultValue?: any): any {
+        if (!dataName) {
+            return this.config.actionData;
+        } else {
+            const dataValue = this.config.actionData[dataName];
+            return dataValue ? dataValue : defaultValue;
+        }
     }
 }

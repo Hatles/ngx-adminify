@@ -12,11 +12,19 @@ import {
 import {adminifyProviders} from './providers/admin-providers';
 import {AdminRouteGuard} from './guards/admin-route-guard';
 import {AdminActionRouteGuard} from './guards/admin-action-route-guard';
+import {adminDataProviders} from './providers/admin-data-providers';
+import {adminsDataProviders} from './providers/admins-data-providers';
+import {actionDataProviders} from './providers/action-data-providers';
 
 @NgModule({
     imports: [
         AdminifyRouterModule.forChild({
-            providers: adminifyProviders
+            providers: [
+                ...adminifyProviders,
+                ...adminsDataProviders,
+                ...adminDataProviders,
+                ...actionDataProviders
+            ]
         }),
     ],
     exports: [

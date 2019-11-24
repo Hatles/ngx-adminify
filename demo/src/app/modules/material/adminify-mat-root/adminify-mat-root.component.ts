@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AdminRootComponent} from '../../admin/components/admin-root/admin-root.component';
-import {ActivatedRoute, UrlTree} from '@angular/router';
-import {AdminPoolService, RouteDataSnapshot} from '@ngx-adminify/core';
+import {ActivatedRoute} from '@angular/router';
+import {AdminPoolService} from '@ngx-adminify/core';
+import {RouteDataSnapshot} from '@ngx-adminify/router';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map} from 'rxjs/operators';
 

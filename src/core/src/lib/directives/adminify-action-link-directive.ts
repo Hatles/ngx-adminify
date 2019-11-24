@@ -72,7 +72,7 @@ export class AdminifyActionLinkDirective {
 
     get urlTree(): UrlTree {
         return this.router.createUrlTree(this.commands, {
-            relativeTo: this.route,
+            relativeTo: <any>this.route,
             queryParams: this.queryParams,
             fragment: this.fragment,
             preserveQueryParams: attrBoolValue(this.preserve),
@@ -178,7 +178,7 @@ export class AdminifyActionLinkWithHrefDirective implements OnChanges, OnDestroy
 
     get urlTree(): UrlTree {
         return this.router.createUrlTree(this.commands, {
-            relativeTo: this.route,
+            relativeTo: <any>this.route,
             queryParams: this.queryParams,
             fragment: this.fragment,
             preserveQueryParams: attrBoolValue(this.preserve),

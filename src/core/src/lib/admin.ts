@@ -1,4 +1,4 @@
-import {Route} from '@angular/router';
+import {Data, Route} from '@angular/router';
 import {AdminPoolService} from './services/admin-pool-service';
 import {AdminConfig} from './admin-config';
 import {AdminRouteBuilder, RouteParametersValues} from './services/admin-route-builder';
@@ -6,8 +6,9 @@ import {AdminAction} from './admin-action';
 import {Injector} from '@angular/core';
 import {AdminActionGuard} from './guards/admin-action-guard';
 import {AdminGuard} from './guards/admin-guard';
+import {IDataProvider} from '@ngx-adminify/router';
 
-export class Admin {
+export class Admin implements IDataProvider {
 
     name: string;
     segment: string;
@@ -36,6 +37,10 @@ export class Admin {
 
         if (!this.config.actionGuards) {
             this.config.actionGuards = this.pool.adminsConfig.defaultActionGuards || [];
+        }
+
+        if (!this.config.adminData) {
+            this.config.adminData = {};
         }
     }
 
@@ -172,5 +177,16 @@ export class Admin {
         }
 
         return true;
+    }
+
+    getData(): Data;
+    getData<T>(dataName: string, defaultValue?: T): T;
+    getData(dataName?: string, defaultValue?: any): any {
+        if (!dataName) {
+            return this.config.adminData;
+        } else {
+            const dataValue = this.config.adminData[dataName];
+            return dataValue ? dataValue : defaultValue;
+        }
     }
 }

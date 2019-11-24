@@ -10,6 +10,7 @@ import {adminifyEntityGenericProviders} from './providers/entity-service-generic
 import {AdminPoolService, processConfig} from '@ngx-adminify/core';
 import {Routes, ROUTES} from '@angular/router';
 import {AsyncRoutesFactory} from '../../../router/src/lib/adminify-router-config';
+import {adminifyEntityActionProviders} from './providers/entity-action-config-providers';
 
 export function provideEntityServiceProviders(providers: EntityServiceProvider[]): Provider[] {
     return providers.map(e => provideEntityServiceProvider(e));
@@ -23,7 +24,10 @@ export function provideEntityServiceProvider(provider: EntityServiceProvider): P
     imports: [
         AdminifyModule,
         AdminifyRouterModule.forChild({
-            providers: adminifyEntityGenericProviders
+            providers: [
+                ...adminifyEntityGenericProviders,
+                ...adminifyEntityActionProviders
+                ]
         }),
     ],
     exports: [
