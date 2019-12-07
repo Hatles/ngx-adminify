@@ -22,12 +22,10 @@ export class AdminViewActionBaseComponent extends AdminActionBaseComponent imple
                 @Inject(RoutePropertySnapshot('action')) actionData: string,
                 public route: ActivatedRoute,
                 @Inject(EntityViewConfigsToken) public viewConfigs: EntityViewConfigs) {
-        super(admin, action, entity, data, actionData);
+        super(admin, action, entity);
     }
 
     ngOnInit() {
-        super.ngOnInit();
-
         this.id = this.route.snapshot.params.id;
         this.idS = this.route.params.pipe(map(p => p.id));
 

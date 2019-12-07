@@ -18,6 +18,8 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {delay, map} from 'rxjs/operators';
 import {AdminViewActionBaseComponent} from './components/admin-view-action-base/admin-view-action-base.component';
 import {AdminListActionBaseComponent} from './components/admin-list-action-base/admin-list-action-base.component';
+import {AdminEditActionBaseComponent} from './components/admin-edit-action-base/admin-edit-action-base.component';
+import {FormlyFieldConfig} from '@ngx-formly/core';
 
 export class EntityService implements IAdminifyEntityService {
 
@@ -56,22 +58,123 @@ export const adminComponents: Type<any>[] = [
     AdminBaseComponent,
     AdminActionBaseComponent,
     AdminListActionBaseComponent,
-    AdminViewActionBaseComponent
+    AdminViewActionBaseComponent,
+    AdminEditActionBaseComponent
 ];
 
 const todoListConfigs: EntityListConfigs = [
+    {name: 'id'},
     {name: 'title'},
     {name: 'completed'},
 ];
 
 const userListConfigs: EntityListConfigs = [
-    {name: 'title'},
-    {name: 'completed'},
+    {name: 'id'},
+    {name: 'name'},
+    {name: 'username'},
+    {name: 'email'},
+];
+
+const todoEditConfigs: FormlyFieldConfig[] = [
+    {
+        key: 'title',
+        type: 'input',
+    },
+    {
+        key: 'completed',
+        type: 'toggle',
+    },
+];
+
+const userEditConfigs: FormlyFieldConfig[] = [
+    {
+        templateOptions: {
+            label: 'Form'
+        },
+        wrappers: [
+            'panel'
+        ],
+        type: 'tab-group',
+        fieldGroup: [
+            {
+                templateOptions: {
+                    label: 'Global Info'
+                },
+                wrappers: [
+                    'panel'
+                ],
+                fieldGroup: [
+                    {
+                        key: 'name',
+                        type: 'input',
+                    },
+                    {
+                        key: 'username',
+                        type: 'input',
+                        templateOptions: {
+                            required: true,
+                            label: 'Username',
+                        }
+                    },
+                    {
+                        key: 'email',
+                        type: 'input',
+                    },
+                ]
+            },
+            {
+                key: 'address',
+                templateOptions: {
+                    label: 'Address'
+                },
+                wrappers: [
+                    'panel'
+                ],
+                fieldGroup: [
+                    {
+                        key: 'street',
+                        type: 'input',
+                        templateOptions: {
+                            required: true,
+                            type: 'text',
+                            label: 'Street',
+                        },
+                    },
+                    {
+                        key: 'suite',
+                        type: 'input',
+                        templateOptions: {
+                            type: 'text',
+                            label: 'Suite',
+                        },
+                    },
+                    {
+                        key: 'city',
+                        type: 'input',
+                        templateOptions: {
+                            required: true,
+                            type: 'text',
+                            label: 'City',
+                        },
+                    },
+                    {
+                        key: 'zipcode',
+                        type: 'input',
+                        templateOptions: {
+                            required: true,
+                            type: 'text',
+                            label: 'Zipcode',
+                        },
+                    },
+                ],
+            }
+        ]
+    }
 ];
 
 const admins: EntityAdminsConfig = {
     path: 'adminconfig',
-    data: { test: 'test' },
+    data: {test: 'test'},
     component: AdminifyMatRootComponent,
     rootFinder: dataRouteFinder('admin'),
     defaultAdminName: 'dashboard',
@@ -138,6 +241,23 @@ const admins: EntityAdminsConfig = {
                     actionData: {
                         entityView: todoListConfigs
                     }
+                },
+                {
+                    name: 'edit',
+                    path: 'edit/:id',
+                    component: AdminEditActionBaseComponent,
+                    actionData: {
+                        entityEdit: todoEditConfigs
+                    }
+                },
+                {
+                    name: 'create',
+                    path: 'create',
+                    component: AdminEditActionBaseComponent,
+                    actionData: {
+                        entityEdit: todoEditConfigs,
+                        entityEditMode: 'create'
+                    }
                 }
             ],
             defaultActionName: 'dashboard',
@@ -169,7 +289,24 @@ const admins: EntityAdminsConfig = {
                     actionData: {
                         entityView: userListConfigs
                     }
-                }
+                },
+                {
+                    name: 'edit',
+                    path: 'edit/:id',
+                    component: AdminEditActionBaseComponent,
+                    actionData: {
+                        entityEdit: userEditConfigs
+                    }
+                },
+                {
+                    name: 'create',
+                    path: 'create',
+                    component: AdminEditActionBaseComponent,
+                    actionData: {
+                        entityEdit: userEditConfigs,
+                        entityEditMode: 'create'
+                    }
+                },
             ],
             defaultActionName: 'dashboard',
             entityService: 'users',

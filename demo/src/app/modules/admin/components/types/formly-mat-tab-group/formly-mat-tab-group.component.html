@@ -1,0 +1,9 @@
+<mat-tab-group>
+    <mat-tab *ngFor="let f of field.fieldGroup"
+         [label]="f.templateOptions.label"
+         [disabled]="f.templateOptions.disabled === true"
+    >
+        <formly-field  [field]="f"></formly-field>
+    </mat-tab>
+</mat-tab-group>
+<ng-content></ng-content>

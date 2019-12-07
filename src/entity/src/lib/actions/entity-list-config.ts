@@ -71,6 +71,8 @@ export interface EntityListConfig {
      * Use `defaultValue` to initialize it the model. If this is provided and the value of the model at compile-time is undefined, then the value of the model will be assigned to `defaultValue`.
      */
     defaultValue?: any;
+
+    templateOptions?: EntityListTemplateOptions;
 }
 
 export interface EntityListTemplateOptions {

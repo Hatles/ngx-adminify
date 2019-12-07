@@ -1,9 +1,4 @@
-<p>admin-view-action-base works!</p>
-<p>{{dataS | async}}</p>
-<p>action: {{actionData}}</p>
-
-<p>idS:{{idS | async}}</p>
-<p>id: {{id}}</p>
+<h3>{{action.name}}</h3>
 
 <div *ngIf="entityValue | withLoading | async as e">
     <ng-template [ngIf]="e.value">
@@ -23,6 +18,8 @@
         </table>
     </ng-template>
     <ng-template [ngIf]="e.error">Error {{ e.error }}</ng-template>
-    <ng-template [ngIf]="e.loading">Loading...</ng-template>
+    <ng-template [ngIf]="e.loading"><mat-progress-bar mode="query"></mat-progress-bar></ng-template>
 </div>
 
+<a mat-raised-button color="warn" adminifyActionLink="list">Back to list</a>
+<a mat-raised-button color="primary" [adminifyActionLink]="['edit', idS | async]">Edit</a>

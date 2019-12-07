@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import {WithLoadingPipe} from './pipes/with-loading.pipe';
+import {MatProgressBarModule, MatProgressSpinnerModule} from '@angular/material';
 
 @NgModule({
     imports: [
@@ -17,6 +18,8 @@ import {WithLoadingPipe} from './pipes/with-loading.pipe';
         MatMenuModule,
         MatIconModule,
         MatButtonModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
     ],
     exports: [
         CommonModule,
@@ -26,6 +29,8 @@ import {WithLoadingPipe} from './pipes/with-loading.pipe';
         MatButtonModule,
         MatTabsModule,
         MatMenuModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
 
         WithLoadingPipe
     ],

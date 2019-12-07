@@ -12,7 +12,6 @@ export class AdminDashboardBaseComponent implements OnInit {
 
     constructor(private pool: AdminPoolService, public admin: Admin,
     ) {
-        console.log('admin', admin);
     }
 
     ngOnInit() {

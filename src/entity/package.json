@@ -13,6 +13,7 @@
         "url": "https://github.com/Hatles/ngx-adminify/issues"
     },
     "peerDependencies": {
-        "@ngx-adminify/core": "0.0.0-ADMINIFY-VERSION"
+        "@ngx-adminify/core": "0.0.0-ADMINIFY-VERSION",
+        "@ngx-formly/core": ">=5.0.0"
     }
 }

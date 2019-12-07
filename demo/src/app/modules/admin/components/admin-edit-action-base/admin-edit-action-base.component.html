@@ -1,0 +1,18 @@
+<h3>{{action.name}}</h3>
+
+<div *ngIf="loading"><mat-progress-bar mode="query"></mat-progress-bar></div>
+<div *ngIf="submitting"><mat-progress-bar mode="query"></mat-progress-bar></div>
+<form [formGroup]="form" (submit)="onSubmit()">
+    <formly-form [form]="form" [fields]="editConfigs" [model]="entityValue"></formly-form>
+    <div class="edit-form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading || submitting">{{ createMode ? 'Create' : 'Update' }}</button>
+        <button *ngIf="createMode" mat-raised-button color="primary" type="button" (click)="createAndAdd()" [disabled]="form.invalid || loading || submitting">Create and Add Another</button>
+        <a mat-raised-button color="warn" adminifyActionLink="list">Back to list</a>
+        <a *ngIf="!createMode" mat-raised-button color="warn" [adminifyActionLink]="['view', id | async]">Back to view</a>
+    </div>
+</form>
+
+<div>
+    <h4>Form data:</h4>
+    <p>{{form.value | json}}</p>
+</div>

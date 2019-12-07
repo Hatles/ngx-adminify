@@ -1,6 +1,4 @@
-<p>admin-list-action-base works!</p>
-<p>{{dataS | async}}</p>
-<p>action: {{actionData}}</p>
+<h3>{{action.name}}</h3>
 
 <div *ngIf="entities | withLoading | async as es">
     <ng-template [ngIf]="es.value">
@@ -8,16 +6,21 @@
             <thead>
             <tr>
                 <th *ngFor="let listConfig of listConfigs">{{listConfig.name}}</th>
+                <th>View</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let e of es.value">
                 <td *ngFor="let listConfig of listConfigs">{{e.value[listConfig.name]}}</td>
-                <td><a [adminifyActionLink]="['view', e.value.id]">{{e.value.id}}</a></td>
+                <td><a mat-raised-button color="primary" [adminifyActionLink]="['view', e.value.id]">View</a></td>
+                <td><a mat-raised-button color="accent" [adminifyActionLink]="['edit', e.value.id]">Edit</a></td>
+                <td><a mat-raised-button color="warn" [adminifyActionLink]="['edit', e.value.id]">Delete</a></td>
             </tr>
             </tbody>
         </table>
     </ng-template>
     <ng-template [ngIf]="es.error">Error {{ es.error }}</ng-template>
-    <ng-template [ngIf]="es.loading">Loading...</ng-template>
+    <ng-template [ngIf]="es.loading"><mat-progress-bar mode="query"></mat-progress-bar></ng-template>
 </div>

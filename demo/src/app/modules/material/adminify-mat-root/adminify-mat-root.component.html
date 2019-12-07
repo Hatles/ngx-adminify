@@ -27,7 +27,7 @@
         <span class="spacer" [style.flex]="'1 1 auto'"></span>
 
         <ng-container *ngTemplateOutlet="version"></ng-container>
-        <a mat-button href="https://github.com/ngx-formly/ngx-formly">
+        <a mat-button href="https://github.com/hatles/ngx-adminify">
             <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
             GitHub
         </a>
@@ -71,7 +71,10 @@
         </ng-container>
     </mat-sidenav>
 
-    <admin-outlet></admin-outlet>
+    <div style="padding: 10px">
+        <h1>Adminify</h1>
+        <admin-outlet></admin-outlet>
+    </div>
 </mat-sidenav-container>
 
 <ng-template #version>

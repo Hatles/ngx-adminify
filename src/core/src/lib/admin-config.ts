@@ -32,6 +32,8 @@ export interface AdminConfig extends BaseAdminConfig {
 
 export interface BaseAdminConfig extends Route {
     name: string;
+    label?: string;
+    icon?: string;
     defaultActionName?: string;
     actions?: AdminActionConfig[];
     adminGuards?: any[];
