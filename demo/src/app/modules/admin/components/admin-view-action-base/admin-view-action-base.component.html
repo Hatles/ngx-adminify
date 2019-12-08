@@ -21,5 +21,6 @@
     <ng-template [ngIf]="e.loading"><mat-progress-bar mode="query"></mat-progress-bar></ng-template>
 </div>
 
-<a mat-raised-button color="warn" adminifyActionLink="list">Back to list</a>
+<a mat-raised-button color="accent" adminifyActionLink="list">Back to list</a>
 <a mat-raised-button color="primary" [adminifyActionLink]="['edit', id | async]">Edit</a>
+<button *ngIf="id | async as idValue" mat-raised-button color="warn" (click)="onDelete(idValue)">Delete</button>
