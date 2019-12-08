@@ -11,13 +11,15 @@ export class TypedAdminData<TData extends Data> {
 
 export class AdminDataPropertyToken {
     property: string;
+    defaultValue: any;
 
-    constructor(property: string) {
+    constructor(property: string, defaultValue?: any) {
         this.property = property;
+        this.defaultValue = defaultValue;
     }
 }
 
-export function AdminDataProperty(property: string): AdminDataPropertyToken {
-    return new AdminDataPropertyToken(property);
+export function AdminDataProperty(property: string, defaultValue?: any): AdminDataPropertyToken {
+    return new AdminDataPropertyToken(property, defaultValue);
 }
 

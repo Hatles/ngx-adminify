@@ -20,12 +20,13 @@ import {AdminViewActionBaseComponent} from './components/admin-view-action-base/
 import {AdminListActionBaseComponent} from './components/admin-list-action-base/admin-list-action-base.component';
 import {AdminEditActionBaseComponent} from './components/admin-edit-action-base/admin-edit-action-base.component';
 import {FormlyFieldConfig} from '@ngx-formly/core';
+import {AdminifyMatListActionComponent} from '../material/components/adminify-mat-list-action/adminify-mat-list-action.component';
 
 export class EntityService implements IAdminifyEntityService {
 
     private entities: BehaviorSubject<any[]>;
 
-    constructor(entityList: any[]) {
+    constructor(entityList: any[], private key: string = 'id') {
         this.entities = new BehaviorSubject(entityList);
     }
 
@@ -50,6 +51,10 @@ export class EntityService implements IAdminifyEntityService {
     update(input: any): Observable<any> {
         return of(input).pipe(delay(1000));
     }
+
+    getKey(input: any): any {
+        return input[this.key];
+    }
 }
 
 export const adminComponents: Type<any>[] = [
@@ -63,16 +68,59 @@ export const adminComponents: Type<any>[] = [
 ];
 
 const todoListConfigs: EntityListConfigs = [
-    {name: 'id'},
-    {name: 'title'},
-    {name: 'completed'},
+    {
+        name: 'id',
+        key: 'id',
+        templateOptions: {
+            label: 'Id'
+        }
+    },
+    {
+        name: 'title',
+        key: 'title',
+        templateOptions: {
+            label: 'title'
+        }
+    },
+    {
+        name: 'completed',
+        key: 'completed',
+        type: 'checkbox',
+        templateOptions: {
+            label: 'completed'
+        }
+    },
 ];
 
 const userListConfigs: EntityListConfigs = [
-    {name: 'id'},
-    {name: 'name'},
-    {name: 'username'},
-    {name: 'email'},
+    {
+        name: 'id',
+        key: 'id',
+        templateOptions: {
+            label: 'Id'
+        }
+    },
+    {
+        name: 'name',
+        key: 'name',
+        templateOptions: {
+            label: 'name'
+        }
+    },
+    {
+        name: 'username',
+        key: 'username',
+        templateOptions: {
+            label: 'username'
+        }
+    },
+    {
+        name: 'email',
+        key: 'email',
+        templateOptions: {
+            label: 'email'
+        }
+    },
 ];
 
 const todoEditConfigs: FormlyFieldConfig[] = [
@@ -83,6 +131,14 @@ const todoEditConfigs: FormlyFieldConfig[] = [
     {
         key: 'completed',
         type: 'toggle',
+    },
+    {
+        key: 'userId',
+        type: 'entity',
+        templateOptions: {
+            entity: 'users',
+            labelProp: 'name',
+        }
     },
 ];
 
@@ -114,6 +170,8 @@ const userEditConfigs: FormlyFieldConfig[] = [
                         templateOptions: {
                             required: true,
                             label: 'Username',
+                            help: 'test help',
+                            description: 'test description'
                         }
                     },
                     {
@@ -229,10 +287,11 @@ const admins: EntityAdminsConfig = {
                 {
                     name: 'list',
                     path: 'list',
-                    component: AdminListActionBaseComponent,
+                    component: AdminifyMatListActionComponent,
                     actionData: {
-                        entityList: todoListConfigs
-                    }
+                        entityList: todoListConfigs,
+                        pageSize: 10
+                    },
                 },
                 {
                     name: 'view',
@@ -277,7 +336,7 @@ const admins: EntityAdminsConfig = {
                 {
                     name: 'list',
                     path: 'list',
-                    component: AdminListActionBaseComponent,
+                    component: AdminifyMatListActionComponent,
                     actionData: {
                         entityList: userListConfigs
                     }

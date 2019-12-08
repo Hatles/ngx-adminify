@@ -5,10 +5,14 @@ import {ActionDataProperty} from '@ngx-adminify/core';
 import {EntityViewConfigsToken} from '../actions/entity-view-config';
 import {EntityCreateConfigsToken, EntityEditConfigsToken, EntityEditMode, EntityEditModeToken} from '../actions/entiy-edit-config';
 
+function jsonCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 export const entityListConfigProvider: AdminifyOutletRouteProvider = {
     provide: EntityListConfigsToken,
     factory: (route: ActivatedRoute, token: any, list: any) => {
-        return list;
+        return jsonCopy(list);
     },
     deps: [ActionDataProperty('entityList')]
 };
@@ -16,7 +20,7 @@ export const entityListConfigProvider: AdminifyOutletRouteProvider = {
 export const entityViewConfigProvider: AdminifyOutletRouteProvider = {
     provide: EntityViewConfigsToken,
     factory: (route: ActivatedRoute, token: any, view: any) => {
-        return view;
+        return jsonCopy(view);
     },
     deps: [ActionDataProperty('entityView')]
 };
@@ -32,7 +36,7 @@ export const entityEditModeProvider: AdminifyOutletRouteProvider = {
 export const entityEditConfigProvider: AdminifyOutletRouteProvider = {
     provide: EntityEditConfigsToken,
     factory: (route: ActivatedRoute, token: any, edit: any) => {
-        return edit;
+        return jsonCopy(edit);
     },
     deps: [ActionDataProperty('entityEdit')]
 };
@@ -40,7 +44,7 @@ export const entityEditConfigProvider: AdminifyOutletRouteProvider = {
 export const entityCreateConfigProvider: AdminifyOutletRouteProvider = {
     provide: EntityCreateConfigsToken,
     factory: (route: ActivatedRoute, token: any, create: any) => {
-        return create;
+        return jsonCopy(create);
     },
     deps: [ActionDataProperty('entityCreate')]
 };

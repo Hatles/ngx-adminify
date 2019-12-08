@@ -13,7 +13,7 @@ import {map} from 'rxjs/operators';
 })
 export class AdminListActionBaseComponent extends AdminActionBaseComponent implements OnInit {
 
-    entities: Observable<{value: any, string: string}[]>;
+    entities: Observable<any[]>;
 
     constructor(
         admin: Admin,

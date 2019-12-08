@@ -78,22 +78,9 @@ export interface EntityListConfig {
 export interface EntityListTemplateOptions {
     type?: string;
     label?: string;
-    placeholder?: string;
     disabled?: boolean;
-    options?: any[] | Observable<any[]>;
-    rows?: number;
-    cols?: number;
     description?: string;
     hidden?: boolean;
-    max?: number;
-    min?: number;
-    minLength?: number;
-    maxLength?: number;
-    pattern?: string|RegExp;
-    required?: boolean;
-    tabindex?: number;
-    readonly?: boolean;
     attributes?: { [key: string]: string|number };
-    step?: number;
     [additionalProperties: string]: any;
 }

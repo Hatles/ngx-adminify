@@ -8,7 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import {WithLoadingPipe} from './pipes/with-loading.pipe';
-import {MatProgressBarModule, MatProgressSpinnerModule} from '@angular/material';
+import {
+    MatFormFieldModule,
+    MatOptionModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatPseudoCheckboxModule, MatSelectModule
+} from '@angular/material';
 
 @NgModule({
     imports: [
@@ -20,6 +26,7 @@ import {MatProgressBarModule, MatProgressSpinnerModule} from '@angular/material'
         MatButtonModule,
         MatProgressBarModule,
         MatProgressSpinnerModule,
+        MatTooltipModule,
     ],
     exports: [
         CommonModule,
@@ -31,6 +38,11 @@ import {MatProgressBarModule, MatProgressSpinnerModule} from '@angular/material'
         MatMenuModule,
         MatProgressBarModule,
         MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatFormFieldModule,
+        MatPseudoCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
 
         WithLoadingPipe
     ],

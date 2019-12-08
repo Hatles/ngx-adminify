@@ -23,6 +23,10 @@ export class AdminifyEntityService implements IAdminifyEntityService {
     update(input: any): Observable<any> {
         return undefined;
     }
+
+    getKey(input: any): any {
+        return undefined;
+    }
 }
 
 // tslint:disable-next-line:max-line-length
@@ -32,4 +36,5 @@ export interface IBaseAdminifyEntityService<TEntity, TPrimaryKey, TGetAllResult,
     create(input: TCreateInput): Observable<TEntity>;
     update(input: TUpdateInput): Observable<TEntity>;
     delete(input: TDeleteInput): Observable<any>;
+    getKey(input: TEntity): TPrimaryKey;
 }

@@ -35,6 +35,8 @@ export interface RestEntityServiceConfig {
     saveDelay?: number;
     /** request timeout in MS (default: 0) */
     timeout?: number; //
+    /** key property */
+    key?: string;
 }
 
 export interface Update<TUpdateInput, TPrimaryKey> {
@@ -59,6 +61,7 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
     protected getDelay = 0;
     protected saveDelay = 0;
     protected timeout = 0;
+    protected key: string;
 
     get name() {
         return this._name;
@@ -78,6 +81,7 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
             getDelay = 0,
             saveDelay = 0,
             timeout: to = 0,
+            key = 'id',
         } =
         config || {};
         this.delete404OK = delete404OK;
@@ -86,6 +90,7 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
         this.getDelay = getDelay;
         this.saveDelay = saveDelay;
         this.timeout = to;
+        this.key = key;
     }
 
     create(entity: TCreateInput): Observable<TEntity> {
@@ -201,6 +206,10 @@ export class BaseRestEntityService<TEntity, TPrimaryKey, TGetAllResult, TGetAllI
             return of({});
         }
         return undefined;
+    }
+
+    getKey(input: TEntity): TPrimaryKey {
+        return input[this.key];
     }
 }
 

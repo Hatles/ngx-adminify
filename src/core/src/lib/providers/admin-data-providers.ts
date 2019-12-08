@@ -17,7 +17,7 @@ export const typedAdminDataProvider: AdminifyOutletRouteProvider = {
 
 export const adminDataPropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: (token: any) => token instanceof AdminDataPropertyToken,
-    factory: (route: ActivatedRoute, token: AdminDataPropertyToken, admin: Admin): any => admin.getData(token.property),
+    factory: (route: ActivatedRoute, token: AdminDataPropertyToken, admin: Admin): any => admin.getData(token.property, token.defaultValue),
     deps: [Admin]
 };
 

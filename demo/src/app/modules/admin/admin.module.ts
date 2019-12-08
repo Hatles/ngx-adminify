@@ -10,6 +10,7 @@ import {wrapperOptions, wrappers} from './components/wrappers/wrappers';
 import {typeOptions, types} from './components/types/types';
 import {ActiveAdminService} from './services/active-admin.service';
 import {validationMessages} from './validation-messages';
+import {FormlySelectModule} from '@ngx-formly/core/select';
 
 @NgModule({
     imports: [
@@ -23,6 +24,7 @@ import {validationMessages} from './validation-messages';
             validationMessages: validationMessages
         }),
         FormlyMatToggleModule,
+        FormlySelectModule,
 
         MatCardModule,
     ],

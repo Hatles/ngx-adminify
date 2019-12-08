@@ -71,27 +71,16 @@ export interface EntityViewConfig {
      * Use `defaultValue` to initialize it the model. If this is provided and the value of the model at compile-time is undefined, then the value of the model will be assigned to `defaultValue`.
      */
     defaultValue?: any;
+
+    templateOptions?: EntityViewTemplateOptions;
 }
 
 export interface EntityViewTemplateOptions {
     type?: string;
     label?: string;
-    placeholder?: string;
     disabled?: boolean;
-    options?: any[] | Observable<any[]>;
-    rows?: number;
-    cols?: number;
     description?: string;
     hidden?: boolean;
-    max?: number;
-    min?: number;
-    minLength?: number;
-    maxLength?: number;
-    pattern?: string|RegExp;
-    required?: boolean;
-    tabindex?: number;
-    readonly?: boolean;
     attributes?: { [key: string]: string|number };
-    step?: number;
     [additionalProperties: string]: any;
 }

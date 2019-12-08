@@ -36,24 +36,28 @@ export class RouteDataPropertyToken {
 
 export class RoutePropertySnapshotToken {
     property: string;
+    defaultValue: any;
 
-    constructor(property: string) {
+    constructor(property: string, defaultValue?: any) {
         this.property = property;
+        this.defaultValue = defaultValue;
     }
 }
 
 export class RoutePropertyToken {
     property: string;
+    defaultValue: any;
 
-    constructor(property: string) {
+    constructor(property: string, defaultValue?: any) {
         this.property = property;
+        this.defaultValue = defaultValue;
     }
 }
 
-export function RoutePropertySnapshot(property: string): RoutePropertySnapshotToken {
-    return new RoutePropertySnapshotToken(property);
+export function RoutePropertySnapshot(property: string, defaultValue?: any): RoutePropertySnapshotToken {
+    return new RoutePropertySnapshotToken(property, defaultValue);
 }
 
-export function RouteProperty(property: string): RoutePropertyToken {
-    return new RoutePropertyToken(property);
+export function RouteProperty(property: string, defaultValue?: any): RoutePropertyToken {
+    return new RoutePropertyToken(property, defaultValue);
 }

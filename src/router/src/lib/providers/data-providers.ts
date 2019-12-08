@@ -47,13 +47,13 @@ export const routeDataPropertyProvider: AdminifyOutletRouteProvider = {
 
 export const routePropertySnapshotProvider: AdminifyOutletRouteProvider = {
     provideFn: (token: any) => token instanceof RoutePropertySnapshotToken,
-    factory: (route: ActivatedRoute, token: RoutePropertySnapshotToken): any => route.snapshot.data[token.property],
+    factory: (route: ActivatedRoute, token: RoutePropertySnapshotToken): any => route.snapshot.data[token.property] || token.defaultValue,
     deps: []
 };
 
 export const routePropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: (token: any) => token instanceof RoutePropertyToken,
-    factory: (route: ActivatedRoute, token: RoutePropertyToken): Observable<any> => route.data.pipe(map(d => d[token.property])),
+    factory: (route: ActivatedRoute, token: RoutePropertyToken): Observable<any> => route.data.pipe(map(d => d[token.property] || token.defaultValue)),
     deps: []
 };
 
