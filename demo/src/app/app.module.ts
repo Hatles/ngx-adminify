@@ -10,6 +10,7 @@ import {AdminifyEntityModule, EntityRestModule} from '@ngx-adminify/entity';
 import {HttpClientModule} from '@angular/common/http';
 import {FormlyModule} from '@ngx-formly/core';
 import {FormlyMaterialModule} from '@ngx-formly/material';
+import {DialogModule} from './dialog/dialog.module';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import {FormlyMaterialModule} from '@ngx-formly/material';
         AdminifyEntityModule.fotRoot(),
         EntityRestModule.forRoot({}, {root: 'https://jsonplaceholder.typicode.com', getDelay: 1000, saveDelay: 1000}),
         FormlyModule.forRoot(),
+        DialogModule.forRoot(),
         FormlyMaterialModule
     ],
     providers: [],

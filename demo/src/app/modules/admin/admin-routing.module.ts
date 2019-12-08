@@ -24,13 +24,18 @@ import {AdminifyMatListActionComponent} from '../material/components/adminify-ma
 
 export class EntityService implements IAdminifyEntityService {
 
+    private keySequence: number;
     private entities: BehaviorSubject<any[]>;
 
     constructor(entityList: any[], private key: string = 'id') {
         this.entities = new BehaviorSubject(entityList);
+        this.keySequence = entityList.reduce((max, current) => max < this.getKey(current) ? this.getKey(current) : max, 0) + 1;
     }
 
     create(input: any): Observable<any> {
+        if (!this.getKey(input)) {
+            this.setKey(input, this.keySequence++);
+        }
         this.entities.next([...this.entities.value, input]);
         return of(input).pipe(delay(1000));
     }
@@ -41,7 +46,7 @@ export class EntityService implements IAdminifyEntityService {
     }
 
     get(input: any): Observable<any> {
-        return this.entities.pipe(map(entityList => entityList.find(e => e.id === input)), delay(1000));
+        return this.entities.pipe(map(entityList => entityList.find(e => this.getKey(e) === input)), delay(1000));
     }
 
     getAll(): Observable<any> {
@@ -55,6 +60,10 @@ export class EntityService implements IAdminifyEntityService {
     getKey(input: any): any {
         return input[this.key];
     }
+
+    setKey(input: any, key: any) {
+        input[this.key] = key;
+    }
 }
 
 export const adminComponents: Type<any>[] = [
@@ -65,6 +74,23 @@ export const adminComponents: Type<any>[] = [
     AdminListActionBaseComponent,
     AdminViewActionBaseComponent,
     AdminEditActionBaseComponent
+];
+
+const testListConfigs: EntityListConfigs = [
+    {
+        name: 'id',
+        key: 'id',
+        templateOptions: {
+            label: 'Id'
+        }
+    },
+    {
+        name: 'title',
+        key: 'title',
+        templateOptions: {
+            label: 'Title'
+        }
+    },
 ];
 
 const todoListConfigs: EntityListConfigs = [
@@ -79,7 +105,7 @@ const todoListConfigs: EntityListConfigs = [
         name: 'title',
         key: 'title',
         templateOptions: {
-            label: 'title'
+            label: 'Title'
         }
     },
     {
@@ -87,7 +113,7 @@ const todoListConfigs: EntityListConfigs = [
         key: 'completed',
         type: 'checkbox',
         templateOptions: {
-            label: 'completed'
+            label: 'Completed'
         }
     },
 ];
@@ -104,21 +130,40 @@ const userListConfigs: EntityListConfigs = [
         name: 'name',
         key: 'name',
         templateOptions: {
-            label: 'name'
+            label: 'Name'
         }
     },
     {
         name: 'username',
         key: 'username',
         templateOptions: {
-            label: 'username'
+            label: 'Username'
         }
     },
     {
         name: 'email',
         key: 'email',
         templateOptions: {
-            label: 'email'
+            label: 'Email'
+        }
+    },
+    {
+        name: 'address',
+        type: 'template',
+        template: '{{address.street}} {{address.city}} {{address.zipcode}}',
+        sort: 'address.city',
+        templateOptions: {
+            label: 'Address'
+        }
+    },
+];
+
+const testEditConfigs: FormlyFieldConfig[] = [
+    {
+        key: 'title',
+        type: 'input',
+        templateOptions: {
+            required: true
         }
     },
 ];
@@ -249,26 +294,45 @@ const admins: EntityAdminsConfig = {
             name: 'test',
             path: 'test',
             component: AdminBaseComponent,
-            adminData: {
-                test: 'admin test',
-                listConfigs: 'list'
-            },
             actions: [
                 {
                     name: 'dashboard',
                     path: 'dashboard',
                     component: AdminActionBaseComponent
                 },
-                // {
-                //     name: 'list',
-                //     path: 'list',
-                //     component: AdminActionBaseComponent
-                // },
-                // {
-                //     name: 'view',
-                //     path: 'view/:id',
-                //     component: AdminActionBaseComponent
-                // }
+                {
+                    name: 'list',
+                    path: 'list',
+                    component: AdminifyMatListActionComponent,
+                    actionData: {
+                        entityList: testListConfigs,
+                    },
+                },
+                {
+                    name: 'view',
+                    path: 'view/:id',
+                    component: AdminViewActionBaseComponent,
+                    actionData: {
+                        entityView: testListConfigs
+                    }
+                },
+                {
+                    name: 'edit',
+                    path: 'edit/:id',
+                    component: AdminEditActionBaseComponent,
+                    actionData: {
+                        entityEdit: testEditConfigs
+                    }
+                },
+                {
+                    name: 'create',
+                    path: 'create',
+                    component: AdminEditActionBaseComponent,
+                    actionData: {
+                        entityEdit: testEditConfigs,
+                        entityEditMode: 'create'
+                    }
+                }
             ],
             defaultActionName: 'dashboard',
             entityService: 'test',
@@ -338,7 +402,9 @@ const admins: EntityAdminsConfig = {
                     path: 'list',
                     component: AdminifyMatListActionComponent,
                     actionData: {
-                        entityList: userListConfigs
+                        entityList: userListConfigs,
+                        sortActive: 'username',
+                        sortDirection: 'asc'
                     }
                 },
                 {

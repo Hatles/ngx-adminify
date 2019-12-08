@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
 import {AdminAction, Admin} from '@ngx-adminify/core';
 import {AdminifyEntityService, EntityViewConfigs, EntityViewConfigsToken} from '@ngx-adminify/entity';
-import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
+import {RouteData, RouteParam, RoutePropertySnapshot} from '@ngx-adminify/router';
 import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {map, switchMap} from 'rxjs/operators';
@@ -14,22 +14,18 @@ import {map, switchMap} from 'rxjs/operators';
 })
 export class AdminViewActionBaseComponent extends AdminActionBaseComponent implements OnInit {
 
-    id: any;
-    idS: Observable<any>;
     entityValue: Observable<any>;
 
     constructor(admin: Admin, action: AdminAction, entity: AdminifyEntityService, data: RouteData,
                 @Inject(RoutePropertySnapshot('action')) actionData: string,
                 public route: ActivatedRoute,
-                @Inject(EntityViewConfigsToken) public viewConfigs: EntityViewConfigs) {
+                @Inject(EntityViewConfigsToken) public viewConfigs: EntityViewConfigs,
+                @Inject(RouteParam('id')) public id: Observable<string>) {
         super(admin, action, entity);
     }
 
     ngOnInit() {
-        this.id = this.route.snapshot.params.id;
-        this.idS = this.route.params.pipe(map(p => p.id));
-
-        this.entityValue = this.idS.pipe(switchMap(id => this.entity.get(id)));
+        this.entityValue = this.id.pipe(switchMap(id => this.entity.get(+id)));
     }
 
 }

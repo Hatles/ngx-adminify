@@ -28,7 +28,7 @@ export class AdminEditActionBaseComponent extends AdminActionBaseComponent imple
         entity: AdminifyEntityService,
         data: RouteData,
         @Inject(RoutePropertySnapshot('action')) actionData: string,
-        @Inject(RouteParam('id')) public id: Observable<number>,
+        @Inject(RouteParam('id')) public id: Observable<string>,
         @Inject(EntityEditModeToken) public mode: EntityEditMode,
         @Inject(EntityEditConfigsToken) public editConfigs: FormlyFieldConfig[]
     ) {
@@ -43,7 +43,7 @@ export class AdminEditActionBaseComponent extends AdminActionBaseComponent imple
         if (!this.createMode) {
             this.id.pipe(switchMap(id => {
                     this.loading = true;
-                    return this.entity.get(id);
+                    return this.entity.get(+id);
                 }), takeUntil(this.onDestroy)
             ).subscribe(result => {
                 this.entityValue = result;

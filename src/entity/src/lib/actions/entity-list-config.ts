@@ -72,6 +72,10 @@ export interface EntityListConfig {
      */
     defaultValue?: any;
 
+    sort?: string;
+
+    template?: string;
+
     templateOptions?: EntityListTemplateOptions;
 }
 

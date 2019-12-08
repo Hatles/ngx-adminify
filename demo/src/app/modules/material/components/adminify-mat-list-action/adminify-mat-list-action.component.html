@@ -7,15 +7,20 @@
 
 <div class="mat-elevation-z8">
     <mat-progress-bar *ngIf="loading" mode="query"></mat-progress-bar>
-    <table mat-table [dataSource]="dataSource" matSort style="width: 100%">
+    <table mat-table [dataSource]="dataSource" matSort [matSortActive]="sortActive" [matSortDirection]="sortDirection" style="width: 100%">
 
         <!-- ID Column -->
         <ng-container *ngFor="let config of listConfigs" [matColumnDef]="config.name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{config.templateOptions.label}} </th>
+            <ng-container *ngIf="config.sort || config.key; else unsorted">
+                <th mat-header-cell *matHeaderCellDef [mat-sort-header]="config.sort || config.key">{{config.templateOptions.label}}</th>
+            </ng-container>
+            <ng-template #unsorted><th mat-header-cell *matHeaderCellDef>{{config.templateOptions.label}}</th></ng-template>
+
             <td mat-cell *matCellDef="let row">
                 <ng-container [ngSwitch]="config.type">
                     <!-- the same view can be shown in more than one case -->
                     <mat-pseudo-checkbox *ngSwitchCase="'checkbox'" [state]="row[config.key] === true ? 'checked' : 'unchecked'"></mat-pseudo-checkbox>
+                    <div *ngSwitchCase="'template'" [innerHTML]="config.template | template : row"></div>
                     <!--default case when there are no matches -->
                     <ng-container *ngSwitchDefault>{{row[config.key]}}</ng-container>
                 </ng-container>
@@ -42,7 +47,7 @@
         <ng-container matColumnDef="deleteAction">
             <th mat-header-cell *matHeaderCellDef>Delete</th>
             <td mat-cell *matCellDef="let row">
-                <a mat-button [adminifyActionLink]="['edit', row.id]" matTooltip="Delete"><mat-icon color="warn">delete</mat-icon></a>
+                <button mat-button (click)="onDelete(row)" matTooltip="Delete"><mat-icon color="warn">delete</mat-icon></button>
             </td>
         </ng-container>
 

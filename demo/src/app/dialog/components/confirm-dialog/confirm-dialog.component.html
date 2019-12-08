@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content class="confirm-dialog-content">
+    <p>{{data.content}}</p>
+</div>
+<mat-dialog-actions>
+    <button *ngIf="data.cancelIcon" mat-mini-fab type="button" [matDialogClose]="false" [title]="'global.cancel'"><mat-icon>{{data.cancelIcon}}</mat-icon></button>
+    <!--<button mat-mini-fab type="button" [matDialogClose]="true" [color]="data.color" [title]="'global.validate' | translate"><mat-icon>{{data.confirmIcon}}</mat-icon></button>-->
+    <button mat-mini-fab type="button" [matDialogClose]="true" color="primary" [title]="'global.validate'"><mat-icon>{{data.confirmIcon}}</mat-icon></button>
+</mat-dialog-actions>

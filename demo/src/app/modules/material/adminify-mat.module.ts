@@ -8,9 +8,10 @@ import {AdminifyRouterModule} from '@ngx-adminify/router';
 import { AdminifyMatListActionComponent } from './components/adminify-mat-list-action/adminify-mat-list-action.component';
 import {AdminifyModule} from '@ngx-adminify/core';
 import {ReactiveFormsModule} from '@angular/forms';
+import { TemplatePipe } from './components/adminify-mat-list-action/template.pipe';
 
 @NgModule({
-    declarations: [AdminifyMatRootComponent, AdminifyMatListActionComponent],
+    declarations: [AdminifyMatRootComponent, AdminifyMatListActionComponent, TemplatePipe],
     entryComponents: [AdminifyMatRootComponent, AdminifyMatListActionComponent],
     exports: [AdminifyMatRootComponent, AdminifyMatListActionComponent],
     imports: [
