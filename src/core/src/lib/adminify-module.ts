@@ -15,6 +15,9 @@ import {AdminActionRouteGuard} from './guards/admin-action-route-guard';
 import {adminDataProviders} from './providers/admin-data-providers';
 import {adminsDataProviders} from './providers/admins-data-providers';
 import {actionDataProviders} from './providers/action-data-providers';
+import {AdminComponentDictionary} from './admin-component-dictionary';
+import {AdminFactory} from './admin-factory';
+import {AdminFactoryDictionary} from './admin-factory-dictionary';
 
 @NgModule({
     imports: [
@@ -45,13 +48,25 @@ import {actionDataProviders} from './providers/action-data-providers';
 })
 export class AdminifyModule {
     // save admin components with key for json config
-    static fotRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders {
         return {
             ngModule: AdminifyModule,
             providers: [
                 AdminPoolService,
                 AdminRouteGuard,
-                AdminActionRouteGuard
+                AdminActionRouteGuard,
+                AdminComponentDictionary,
+                AdminFactoryDictionary,
+            ]
+        };
+    }
+
+    static forChild(): ModuleWithProviders {
+        return {
+            ngModule: AdminifyModule,
+            providers: [
+                AdminComponentDictionary,
+                AdminFactoryDictionary,
             ]
         };
     }

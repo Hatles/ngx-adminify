@@ -1,0 +1,558 @@
+{
+    "admin": {
+        "path": "adminconfig",
+        "data": {
+            "test": "test"
+        },
+        "defaultAdminName": "dashboard",
+        "adminsData": {
+            "test": "test admins"
+        },
+        "admins": [
+            {
+                "name": "dashboard",
+                "path": "dashboard"
+            },
+            {
+                "name": "test",
+                "path": "test",
+                "actions": [
+                    {
+                        "name": "dashboard",
+                        "path": "dashboard"
+                    },
+                    {
+                        "name": "list",
+                        "path": "list",
+                        "actionData": {
+                            "entityList": [
+                                {
+                                    "name": "id",
+                                    "key": "id",
+                                    "templateOptions": {
+                                        "label": "Id"
+                                    }
+                                },
+                                {
+                                    "name": "title",
+                                    "key": "title",
+                                    "templateOptions": {
+                                        "label": "Title"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "view",
+                        "path": "view/:id",
+                        "actionData": {
+                            "entityView": [
+                                {
+                                    "name": "id",
+                                    "key": "id",
+                                    "templateOptions": {
+                                        "label": "Id"
+                                    }
+                                },
+                                {
+                                    "name": "title",
+                                    "key": "title",
+                                    "templateOptions": {
+                                        "label": "Title"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "edit",
+                        "path": "edit/:id",
+                        "actionData": {
+                            "entityEdit": [
+                                {
+                                    "key": "title",
+                                    "type": "input",
+                                    "templateOptions": {
+                                        "required": true
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "create",
+                        "path": "create",
+                        "actionData": {
+                            "entityEdit": [
+                                {
+                                    "key": "title",
+                                    "type": "input",
+                                    "templateOptions": {
+                                        "required": true
+                                    }
+                                }
+                            ],
+                            "entityEditMode": "create"
+                        }
+                    }
+                ],
+                "defaultActionName": "dashboard",
+                "entityService": "test"
+            },
+            {
+                "name": "users",
+                "path": "users",
+                "actions": [
+                    {
+                        "name": "dashboard",
+                        "path": "dashboard"
+                    },
+                    {
+                        "name": "list",
+                        "path": "list",
+                        "actionData": {
+                            "entityList": [
+                                {
+                                    "name": "id",
+                                    "key": "id",
+                                    "templateOptions": {
+                                        "label": "Id"
+                                    }
+                                },
+                                {
+                                    "name": "name",
+                                    "key": "name",
+                                    "templateOptions": {
+                                        "label": "Name"
+                                    }
+                                },
+                                {
+                                    "name": "username",
+                                    "key": "username",
+                                    "templateOptions": {
+                                        "label": "Username"
+                                    }
+                                },
+                                {
+                                    "name": "email",
+                                    "key": "email",
+                                    "templateOptions": {
+                                        "label": "Email"
+                                    }
+                                },
+                                {
+                                    "name": "address",
+                                    "type": "template",
+                                    "template": "{{address.street}} {{address.city}} {{address.zipcode}}",
+                                    "sort": "address.city",
+                                    "templateOptions": {
+                                        "label": "Address"
+                                    }
+                                }
+                            ],
+                            "sortActive": "username",
+                            "sortDirection": "asc"
+                        }
+                    },
+                    {
+                        "name": "view",
+                        "path": "view/:id",
+                        "actionData": {
+                            "entityView": [
+                                {
+                                    "name": "id",
+                                    "key": "id",
+                                    "templateOptions": {
+                                        "label": "Id"
+                                    }
+                                },
+                                {
+                                    "name": "name",
+                                    "key": "name",
+                                    "templateOptions": {
+                                        "label": "Name"
+                                    }
+                                },
+                                {
+                                    "name": "username",
+                                    "key": "username",
+                                    "templateOptions": {
+                                        "label": "Username"
+                                    }
+                                },
+                                {
+                                    "name": "email",
+                                    "key": "email",
+                                    "templateOptions": {
+                                        "label": "Email"
+                                    }
+                                },
+                                {
+                                    "name": "address",
+                                    "type": "template",
+                                    "template": "{{address.street}} {{address.city}} {{address.zipcode}}",
+                                    "sort": "address.city",
+                                    "templateOptions": {
+                                        "label": "Address"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "edit",
+                        "path": "edit/:id",
+                        "componentName": "AdminEditActionBaseComponent",
+                        "actionData": {
+                            "entityEdit": [
+                                {
+                                    "templateOptions": {
+                                        "label": "Form"
+                                    },
+                                    "wrappers": [
+                                        "panel"
+                                    ],
+                                    "type": "tab-group",
+                                    "fieldGroup": [
+                                        {
+                                            "templateOptions": {
+                                                "label": "Global Info"
+                                            },
+                                            "wrappers": [
+                                                "panel"
+                                            ],
+                                            "fieldGroup": [
+                                                {
+                                                    "key": "name",
+                                                    "type": "input"
+                                                },
+                                                {
+                                                    "key": "username",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "label": "Username",
+                                                        "help": "test help",
+                                                        "description": "test description"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "email",
+                                                    "type": "input"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "key": "address",
+                                            "templateOptions": {
+                                                "label": "Address"
+                                            },
+                                            "wrappers": [
+                                                "panel"
+                                            ],
+                                            "fieldGroup": [
+                                                {
+                                                    "key": "street",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "type": "text",
+                                                        "label": "Street"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "suite",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "type": "text",
+                                                        "label": "Suite"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "city",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "type": "text",
+                                                        "label": "City"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "zipcode",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "type": "text",
+                                                        "label": "Zipcode"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "create",
+                        "path": "create",
+                        "actionData": {
+                            "entityEdit": [
+                                {
+                                    "templateOptions": {
+                                        "label": "Form"
+                                    },
+                                    "wrappers": [
+                                        "panel"
+                                    ],
+                                    "type": "tab-group",
+                                    "fieldGroup": [
+                                        {
+                                            "templateOptions": {
+                                                "label": "Global Info"
+                                            },
+                                            "wrappers": [
+                                                "panel"
+                                            ],
+                                            "fieldGroup": [
+                                                {
+                                                    "key": "name",
+                                                    "type": "input"
+                                                },
+                                                {
+                                                    "key": "username",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "label": "Username",
+                                                        "help": "test help",
+                                                        "description": "test description"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "email",
+                                                    "type": "input"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "key": "address",
+                                            "templateOptions": {
+                                                "label": "Address"
+                                            },
+                                            "wrappers": [
+                                                "panel"
+                                            ],
+                                            "fieldGroup": [
+                                                {
+                                                    "key": "street",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "type": "text",
+                                                        "label": "Street"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "suite",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "type": "text",
+                                                        "label": "Suite"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "city",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "type": "text",
+                                                        "label": "City"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "zipcode",
+                                                    "type": "input",
+                                                    "templateOptions": {
+                                                        "required": true,
+                                                        "type": "text",
+                                                        "label": "Zipcode"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "entityEditMode": "create"
+                        }
+                    }
+                ],
+                "defaultActionName": "dashboard",
+                "entityService": "users"
+            },
+            {
+                "name": "todos",
+                "path": "todos",
+                "actions": [
+                    {
+                        "name": "dashboard",
+                        "path": "dashboard"
+                    },
+                    {
+                        "name": "list",
+                        "path": "list",
+                        "actionData": {
+                            "entityList": [
+                                {
+                                    "name": "id",
+                                    "key": "id",
+                                    "templateOptions": {
+                                        "label": "Id"
+                                    }
+                                },
+                                {
+                                    "name": "title",
+                                    "key": "title",
+                                    "templateOptions": {
+                                        "label": "Title"
+                                    }
+                                },
+                                {
+                                    "name": "completed",
+                                    "key": "completed",
+                                    "type": "checkbox",
+                                    "templateOptions": {
+                                        "label": "Completed"
+                                    }
+                                }
+                            ],
+                            "pageSize": 10
+                        }
+                    },
+                    {
+                        "name": "view",
+                        "path": "view/:id",
+                        "actionData": {
+                            "entityView": [
+                                {
+                                    "name": "id",
+                                    "key": "id",
+                                    "templateOptions": {
+                                        "label": "Id"
+                                    }
+                                },
+                                {
+                                    "name": "title",
+                                    "key": "title",
+                                    "templateOptions": {
+                                        "label": "Title"
+                                    }
+                                },
+                                {
+                                    "name": "completed",
+                                    "key": "completed",
+                                    "type": "checkbox",
+                                    "templateOptions": {
+                                        "label": "Completed"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "edit",
+                        "path": "edit/:id",
+                        "actionData": {
+                            "entityEdit": [
+                                {
+                                    "key": "title",
+                                    "type": "input"
+                                },
+                                {
+                                    "key": "completed",
+                                    "type": "toggle"
+                                },
+                                {
+                                    "key": "userId",
+                                    "type": "entity",
+                                    "templateOptions": {
+                                        "entity": "users",
+                                        "labelProp": "name"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "create",
+                        "path": "create",
+                        "actionData": {
+                            "entityEdit": [
+                                {
+                                    "key": "title",
+                                    "type": "input"
+                                },
+                                {
+                                    "key": "completed",
+                                    "type": "toggle"
+                                },
+                                {
+                                    "key": "userId",
+                                    "type": "entity",
+                                    "templateOptions": {
+                                        "entity": "users",
+                                        "labelProp": "name"
+                                    }
+                                }
+                            ],
+                            "entityEditMode": "create"
+                        }
+                    }
+                ],
+                "defaultActionName": "dashboard",
+                "entityService": "todos"
+            }
+        ]
+    },
+    "entities": [
+        {
+            "provide": "test",
+            "useValue": {
+                "key": "id",
+                "entities": {
+                    "_isScalar": false,
+                    "observers": [],
+                    "closed": false,
+                    "isStopped": false,
+                    "hasError": false,
+                    "thrownError": null,
+                    "_value": [
+                        {
+                            "id": 1,
+                            "title": "test 2 1"
+                        },
+                        {
+                            "id": 2,
+                            "title": "test 2 2"
+                        }
+                    ]
+                },
+                "keySequence": 3
+            }
+        },
+        {
+            "provide": "todos",
+            "deps": [
+                null
+            ]
+        },
+        {
+            "provide": "users",
+            "deps": [
+                null
+            ]
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {adminComponents, AdminRoutingModule} from './admin-routing.module';
+import {adminComponentDeclarations, adminComponents, AdminRoutingModule} from './admin-routing.module';
 import {SharedModule} from '../../shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule} from '@ngx-formly/core';
@@ -11,6 +11,7 @@ import {typeOptions, types} from './components/types/types';
 import {ActiveAdminService} from './services/active-admin.service';
 import {validationMessages} from './validation-messages';
 import {FormlySelectModule} from '@ngx-formly/core/select';
+import {AdminifyModule, declareAdminComponents} from '@ngx-adminify/core';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import {FormlySelectModule} from '@ngx-formly/core/select';
         AdminRoutingModule,
         SharedModule,
         ReactiveFormsModule,
+        AdminifyModule.forChild(),
         FormlyModule.forChild({
             wrappers: wrapperOptions,
             types: typeOptions,
@@ -29,7 +31,8 @@ import {FormlySelectModule} from '@ngx-formly/core/select';
         MatCardModule,
     ],
     providers: [
-        ActiveAdminService
+        ActiveAdminService,
+        declareAdminComponents(adminComponentDeclarations)
     ],
     declarations: [
         adminComponents,

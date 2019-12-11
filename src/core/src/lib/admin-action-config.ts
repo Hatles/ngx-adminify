@@ -5,4 +5,5 @@ export interface AdminActionConfig extends Route {
     label?: string;
     icon?: string;
     actionData?: Data;
+    componentName?: string;
 }

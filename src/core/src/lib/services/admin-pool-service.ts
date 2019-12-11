@@ -5,6 +5,8 @@ import {AdminConfig, AdminsConfig} from '../admin-config';
 import {AdminifyEmptyOutletComponent, IDataProvider} from '@ngx-adminify/router';
 import {AdminFactory, defaultAdminFactory, IAdminFactory} from '../admin-factory';
 import {AdminGuard} from '../guards/admin-guard';
+import {AdminComponentDictionary} from '../admin-component-dictionary';
+import {AdminFactoryDictionary} from '../admin-factory-dictionary';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -27,17 +29,20 @@ export class AdminPoolService implements IDataProvider {
         this.admins = [];
         this.adminsConfig = adminsConfig;
 
-        this.processConfig();
+        const componentDictionary = injector.get(AdminComponentDictionary);
+        const factoryDictionary = injector.get(AdminFactoryDictionary);
+
+        this.processConfig(componentDictionary, factoryDictionary);
         this.resolveGuards(injector);
 
-        const admins = adminsConfig.admins.map((admin) => this.buildAdmin(admin, injector));
-        const adminRoutes = admins.map(admin => this.buildAdminRoute(admin));
+        const admins = adminsConfig.admins.map((admin) => this.buildAdmin(admin, injector, factoryDictionary));
+        const adminRoutes = admins.map(admin => this.buildAdminRoute(admin, componentDictionary));
 
         return this.wrapWithAdminRouter(this.buildAdminsRoute(adminRoutes));
     }
 
 
-    private processConfig() {
+    private processConfig(componentDictionary: AdminComponentDictionary, factoryDictionary: AdminFactoryDictionary) {
         if (!this.adminsConfig.defaultAdminFactory) {
             this.adminsConfig.defaultAdminFactory = defaultAdminFactory;
         }
@@ -53,6 +58,14 @@ export class AdminPoolService implements IDataProvider {
         if (!this.adminsConfig.adminsData) {
             this.adminsConfig.adminsData = {};
         }
+
+        if (!this.adminsConfig.component && this.adminsConfig.componentName) {
+            this.adminsConfig.component = componentDictionary.get(this.adminsConfig.componentName);
+        }
+
+        if (!this.adminsConfig.defaultAdminFactory && this.adminsConfig.defaultAdminFactoryName) {
+            this.adminsConfig.defaultAdminFactory = factoryDictionary.get(this.adminsConfig.defaultAdminFactoryName);
+        }
     }
 
     private resolveGuards(injector: Injector) {
@@ -60,12 +73,14 @@ export class AdminPoolService implements IDataProvider {
 
     }
 
-    private buildAdmin(config: AdminConfig, injector: Injector): Admin {
+    private buildAdmin(config: AdminConfig, injector: Injector, factoryDictionary: AdminFactoryDictionary): Admin {
         let factory: AdminFactory;
         if (config.factory) {
             factory = config.factory;
         } else {
-            if (config.factoryToken) {
+            if (config.factoryName) {
+                factory = factoryDictionary.get(config.factoryName);
+            } else if (config.factoryToken) {
                 factory = injector.get(config.factoryToken);
             } else {
                 factory = this.adminsConfig.defaultAdminFactory;
@@ -86,8 +101,14 @@ export class AdminPoolService implements IDataProvider {
         return admin;
     }
 
-    private buildAdminRoute(admin: Admin): Route {
-        return admin.getRoute();
+    private buildAdminRoute(admin: Admin, componentDictionary: AdminComponentDictionary): Route {
+        const route = admin.getRoute();
+
+        if (!route.component && admin.config.componentName) {
+            route.component = componentDictionary.get(admin.config.componentName);
+        }
+
+        return route;
     }
 
     getAdmin(admin: string): Admin {

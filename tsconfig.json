@@ -18,6 +18,15 @@
             "@ngx-adminify/*": [
                 "src/*/src/public_api"
             ],
+            "@ngx-adminify/core": [
+                "src/core/src/public_api"
+            ],
+            "@ngx-adminify/entity": [
+                "src/entity/src/public_api"
+            ],
+            "@ngx-adminify/router": [
+                "src/router/src/public_api"
+            ],
             "@assets/*": [
                 "demo/src/assets/*"
             ]

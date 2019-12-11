@@ -7,6 +7,7 @@ import {Injector} from '@angular/core';
 import {AdminActionGuard} from './guards/admin-action-guard';
 import {AdminGuard} from './guards/admin-guard';
 import {IDataProvider} from '@ngx-adminify/router';
+import {AdminComponentDictionary} from './admin-component-dictionary';
 
 export class Admin implements IDataProvider {
 
@@ -20,7 +21,7 @@ export class Admin implements IDataProvider {
     adminGuards: AdminGuard[];
     actionGuards: AdminActionGuard[];
 
-    constructor(protected pool: AdminPoolService, public config: AdminConfig, public defaultAdmin: boolean = false) {
+    constructor(protected pool: AdminPoolService, protected componentDictionary: AdminComponentDictionary, public config: AdminConfig, public defaultAdmin: boolean = false) {
         this.name = this.config.name;
 
         this.processConfig();
@@ -41,6 +42,10 @@ export class Admin implements IDataProvider {
 
         if (!this.config.adminData) {
             this.config.adminData = {};
+        }
+
+        if (!this.config.component && this.config.componentName) {
+            this.config.component = this.componentDictionary.get(this.config.componentName);
         }
     }
 
@@ -95,7 +100,7 @@ export class Admin implements IDataProvider {
     }
 
     private buildActions(): AdminAction[] {
-        this.actions = this.config.actions.map(a => new AdminAction(this, a));
+        this.actions = this.config.actions.map(a => new AdminAction(this, this.componentDictionary, a));
         return this.actions;
     }
 

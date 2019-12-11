@@ -3,6 +3,7 @@ import {AdminRouteBuilder, RouteParametersValues} from './services/admin-route-b
 import {Admin} from './admin';
 import {Data, Route} from '@angular/router';
 import {IDataProvider} from '../../../router/src/lib/data/data-provider';
+import {AdminComponentDictionary} from './admin-component-dictionary';
 
 export class AdminAction implements IDataProvider {
 
@@ -11,7 +12,7 @@ export class AdminAction implements IDataProvider {
     route: Route;
     hasParameters: boolean;
 
-    constructor(private admin: Admin, public config: AdminActionConfig) {
+    constructor(private admin: Admin, protected componentDictionary: AdminComponentDictionary, public config: AdminActionConfig) {
         this.name = this.config.name;
 
         this.processConfig();
@@ -21,6 +22,10 @@ export class AdminAction implements IDataProvider {
     private processConfig() {
         if (!this.config.actionData) {
             this.config.actionData = {};
+        }
+
+        if (!this.config.component && this.config.componentName) {
+            this.config.component = this.componentDictionary.get(this.config.componentName);
         }
     }
 

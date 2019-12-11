@@ -1,8 +1,7 @@
 import {Data, Route} from '@angular/router';
 import {AdminActionConfig} from './admin-action-config';
 import {AdminFactory} from './admin-factory';
-
-export type RouteFinder = (Route) => boolean;
+import {Type} from '@angular/core';
 
 export interface AdminsConfig extends BaseAdminsConfig {
     // [key: string]: any;
@@ -13,16 +12,17 @@ interface BaseAdminsConfig extends Route {
     admins: AdminConfig[];
     adminGuards?: any[];
     defaultActionGuards?: any[];
-    rootFinder?: RouteFinder;
     defaultRoute?: Route;
     defaultRoutePath?: string;
     defaultAdminName?: string;
     defaultAdminFactory?: AdminFactory;
+    defaultAdminFactoryName?: string;
     wildcardRoute?: Route;
     wildcardRedirectToAdminRoot?: boolean;
     wildcardRedirectToDefaultAdmin?: boolean;
     defaultAdminRouteGuards?: any[]; // CanActivate
     defaultActionRouteGuards?: any[]; // CanActivate
+    componentName?: string;
 }
 
 export interface AdminConfig extends BaseAdminConfig {
@@ -39,6 +39,8 @@ export interface BaseAdminConfig extends Route {
     adminGuards?: any[];
     actionGuards?: any[];
     factory?: AdminFactory;
+    factoryName?: string;
     factoryToken?: any;
     defaultActionRouteGuards?: any[]; // CanActivate
+    componentName?: string;
 }

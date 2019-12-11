@@ -2,9 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {FieldType} from '@ngx-formly/material';
 import {MatSelect, MatSelectChange} from '@angular/material';
 import {Observable} from 'rxjs';
-import {AdminifyEntityPoolService} from '../../../../../../../../src/entity/src/lib/services/adminify-entity-pool-service';
-import {EntityService} from '../../../admin-routing.module';
-import {IAdminifyEntityService} from '../../../../../../../../src/entity/src/lib/adminify-entity-service';
+import {IAdminifyEntityService, AdminifyEntityPoolService} from '@ngx-adminify/entity';
 
 @Component({
     selector: 'demo-form-entity-type',

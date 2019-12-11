@@ -2,6 +2,7 @@ import {Admin} from './admin';
 import {AdminPoolService} from './services/admin-pool-service';
 import {AdminConfig} from './admin-config';
 import {Injector} from '@angular/core';
+import {AdminComponentDictionary} from './admin-component-dictionary';
 
 export interface IAdminFactory {
     build(injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean): Admin;
@@ -10,5 +11,5 @@ export interface IAdminFactory {
 export type AdminFactory = (injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean) => Admin;
 
 export const defaultAdminFactory: AdminFactory = (injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean) => {
-    return new Admin(pool, config, isDefaultAdmin);
+    return new Admin(pool, injector.get(AdminComponentDictionary), config, isDefaultAdmin);
 };
