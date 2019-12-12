@@ -8,4 +8,11 @@ export const edit: FormlyFieldConfig[] = [
             required: true
         }
     },
+    {
+        key: 'description',
+        type: 'textarea',
+        templateOptions: {
+            required: true
+        }
+    },
 ];

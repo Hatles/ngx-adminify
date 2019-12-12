@@ -15,4 +15,11 @@ export const list: EntityListConfigs = [
             label: 'Title'
         }
     },
+    {
+        name: 'description',
+        key: 'description',
+        templateOptions: {
+            label: 'Description'
+        }
+    },
 ];

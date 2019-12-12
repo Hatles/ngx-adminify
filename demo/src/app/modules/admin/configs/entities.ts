@@ -4,11 +4,13 @@ import {EntityService} from './entities/entity.service';
 const entity: IAdminifyEntityService = new EntityService([
     {
         id: 1,
-        title: 'test 2 1'
+        title: 'test 1',
+        description: 'description 1',
     },
     {
         id: 2,
-        title: 'test 2 2'
+        title: 'test 2',
+        description: 'description 2',
     },
 ]);
 

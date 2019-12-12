@@ -26,7 +26,7 @@ export class EntityService implements IAdminifyEntityService {
     }
 
     get(input: any): Observable<any> {
-        return this.entities.pipe(map(entityList => entityList.find(e => this.getKey(e) === input)), delay(1000));
+        return this.entities.pipe(map(entityList => ({...entityList.find(e => this.getKey(e) === input)})), delay(1000));
     }
 
     getAll(): Observable<any> {
