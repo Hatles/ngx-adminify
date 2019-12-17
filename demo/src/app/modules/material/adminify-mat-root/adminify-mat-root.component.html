@@ -15,7 +15,7 @@
     <ng-container *ngIf="isSmallDevice$ | async else mainMenu">
         <span class="spacer" [style.flex]="'1 1 auto'"></span>
         <ng-container *ngTemplateOutlet="version"></ng-container>
-        <a mat-button href="https://github.com/ngx-formly/ngx-formly">
+        <a mat-button href="https://github.com/hatles/ngx-adminify">
             <img src="https://material.angular.io/assets/img/homepage/github-circle-white-transparent.svg">
         </a>
         <button mat-button (click)="sidenav.toggle()">
