@@ -4,7 +4,7 @@ const fs = require("fs"),
         'router',
         'core',
         'entity',
-        'material',
+        // 'material',
     ];
 
 // update `FORMLY-VERSION` in package.json for all sub-packages

@@ -12,7 +12,7 @@ import {
     ComponentFactoryResolver,
     ComponentRef,
     Directive,
-    EventEmitter,
+    EventEmitter, Injector,
     OnDestroy,
     OnInit,
     Output,
@@ -50,7 +50,9 @@ import {ActivatedRoute, ChildrenOutletContexts, Data, PRIMARY_OUTLET} from "../a
 // tslint:disable-next-line:directive-selector
 @Directive({selector: 'admin-outlet', exportAs: 'adminOutlet'})
 // tslint:disable-next-line:directive-class-suffix
-export class AdminifyOutlet implements OnDestroy, OnInit {
+export class AdminifyOutlet
+    // implements OnDestroy, OnInit
+{
     private activated: ComponentRef<any>|null = null;
     // tslint:disable-next-line:variable-name
     private _activatedRoute: ActivatedRoute|null = null;
@@ -60,15 +62,19 @@ export class AdminifyOutlet implements OnDestroy, OnInit {
     @Output('activate') activateEvents = new EventEmitter<any>();
     // tslint:disable-next-line:no-output-rename
     @Output('deactivate') deactivateEvents = new EventEmitter<any>();
-
+    private parentContexts: ChildrenOutletContexts;
     constructor(
         private routeInjectorFactory: AdminifyOutletRouteInjectorFactory,
-        private parentContexts: ChildrenOutletContexts, private location: ViewContainerRef,
+        // private parentContexts: ChildrenOutletContexts,
+        private location: ViewContainerRef,
         private resolver: ComponentFactoryResolver, @Attribute('name') name: string,
-        private changeDetector: ChangeDetectorRef) {
+        private changeDetector: ChangeDetectorRef,
+        private injector: Injector
+    ) {
         this.name = name || PRIMARY_OUTLET;
+        this.parentContexts = injector.get(ChildrenOutletContexts);
         // tslint:disable-next-line
-        parentContexts.onChildOutletCreated(this.name, <any>this);
+        this.parentContexts.onChildOutletCreated(this.name, <any>this);
     }
 
     ngOnDestroy(): void { this.parentContexts.onChildOutletDestroyed(this.name); }

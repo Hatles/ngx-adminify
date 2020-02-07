@@ -3,14 +3,14 @@ import {Observable, Subscription, from} from 'rxjs';
 import {concatMap, filter, map, mergeAll, mergeMap} from 'rxjs/operators';
 import {RouterConfigLoaderFactory} from './router-config-loader-factory';
 import {
-    Router,
     Routes,
     Route,
-    PreloadingStrategy,
     RouteConfigLoadStart,
     RouteConfigLoadEnd,
     NavigationEnd
 } from '../angular/router';
+import {Router} from '../angular/router/router';
+import {PreloadingStrategy} from '../angular/router/router_preloader';
 import {RouterConfigLoader} from "../angular/router/router_config_loader";
 import {LoadedRouterConfig} from "../angular/router/config";
 
@@ -35,10 +35,13 @@ export class AdminifyRouterPreloader implements OnDestroy {
 
     constructor(
         private routerConfigLoaderFactory: RouterConfigLoaderFactory,
-        private router: Router, moduleLoader: NgModuleFactoryLoader, compiler: Compiler,
-        private injector: Injector, private preloadingStrategy: PreloadingStrategy) {
-        const onStartLoad = (r: Route) => router.triggerEvent(new RouteConfigLoadStart(r));
-        const onEndLoad = (r: Route) => router.triggerEvent(new RouteConfigLoadEnd(r));
+        private router: Router,
+        private injector: Injector,
+        private preloadingStrategy: PreloadingStrategy
+    ) {
+
+        const onStartLoad = (r: Route) => this.router.triggerEvent(new RouteConfigLoadStart(r));
+        const onEndLoad = (r: Route) => this.router.triggerEvent(new RouteConfigLoadEnd(r));
 
         this.loader = this.routerConfigLoaderFactory.get(onStartLoad, onEndLoad);
     }

@@ -1,4 +1,4 @@
-import {Injectable, Injector} from '@angular/core';
+import {Injectable, Injector, Optional} from '@angular/core';
 import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
 import {ActivatedRoute as AActivatedRoute} from '@angular/router';
 import {
@@ -12,9 +12,12 @@ import {
 export class AdminifyOutletRouteInjectorFactory {
     private providers: AdminifyOutletRouteProviders;
 
-    constructor(providers: AdminifyOutletRouteProviders) {
-        this.providers = providers ? providers : [];
+    constructor() {
+        this.providers = [];
     }
+    // constructor(providers: AdminifyOutletRouteProviders) {
+    //     this.providers = providers ? providers : [];
+    // }
 
     // tslint:disable-next-line:max-line-length
     get(route: ActivatedRoute, childContexts: ChildrenOutletContexts, parent: Injector): AdminOutletInjector {

@@ -3,7 +3,6 @@ import {ErrorHandler, Navigation, NavigationExtras, NavigationTransition, Restor
 
 import {Injector, isDevMode, NgModuleRef, NgZone, Type, ɵConsole as Console} from '@angular/core';
 import {containsTree, createEmptyUrlTree, UrlSerializer, UrlTree} from '../angular/router/url_tree';
-import {ChildrenOutletContexts} from '../angular/router';
 import {Route, Routes, standardizeConfig, validateConfig} from '../angular/router/config';
 import {
     Event,
@@ -36,6 +35,7 @@ import {RouterConfigLoaderFactory} from "./router-config-loader-factory";
 import {loadConfig} from "./adminify-router-config-loader";
 import {applyRedirects} from "../angular/router/operators/apply_redirects";
 import {NavigationTrigger} from '../angular/router/events';
+import {ChildrenOutletContexts} from "../angular/router/router_outlet_context";
 
 
 
@@ -186,8 +186,11 @@ export class AdminifyRouter {
     // TODO: vsavkin make internal after the final is out.
     constructor(
         private routerConfigLoaderFactory: RouterConfigLoaderFactory,
-        private rootComponentType: Type<any>|null, private urlSerializer: UrlSerializer,
-        private rootContexts: ChildrenOutletContexts, private location: Location) {
+        private rootComponentType: Type<any>|null,
+        private urlSerializer: UrlSerializer,
+        private rootContexts: ChildrenOutletContexts,
+        private location: Location
+    ) {
     }
 
     public initRouter(injector: Injector): Promise<Routes> {
