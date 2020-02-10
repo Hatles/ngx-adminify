@@ -14,7 +14,7 @@ import {Admin} from '../admin';
 import {RouteParametersValues} from '../services/admin-route-builder';
 import {AdminActivatedRoute} from '../admin-activated-route';
 import {Subscription} from "rxjs";
-import {Event, NavigationEnd} from "../../../../router/src/lib/angular/router";
+import {Event, NavigationEnd} from "@ngx-adminify/router";
 import {LocationStrategy} from "@angular/common";
 
 // tslint:disable-next-line:directive-selector

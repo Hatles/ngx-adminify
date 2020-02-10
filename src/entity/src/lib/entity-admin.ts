@@ -1,9 +1,6 @@
-import {Admin} from '../../../core/src/lib/admin';
-import {AdminPoolService} from '../../../core/src/lib/services/admin-pool-service';
+import {Admin, AdminComponentDictionary, AdminPoolService} from '@ngx-adminify/core';
 import {EntityAdminConfig} from './entity-admin-config';
 import {IAdminifyEntityService} from './adminify-entity-service';
-import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../../../router/src/lib/adminify-outlet-route-provider';
-import {AdminComponentDictionary} from '../../../core/src/lib/admin-component-dictionary';
 
 export class EntityAdmin extends Admin /*implements IAdminifyEntityService*/ {
 

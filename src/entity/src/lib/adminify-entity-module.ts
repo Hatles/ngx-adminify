@@ -1,34 +1,43 @@
 import {Inject, Injector, ModuleWithProviders, NgModule, Optional, Provider} from '@angular/core';
 import {
-    AdminifyModule,
+    actionDataProviders,
+    adminDataProviders,
+    AdminifyModule, adminifyProviders, adminsDataProviders,
     provideAdminAsyncRoutes
 } from '@ngx-adminify/core';
 import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service';
 import {ENTITY_SERVICE_PROVIDER, EntityConfig, EntityServiceProvider} from './entity-config';
-import {AdminifyRouterModule, provideAsyncRoutesFactory} from '@ngx-adminify/router';
+import {AdminifyRouterModule, provideAdminifyProviders, provideAsyncRoutesFactory} from '@ngx-adminify/router';
 import {adminifyEntityGenericProviders} from './providers/entity-service-generic-providers';
 import {AdminPoolService, processConfig} from '@ngx-adminify/core';
 import {Routes, ROUTES} from '@angular/router';
-import {AsyncRoutesFactory} from '../../../router/src/lib/adminify-router-config';
+import {AsyncRoutesFactory} from '@ngx-adminify/router';
 import {adminifyEntityActionProviders} from './providers/entity-action-config-providers';
 
-export function provideEntityServiceProviders(providers: EntityServiceProvider[]): Provider[] {
-    return providers.map(e => provideEntityServiceProvider(e));
+export function provideEntityServiceProviders(entityServiceProviders: EntityServiceProvider[]): Provider[] {
+    const providers = entityServiceProviders.map(e => provideEntityServiceProvider(e));
+    return providers;
 }
 
 export function provideEntityServiceProvider(provider: EntityServiceProvider): Provider {
     return {provide: ENTITY_SERVICE_PROVIDER, multi: true, useValue: provider};
 }
 
+const providers = [
+    ...adminifyEntityGenericProviders,
+    ...adminifyEntityActionProviders
+];
+
+const adminifyRouterModuleImport =
+    {
+        ngModule: AdminifyRouterModule,
+        providers: provideAdminifyProviders(providers)
+    };
+
 @NgModule({
     imports: [
         AdminifyModule,
-        AdminifyRouterModule.forChild({
-            providers: [
-                ...adminifyEntityGenericProviders,
-                ...adminifyEntityActionProviders
-                ]
-        }),
+        adminifyRouterModuleImport
     ],
     exports: [
         AdminifyModule,
@@ -112,18 +121,24 @@ export function provideEntityAsyncRoutesFactory(factory: (...deps: any[]) => Pro
 
 // tslint:disable-next-line:max-line-length
 export function createAsyncRoutesFromEntityConfig(configFactory: (...deps: any[]) => Promise<EntityConfig>, deps: any[]): AsyncRoutesFactory {
+    const factory = createAsyncRoutesFromEntityConfigFactory(configFactory);
     return {
-        factory: (pool: AdminPoolService, entityPool: AdminifyEntityPoolService, injector: Injector, ...fdeps: any[]) => {
-            return new Promise<Routes>(resolve => {
-                const promise: Promise<EntityConfig> = configFactory.call(null, fdeps.slice(1));
-                promise.then(result => {
-                    entityPool.registerProviders(result.entities);
-                    const config = processConfig(result.admin);
-                    const routes = pool.buildAdmins(config, injector);
-                    resolve(routes);
-                });
-            });
-        },
+        factory: factory,
         deps: [AdminPoolService, AdminifyEntityPoolService, Injector, ...deps]
     };
+}
+
+export function createAsyncRoutesFromEntityConfigFactory(configFactory: (...deps: any[]) => Promise<EntityConfig>) {
+    const fn = (pool: AdminPoolService, entityPool: AdminifyEntityPoolService, injector: Injector, ...fdeps: any[]) => {
+        return new Promise<Routes>(resolve => {
+            const promise: Promise<EntityConfig> = configFactory.call(null, fdeps.slice(1));
+            promise.then(result => {
+                entityPool.registerProviders(result.entities);
+                const config = processConfig(result.admin);
+                const routes = pool.buildAdmins(config, injector);
+                resolve(routes);
+            });
+        });
+    };
+    return fn;
 }

@@ -13,16 +13,6 @@ export interface RegisteredEntityServiceToken {
     token: any;
 }
 
-export declare class EntityInjectionToken<T> {
-    protected _desc: string;
-    readonly ngInjectableDef: never | undefined;
-    constructor(_desc: string, options?: {
-        providedIn?: Type<any> | 'root' | null;
-        factory: () => T;
-    });
-    toString(): string;
-}
-
 
 function createEntityServiceToken(name: string): InjectionToken<IAdminifyEntityService> {
     return new InjectionToken<IAdminifyEntityService>('ENTITY_SERVICE_' + name);

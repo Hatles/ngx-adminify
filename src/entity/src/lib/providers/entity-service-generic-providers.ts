@@ -22,11 +22,12 @@ export class EntityServiceToken {
 
 export const entityServiceProvider: AdminifyOutletRouteProvider = {
     provide: AdminifyEntityService,
-    factory: (route: ActivatedRoute, token: any, pool: AdminPoolService) => {
-        return (pool.getAdmin(getFisrtParentData(route, 'admin')) as EntityAdmin).entityService;
-    },
+    factory: entityServiceProviderFn,
     deps: [AdminPoolService]
 };
+export function entityServiceProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService) {
+    return (pool.getAdmin(getFisrtParentData(route, 'admin')) as EntityAdmin).entityService;
+}
 
 export const adminifyEntityGenericProviders: AdminifyOutletRouteProviders = [
     entityServiceProvider

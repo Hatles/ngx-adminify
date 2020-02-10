@@ -1,25 +1,37 @@
 import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '@ngx-adminify/router';
-import {ActionData, ActionDataPropertyToken, TypedActionData} from '../data/action-data';
+import {ActionData, ActionDataPropertyToken, ActionDataPropertyTokenType, TypedActionData} from '../data/action-data';
 import {ActivatedRoute} from '@angular/router';
 import {AdminAction} from '../admin-action';
 
 export const actionDataProvider: AdminifyOutletRouteProvider = {
     provide: ActionData,
-    factory: (route: ActivatedRoute, token: any, action: AdminAction): ActionData => ({ data: action.getData() }),
+    factory: actionDataProviderFn,
     deps: [AdminAction]
 };
+export function actionDataProviderFn(route: ActivatedRoute, token: any, action: AdminAction): ActionData {
+    return { data: action.getData() };
+}
 
 export const typedActionDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedActionData,
-    factory: (route: ActivatedRoute, token: any, action: AdminAction): TypedActionData<any> => ({ data: action.getData() }),
+    factory: typedActionDataProviderFn,
     deps: [AdminAction]
 };
+export function typedActionDataProviderFn(route: ActivatedRoute, token: any, action: AdminAction): TypedActionData<any> {
+    return { data: action.getData() };
+}
 
 export const actionDataPropertyProvider: AdminifyOutletRouteProvider = {
-    provideFn: (token: any) => token instanceof ActionDataPropertyToken,
-    factory: (route: ActivatedRoute, token: ActionDataPropertyToken, action: AdminAction): any => action.getData(token.property, token.defaultValue),
+    provideFn: actionDataPropertyProviderProvideFn,
+    factory: actionDataPropertyProviderFn,
     deps: [AdminAction]
 };
+export function actionDataPropertyProviderProvideFn(token: any): boolean {
+    return token != null && token.tokenType == ActionDataPropertyTokenType;
+}
+export function actionDataPropertyProviderFn(route: ActivatedRoute, token: ActionDataPropertyToken, action: AdminAction): any {
+    return action.getData(token.property, token.defaultValue);
+}
 
 export const actionDataProviders: AdminifyOutletRouteProviders = [
     actionDataProvider,

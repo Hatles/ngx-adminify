@@ -10,59 +10,63 @@ import {ActivatedRoute} from '@angular/router';
 
 export const adminProvider: AdminifyOutletRouteProvider = {
     provide: Admin,
-    factory: (route: ActivatedRoute, token: any, pool: AdminPoolService) => {
-        return pool.getAdmin(getFisrtParentData(route, 'admin'));
-    },
+    factory: adminProviderFn,
     deps: [AdminPoolService]
 };
+export function adminProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService) {
+    return pool.getAdmin(getFisrtParentData(route, 'admin'));
+}
 
 export const adminActionProvider: AdminifyOutletRouteProvider = {
     provide: AdminAction,
-    factory: (route: ActivatedRoute, token: any, pool: AdminPoolService) => {
-        return pool.getAdmin(getFisrtParentData(route, 'admin')).getAction(getFisrtParentData(route, 'action'));
-    },
+    factory: adminActionProviderFn,
     deps: [AdminPoolService]
 };
+export function adminActionProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService) {
+    return pool.getAdmin(getFisrtParentData(route, 'admin')).getAction(getFisrtParentData(route, 'action'));
+}
 
 export const adminRootRouteProvider: AdminifyOutletRouteProvider = {
     provide: AdminRootRoute,
-    factory: (route: ActivatedRoute, token: any) => {
+    factory: adminRootRouteProviderFn,
+    deps: []
+};
+export function adminRootRouteProviderFn(route: ActivatedRoute, token: any) {
+    if (route.snapshot.data.adminRoot) {
+        return route;
+    }
+
+    while (route.parent) {
+        route = route.parent;
+
         if (route.snapshot.data.adminRoot) {
             return route;
         }
+    }
 
-        while (route.parent) {
-            route = route.parent;
-
-            if (route.snapshot.data.adminRoot) {
-                return route;
-            }
-        }
-
-        throw new Error('Can\'t find admin root');
-    },
-    deps: []
-};
+    throw new Error('Can\'t find admin root');
+}
 
 export const adminActivatedRouteProvider: AdminifyOutletRouteProvider = {
     provide: AdminActivatedRoute,
-        factory: (route: ActivatedRoute, token: any) => {
+        factory: adminActivatedRouteProviderFn,
+        deps: []
+};
+export function adminActivatedRouteProviderFn(route: ActivatedRoute, token: any) {
+    if (route.snapshot.data.admin && (!route.parent || !route.parent.snapshot.data.admin)) {
+        return route;
+    }
+
+    while (route.parent) {
+        route = route.parent;
+
         if (route.snapshot.data.admin && (!route.parent || !route.parent.snapshot.data.admin)) {
             return route;
         }
+    }
 
-        while (route.parent) {
-            route = route.parent;
-
-            if (route.snapshot.data.admin && (!route.parent || !route.parent.snapshot.data.admin)) {
-                return route;
-            }
-        }
-
-        throw new Error('Can\'t find admin activated route');
-    },
-        deps: []
-};
+    throw new Error('Can\'t find admin activated route');
+}
 
 export const adminifyProviders: AdminifyOutletRouteProviders = [
     adminProvider,

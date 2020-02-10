@@ -9,17 +9,11 @@ export class TypedActionData<TData extends Data> {
     data: TData;
 }
 
-export class ActionDataPropertyToken {
-    property: string;
-    defaultValue: any;
-
-    constructor(property: string, defaultValue?: any) {
-        this.property = property;
-        this.defaultValue = defaultValue;
-    }
-}
+export const ActionDataPropertyTokenType = 'ActionDataPropertyToken';
+export type ActionDataPropertyToken = {property: string, defaultValue: any, tokenType: string};
 
 export function ActionDataProperty(property: string, defaultValue?: any): ActionDataPropertyToken {
-    return new ActionDataPropertyToken(property, defaultValue);
+    const token = {property: property, defaultValue: defaultValue, tokenType: ActionDataPropertyTokenType};
+    return token;
 }
 

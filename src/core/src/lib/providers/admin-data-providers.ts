@@ -5,21 +5,33 @@ import {Admin} from '../admin';
 
 export const adminDataProvider: AdminifyOutletRouteProvider = {
     provide: AdminData,
-    factory: (route: ActivatedRoute, token: any, admin: Admin): AdminData => ({ data: admin.getData() }),
+    factory: adminDataProviderFn,
     deps: [Admin]
 };
+export function adminDataProviderFn(route: ActivatedRoute, token: any, admin: Admin): AdminData {
+    return { data: admin.getData() };
+}
 
 export const typedAdminDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedAdminData,
-    factory: (route: ActivatedRoute, token: any, admin: Admin): TypedAdminData<any> => ({ data: admin.getData() }),
+    factory: typedAdminDataProviderFn,
     deps: [Admin]
 };
+export function typedAdminDataProviderFn(route: ActivatedRoute, token: any, admin: Admin): TypedAdminData<any> {
+    return { data: admin.getData() };
+}
 
 export const adminDataPropertyProvider: AdminifyOutletRouteProvider = {
-    provideFn: (token: any) => token instanceof AdminDataPropertyToken,
-    factory: (route: ActivatedRoute, token: AdminDataPropertyToken, admin: Admin): any => admin.getData(token.property, token.defaultValue),
+    provideFn: adminDataPropertyProviderProvideFn,
+    factory: adminDataPropertyProviderFn,
     deps: [Admin]
 };
+export function adminDataPropertyProviderProvideFn(token: any) {
+    return token instanceof AdminDataPropertyToken;
+}
+export function adminDataPropertyProviderFn(route: ActivatedRoute, token: AdminDataPropertyToken, admin: Admin) {
+    return admin.getData(token.property, token.defaultValue);
+}
 
 export const adminDataProviders: AdminifyOutletRouteProviders = [
     adminDataProvider,

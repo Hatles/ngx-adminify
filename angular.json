@@ -109,46 +109,6 @@
         }
       }
     },
-    "test-lib": {
-      "root": "src/test",
-      "sourceRoot": "src/test",
-      "projectType": "library",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "src/test/tsconfig.lib.json",
-            "project": "src/test/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "src/router/ng-package.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/router/src/test.ts",
-            "tsConfig": "src/router/tsconfig.spec.json",
-            "karmaConfig": "src/router/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/test/tsconfig.lib.json",
-              "src/test/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
     "@ngx-adminify/router": {
       "root": "src/router",
       "sourceRoot": "src/router",

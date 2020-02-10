@@ -1,4 +1,4 @@
-import {AdminConfig, AdminsConfig} from '../../../core/src/lib/admin-config';
+import {AdminConfig, AdminsConfig} from '@ngx-adminify/core';
 
 export interface EntityAdminsConfig extends AdminsConfig {
     admins: EntityAdminConfig[]|AdminConfig[]|any[];

@@ -13,7 +13,7 @@ import {QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {AdminPoolService} from '../services/admin-pool-service';
 import {AdminRootRoute} from '../admin-root-route';
 import {Subscription} from "rxjs";
-import {Event, NavigationEnd} from "../../../../router/src/lib/angular/router";
+import {Event, NavigationEnd} from "@ngx-adminify/router";
 import {LocationStrategy} from "@angular/common";
 
 // tslint:disable-next-line:directive-selector
