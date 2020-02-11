@@ -10,7 +10,7 @@
     "commit": "npm run build && git-cz",
     "barrels": "node .config/barrels.js",
     "bundlesize": "npm run build && bundlesize",
-    "build": "npm run build:router && npm run build:core && npm run build:entity && npm run build:material && npm run build:schematics && node .config/build.js",
+    "build": "npm run build:router && npm run build:core && npm run build:entity && node .config/build.js",
     "build:router": "ng build @ngx-adminify/router",
     "build:core": "ng build @ngx-adminify/core",
     "build:entity": "ng build @ngx-adminify/entity",

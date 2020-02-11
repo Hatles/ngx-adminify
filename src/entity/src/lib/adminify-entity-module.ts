@@ -131,7 +131,7 @@ export function createAsyncRoutesFromEntityConfig(configFactory: (...deps: any[]
 export function createAsyncRoutesFromEntityConfigFactory(configFactory: (...deps: any[]) => Promise<EntityConfig>) {
     const fn = (pool: AdminPoolService, entityPool: AdminifyEntityPoolService, injector: Injector, ...fdeps: any[]) => {
         return new Promise<Routes>(resolve => {
-            const promise: Promise<EntityConfig> = configFactory.call(null, fdeps.slice(1));
+            const promise: Promise<EntityConfig> = configFactory.call(null, ...fdeps.slice());
             promise.then(result => {
                 entityPool.registerProviders(result.entities);
                 const config = processConfig(result.admin);
