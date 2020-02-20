@@ -51,9 +51,11 @@ export class RouteParamToken {
 }
 
 export function RouteParamSnapshot(property: string): RouteParamSnapshotToken {
-    return new RouteParamSnapshotToken(property);
+    const token = new RouteParamSnapshotToken(property);
+    return token;
 }
 
 export function RouteParam(param: string): RouteParamToken {
-    return new RouteParamToken(param);
+    const token = new RouteParamToken(param);
+    return token;
 }

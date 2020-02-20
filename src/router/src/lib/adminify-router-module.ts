@@ -78,7 +78,7 @@ export class AdminifyRouterModule {
                 paramsProvidersList,
                 customProvidersList,
 
-                {provide: ROUTES, useExisting: router.ROUTES},
+                {provide: ROUTES, useExisting: router.ROUTES, multi: true},
                 {provide: UrlSerializer, useExisting: router.UrlSerializer},
                 {provide: ChildrenOutletContexts, useExisting: router.ChildrenOutletContexts},
                 {provide: ROUTER_CONFIGURATION, useExisting: router.ROUTER_CONFIGURATION},

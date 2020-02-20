@@ -165,7 +165,7 @@ export class Admin implements IDataProvider {
         const action = this.getAction(actionName);
 
         for (const actionGuard of this.actionGuards) {
-            if (!actionGuard.canAccessAction(this, action)) {
+            if (!actionGuard.canAccessAction(this, action, actionName)) {
                 return false;
             }
         }
