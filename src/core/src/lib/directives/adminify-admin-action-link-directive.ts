@@ -16,7 +16,8 @@ import {AdminActivatedRoute} from '../admin-activated-route';
 import {Subscription} from "rxjs";
 import {Event, NavigationEnd} from "@ngx-adminify/router";
 import {LocationStrategy} from "@angular/common";
-import {AdminPoolService, AdminRootRoute} from "@ngx-adminify/core";
+import {AdminRootRoute} from "../admin-root-route";
+import {AdminPoolService} from '../services/admin-pool-service';
 
 // tslint:disable-next-line:directive-selector
 @Directive({selector: ':not(a):not(area)[adminifyAdminActionLink]'})
