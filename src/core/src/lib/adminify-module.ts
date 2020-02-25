@@ -24,6 +24,10 @@ import {adminsDataProviders} from './providers/admins-data-providers';
 import {actionDataProviders} from './providers/action-data-providers';
 import {AdminComponentDictionary} from './admin-component-dictionary';
 import {AdminFactoryDictionary} from './admin-factory-dictionary';
+import {
+    AdminifyAdminActionLinkDirective,
+    AdminifyAdminActionLinkWithHrefDirective
+} from "./directives/adminify-admin-action-link-directive";
 
 const providers = [
             ...adminifyProviders,
@@ -47,13 +51,17 @@ const adminifyRouterModuleImport =
         AdminifyLinkDirective,
         AdminifyLinkWithHrefDirective,
         AdminifyActionLinkDirective,
-        AdminifyActionLinkWithHrefDirective
+        AdminifyActionLinkWithHrefDirective,
+        AdminifyAdminActionLinkDirective,
+        AdminifyAdminActionLinkWithHrefDirective,
     ],
     declarations: [
         AdminifyLinkDirective,
         AdminifyLinkWithHrefDirective,
         AdminifyActionLinkDirective,
-        AdminifyActionLinkWithHrefDirective
+        AdminifyActionLinkWithHrefDirective,
+        AdminifyAdminActionLinkDirective,
+        AdminifyAdminActionLinkWithHrefDirective,
     ],
     entryComponents: []
     // No provider
