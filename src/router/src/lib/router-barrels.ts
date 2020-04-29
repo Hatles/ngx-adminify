@@ -10,6 +10,7 @@ export * from './data/data-provider';
 export * from './data/route-data-snapshot';
 export * from './data/route-params-snapshot';
 export * from './directives/adminify-outlet';
+export * from './providers/providers';
 export * from './providers/data-providers';
 export * from './providers/params-providers';
 export * from './services/adminify-outlet-route-injector-factory';

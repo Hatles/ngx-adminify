@@ -22,15 +22,7 @@ export interface EntityRestModuleConfig {
     ],
 })
 export class EntityRestModule {
-    static forRoot(config?: EntityRestModuleConfig, factoryConfig?: RestEntityServiceConfig): ModuleWithProviders {
-        config = config || {};
-
-        const providers: Provider[] = factoryConfig ? [
-                {
-                    provide: REST_ENTITY_SERVICE_CONFIG, useValue: factoryConfig
-                }
-            ] : [];
-
+    static forRoot(config: EntityRestModuleConfig = {}, factoryConfig: RestEntityServiceConfig = undefined): ModuleWithProviders {
         return {
             ngModule: EntityRestModule,
             providers: [
@@ -39,7 +31,11 @@ export class EntityRestModule {
                     multi: true,
                     useValue: config.pluralNames ? config.pluralNames : {},
                 },
-                ...providers
+                ...(factoryConfig ? [
+                    {
+                        provide: REST_ENTITY_SERVICE_CONFIG, useValue: factoryConfig
+                    }
+                ] : [])
             ],
         };
     }

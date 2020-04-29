@@ -48,7 +48,7 @@ export class AdminifyAdminActionLinkDirective {
     }
 
     @Input()
-    set adminifyActionLink(action: string | { action: string, parameters?: RouteParametersValues | string[] } | string[]) {
+    set adminifyAdminActionLink(action: string | { action: string, parameters?: RouteParametersValues | string[] } | string[]) {
         if (action) {
             let adminActionName: string;
             let parameters: RouteParametersValues | string[];

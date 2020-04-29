@@ -23,7 +23,15 @@ export const adminComponentDeclarations: AdminComponentDeclaration[] = [
     { name: 'AdminEditActionBaseComponent', component: AdminEditActionBaseComponent}
 ];
 
-export const adminComponents: Type<any>[] = adminComponentDeclarations.map(d => d.component);
+export const adminComponents: Type<any>[] = [
+    AdminRootComponent,
+    AdminDashboardBaseComponent,
+    AdminBaseComponent,
+    AdminActionBaseComponent,
+    AdminListActionBaseComponent,
+    AdminViewActionBaseComponent,
+    AdminEditActionBaseComponent
+];
 
 export function buildConfigFactory(): Promise<AdminsConfig> {
     return new Promise<AdminsConfig>(resolve => {

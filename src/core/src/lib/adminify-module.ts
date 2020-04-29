@@ -39,7 +39,7 @@ const providers = [
 const adminifyRouterModuleImport =
 {
     ngModule: AdminifyRouterModule,
-    providers: provideAdminifyProviders(providers)
+    providers: [provideAdminifyProviders(providers)]
 };
 
 @NgModule({

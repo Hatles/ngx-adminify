@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
 import {Admin, AdminAction} from '@ngx-adminify/core';
 import {AdminifyEntityService, EntityEditConfigsToken, EntityEditMode, EntityEditModeToken} from '@ngx-adminify/entity';
@@ -22,18 +22,19 @@ export class AdminEditActionBaseComponent extends AdminActionBaseComponent imple
     onDestroy: Subject<void> = new Subject();
     createMode: boolean;
 
+    id: Observable<string>
+
     constructor(
         admin: Admin,
         action: AdminAction,
         entity: AdminifyEntityService,
-        data: RouteData,
-        @Inject(RoutePropertySnapshot('action')) actionData: string,
-        @Inject(RouteParam('id')) public id: Observable<string>,
+        injector: Injector,
         @Inject(EntityEditModeToken) public mode: EntityEditMode,
         @Inject(EntityEditConfigsToken) public editConfigs: FormlyFieldConfig[]
     ) {
         super(admin, action, entity);
 
+        this.id = injector.get(RouteParam('id'));
         this.createMode = mode === 'create';
     }
 

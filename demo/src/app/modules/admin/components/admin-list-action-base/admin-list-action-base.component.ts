@@ -6,6 +6,8 @@ import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
+export const RouteAction = RoutePropertySnapshot('action');
+
 @Component({
   selector: 'demo-admin-list-action-base',
   templateUrl: './admin-list-action-base.component.html',
@@ -19,8 +21,6 @@ export class AdminListActionBaseComponent extends AdminActionBaseComponent imple
         admin: Admin,
         action: AdminAction,
         entity: AdminifyEntityService,
-        data: RouteData,
-        @Inject(RoutePropertySnapshot('action')) actionData: string,
         @Inject(EntityListConfigsToken) public listConfigs: EntityListConfigs) {
         super(admin, action, entity);
     }

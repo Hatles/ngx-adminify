@@ -13,7 +13,6 @@ export const ActionDataPropertyTokenType = 'ActionDataPropertyToken';
 export type ActionDataPropertyToken = {property: string, defaultValue: any, tokenType: string};
 
 export function ActionDataProperty(property: string, defaultValue?: any): ActionDataPropertyToken {
-    const token = {property: property, defaultValue: defaultValue, tokenType: ActionDataPropertyTokenType};
-    return token;
+    return {property: property, defaultValue: defaultValue, tokenType: ActionDataPropertyTokenType};
 }
 

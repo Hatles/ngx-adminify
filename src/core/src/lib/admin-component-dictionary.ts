@@ -31,7 +31,7 @@ export class AdminComponentDictionary {
     private components: AdminComponentDeclaration[];
 
     constructor(@Inject(ADMIN_COMPONENT_DECLARATION) @Optional() components: AdminComponentDeclaration[]) {
-        this.components = components;
+        this.components = components || [];
     }
 
     get(component: string): Type<any> {

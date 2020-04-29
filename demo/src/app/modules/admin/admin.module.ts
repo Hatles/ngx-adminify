@@ -11,7 +11,12 @@ import {typeOptions, types} from './components/types/types';
 import {ActiveAdminService} from './services/active-admin.service';
 import {validationMessages} from './validation-messages';
 import {FormlySelectModule} from '@ngx-formly/core/select';
-import {AdminifyModule, declareAdminComponents} from '@ngx-adminify/core';
+import {
+    ADMIN_COMPONENT_DECLARATION,
+    AdminifyModule,
+    declareAdminComponents,
+    provideAdminComponentDeclaration
+} from '@ngx-adminify/core';
 import {FormEntityTypeComponent} from "./components/types/form-entity-type/form-entity-type.component";
 import {FormlyMatTabGroupComponent} from "./components/types/formly-mat-tab-group/formly-mat-tab-group.component";
 import {PanelWrapperComponent} from "./components/wrappers/panel-wrapper/panel-wrapper.component";
@@ -43,7 +48,20 @@ import {FormFieldWrapperComponent} from "./components/wrappers/form-field-wrappe
     ],
     providers: [
         ActiveAdminService,
-        declareAdminComponents(adminComponentDeclarations)
+        // declareAdminComponents(adminComponentDeclarations),
+        {
+            provide: ADMIN_COMPONENT_DECLARATION,
+            multi: true,
+            useValue: {name: 'AdminRootComponentxxxxxxx2', component: AdminRootComponent}
+        },
+        provideAdminComponentDeclaration({name: 'AdminRootComponentxxxxxx', component: AdminRootComponent}),
+        provideAdminComponentDeclaration({name: 'AdminRootComponent', component: AdminRootComponent}),
+        provideAdminComponentDeclaration({name: 'AdminDashboardBaseComponent', component: AdminDashboardBaseComponent}),
+        provideAdminComponentDeclaration({name: 'AdminBaseComponent', component: AdminBaseComponent}),
+        provideAdminComponentDeclaration({name: 'AdminActionBaseComponent', component: AdminActionBaseComponent}),
+        provideAdminComponentDeclaration({name: 'AdminListActionBaseComponent', component: AdminListActionBaseComponent}),
+        provideAdminComponentDeclaration({name: 'AdminViewActionBaseComponent', component: AdminViewActionBaseComponent}),
+        provideAdminComponentDeclaration({name: 'AdminEditActionBaseComponent', component: AdminEditActionBaseComponent})
     ],
     declarations: [
         adminComponents,
@@ -63,7 +81,7 @@ import {FormFieldWrapperComponent} from "./components/wrappers/form-field-wrappe
         FormFieldWrapperComponent
     ],
     entryComponents: [
-        adminComponents
+        ...adminComponents
     ]
 })
 export class AdminModule {

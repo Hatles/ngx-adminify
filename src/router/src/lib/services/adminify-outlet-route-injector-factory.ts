@@ -74,6 +74,10 @@ class AdminOutletInjector implements Injector {
             return this.childContexts;
         }
 
+        if (token === Injector) {
+            return this;
+        }
+
         const provider = this.factory.getProvider(token);
         if (provider) {
             return provider.factory.apply(undefined, [this.route, token, ...(provider.deps || []).map(dep => this.get(dep))]);

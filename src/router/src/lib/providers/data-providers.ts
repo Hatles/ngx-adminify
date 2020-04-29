@@ -8,56 +8,106 @@ import {map} from 'rxjs/operators';
 import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
+import {Provider} from "@angular/core";
+import {provideAdminifyProvider} from "./providers";
 
 export const routeDataSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: RouteDataSnapshot,
-    factory: (route: ActivatedRoute, token: any): RouteDataSnapshot => ({ data: route.snapshot.data }),
+    factory: routeDataSnapshotProviderFactory,
     deps: []
 };
+
+export function routeDataSnapshotProviderFactory(route: ActivatedRoute, token: any): RouteDataSnapshot {
+    return { data: route.snapshot.data };
+}
 
 export const routeDataProvider: AdminifyOutletRouteProvider = {
     provide: RouteData,
-    factory: (route: ActivatedRoute, token: any): RouteData => ({ data: route.data }),
+    factory: routeDataProviderFactory,
     deps: []
 };
+
+export function routeDataProviderFactory(route: ActivatedRoute, token: any): RouteDataSnapshot {
+    return { data: route.data };
+}
 
 export const typedRouteDataSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: TypedRouteDataSnapshot,
-    factory: (route: ActivatedRoute, token: any): TypedRouteDataSnapshot<any> => ({ data: route.snapshot.data }),
+    factory: typedRouteDataSnapshotProviderFactory,
     deps: []
 };
+
+export function typedRouteDataSnapshotProviderFactory(route: ActivatedRoute, token: any): TypedRouteDataSnapshot<any> {
+    return { data: route.snapshot.data };
+}
 
 export const typedRouteDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedRouteData,
-    factory: (route: ActivatedRoute, token: any): TypedRouteData<any> => ({ data: route.data }),
+    factory: typedRouteDataProviderFactory,
     deps: []
 };
+
+export function typedRouteDataProviderFactory(route: ActivatedRoute, token: any): TypedRouteData<any> {
+    return { data: route.data };
+}
 
 export const routeDataPropertySnapshotProvider: AdminifyOutletRouteProvider = {
-    provideFn: (token: any) => token instanceof RouteDataPropertySnapshotToken,
-    factory: (route: ActivatedRoute, token: RouteDataPropertySnapshotToken): RouteDataPropertySnapshot<any> => ({ data: route.snapshot.data[token.property] }),
+    provideFn: routeDataPropertySnapshotProviderFn,
+    factory: routeDataPropertySnapshotProviderFactory,
     deps: []
 };
+
+export function routeDataPropertySnapshotProviderFn(token: any) {
+    return token._type === 'RouteDataPropertySnapshotToken';
+}
+
+export function routeDataPropertySnapshotProviderFactory(route: ActivatedRoute, token: any): RouteDataPropertySnapshot<any> {
+    return { data: route.snapshot.data[token.property] };
+}
 
 export const routeDataPropertyProvider: AdminifyOutletRouteProvider = {
-    provideFn: (token: any) => token instanceof RouteDataPropertyToken,
-    factory: (route: ActivatedRoute, token: RouteDataPropertyToken): RouteDataProperty<any> => ({ data: route.data.pipe(map(d => d[token.property])) }),
+    provideFn: routeDataPropertyProviderFn,
+    factory: routeDataPropertyProviderFactory,
     deps: []
 };
+
+export function routeDataPropertyProviderFactory(route: ActivatedRoute, token: any): RouteDataProperty<any> {
+    return { data: route.data.pipe(map(d => d[token.property])) };
+}
+
+export function routeDataPropertyProviderFn(token: any): boolean {
+    return token._type === 'RouteDataPropertyToken';
+}
 
 export const routePropertySnapshotProvider: AdminifyOutletRouteProvider = {
-    provideFn: (token: any) => token instanceof RoutePropertySnapshotToken,
-    factory: (route: ActivatedRoute, token: RoutePropertySnapshotToken): any => route.snapshot.data[token.property] || token.defaultValue,
+    provideFn: routePropertySnapshotProviderFn,
+    factory: routePropertySnapshotProviderFactory,
     deps: []
 };
+
+export function routePropertySnapshotProviderFn(token: any): boolean {
+    return token._type === 'RoutePropertySnapshotToken';
+}
+
+export function routePropertySnapshotProviderFactory(route: ActivatedRoute, token: any): any {
+    return route.snapshot.data[token.property] || token.defaultValue;
+}
 
 export const routePropertyProvider: AdminifyOutletRouteProvider = {
-    provideFn: (token: any) => token instanceof RoutePropertyToken,
-    factory: (route: ActivatedRoute, token: RoutePropertyToken): Observable<any> => route.data.pipe(map(d => d[token.property] || token.defaultValue)),
+    provideFn: routePropertyProviderFn,
+    factory: routePropertyProviderFactory,
     deps: []
 };
 
-export const dataProviders: AdminifyOutletRouteProviders = [
+export function routePropertyProviderFn(token: any): boolean {
+    return token._type === 'RoutePropertyToken';
+}
+
+export function routePropertyProviderFactory(route: ActivatedRoute, token: any): Observable<any> {
+    return route.data.pipe(map(d => d[token.property] || token.defaultValue));
+}
+
+export const dataProvidersList: AdminifyOutletRouteProviders = [
     routeDataSnapshotProvider,
     routeDataProvider,
     typedRouteDataSnapshotProvider,
@@ -66,4 +116,15 @@ export const dataProviders: AdminifyOutletRouteProviders = [
     routeDataPropertyProvider,
     routePropertySnapshotProvider,
     routePropertyProvider,
+];
+
+export const dataProviders: Provider[] = [
+    provideAdminifyProvider(routeDataSnapshotProvider),
+    provideAdminifyProvider(routeDataProvider),
+    provideAdminifyProvider(typedRouteDataSnapshotProvider),
+    provideAdminifyProvider(typedRouteDataProvider),
+    provideAdminifyProvider(routeDataPropertySnapshotProvider),
+    provideAdminifyProvider(routeDataPropertyProvider),
+    provideAdminifyProvider(routePropertySnapshotProvider),
+    provideAdminifyProvider(routePropertyProvider),
 ];

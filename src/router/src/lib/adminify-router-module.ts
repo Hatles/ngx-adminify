@@ -15,7 +15,6 @@ import {
     ExtraOptions,
     Route,
     Router,
-    RouterModule,
     ROUTER_CONFIGURATION,
     RouteReuseStrategy,
     RouterPreloader,
@@ -23,7 +22,11 @@ import {
     UrlHandlingStrategy,
     UrlSerializer
 } from './angular/router';
-import {ADMINIFY_PROVIDER, AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from './adminify-outlet-route-provider';
+import {
+    ADMINIFY_PROVIDER,
+    ADMINIFY_PROVIDER_ARRAY,
+    AdminifyOutletRouteProviders
+} from './adminify-outlet-route-provider';
 import {AdminifyOutletRouteInjectorFactory} from './services/adminify-outlet-route-injector-factory';
 import {AdminifyOutlet} from './directives/adminify-outlet';
 import {AdminifyRouterChildConfig, AdminifyRouterConfig, AsyncRoutes, AsyncRoutesFactory} from './adminify-router-config';
@@ -39,6 +42,7 @@ import * as router from '@angular/router';
 import {RouterModule as ARouterModule} from '@angular/router';
 import {dataProviders} from './providers/data-providers';
 import {paramsProviders} from './providers/params-providers';
+import {provideAdminifyProviders} from "./providers/providers";
 
 @NgModule({
     imports: [
@@ -60,11 +64,6 @@ import {paramsProviders} from './providers/params-providers';
 export class AdminifyRouterModule {
     // save admin components with key for json config
     static fotRoot(config: AdminifyRouterConfig = {}): ModuleWithProviders {
-        const dataProvidersList = provideAdminifyProviders(dataProviders);
-        const paramsProvidersList = provideAdminifyProviders(paramsProviders);
-        const customProvidersList = provideAdminifyProviders(config.providers || []);
-
-
         return {
             ngModule: AdminifyRouterModule,
             providers: [
@@ -74,9 +73,9 @@ export class AdminifyRouterModule {
                     provide: RouterConfigLoaderFactory,
                     useClass: AdminifyRouterConfigLoaderFactory
                 },
-                dataProvidersList,
-                paramsProvidersList,
-                customProvidersList,
+                dataProviders,
+                paramsProviders,
+                provideAdminifyProviders(config.providers || []),
 
                 {provide: ROUTES, useExisting: router.ROUTES, multi: true},
                 {provide: UrlSerializer, useExisting: router.UrlSerializer},
@@ -100,42 +99,28 @@ export class AdminifyRouterModule {
     }
 
     static forChild(config: AdminifyRouterChildConfig): ModuleWithProviders {
-        const providers = [];
-
-        if (config.routes) {
-            providers.push(...provideAsyncRoutesFactory(config.routes));
-        }
-
-        if (config.providers) {
-            providers.push(...provideAdminifyProviders(config.providers));
-        }
-
         return {
             ngModule: AdminifyRouterModule,
-            providers: providers
+            providers: [
+                config.routes ? provideAsyncRoutesFactory(config.routes) : [],
+                config.providers ? provideAdminifyProviders(config.providers) : []
+            ]
         };
     }
 
     constructor(
         injectorFactory: AdminifyOutletRouteInjectorFactory,
-        @Optional() @Inject(ADMINIFY_PROVIDER) providers: AdminifyOutletRouteProviders = []
+        @Optional() @Inject(ADMINIFY_PROVIDER) providers: AdminifyOutletRouteProviders = [],
+        @Optional() @Inject(ADMINIFY_PROVIDER_ARRAY) providersArr: AdminifyOutletRouteProviders[] = [],
     ) {
         if (!providers) {
             return;
         }
 
         injectorFactory.addProviders(providers);
+        providersArr.forEach(ps => injectorFactory.addProviders(ps))
     }
 }
-
-export function provideAdminifyProvider(provider: AdminifyOutletRouteProvider): Provider {
-    return {provide: ADMINIFY_PROVIDER, multi: true, useValue: provider};
-}
-
-export function provideAdminifyProviders(providers: AdminifyOutletRouteProviders): Provider[] {
-    return providers.map(provider => provideAdminifyProvider(provider));
-}
-
 export function provideAsyncRoutes(routes: AsyncRoutes): Provider[] {
     return [
         {provide: ASYNC_ROUTES, multi: true, useValue: routes},
@@ -152,11 +137,9 @@ export function provideAsyncRoutesByFactory(factory: (...deps) => AsyncRoutes, d
 }
 
 export function provideAsyncRoutesFactory(factory: AsyncRoutesFactory): Provider[] {
-    const emptyRoutes = {provide: ROUTES, multi: true, useValue: []};
-
     return [
         {provide: ASYNC_ROUTES, multi: true, useFactory: factory.factory, deps: factory.deps},
-        emptyRoutes
+        {provide: ROUTES, multi: true, useValue: []}
     ];
 }
 

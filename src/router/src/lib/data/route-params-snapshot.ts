@@ -1,6 +1,7 @@
 // tslint:disable-next-line:interface-over-type-literal
 import {Observable} from 'rxjs';
 import {Params} from '@angular/router';
+import {RouteInjectionToken} from './route-data-snapshot';
 
 export class RouteParamsSnapshot {
     params: Params;
@@ -26,36 +27,32 @@ export class RouteParamsProperty<T> {
     params: Observable<T>;
 }
 
-export class RouteParamsPropertySnapshotToken {
+export interface RouteParamsPropertySnapshotToken extends RouteInjectionToken {
     property: string;
 }
 
-export class RouteParamsPropertyToken {
+export interface RouteParamsPropertyToken extends RouteInjectionToken {
     property: string;
 }
 
-export class RouteParamSnapshotToken {
+export interface RouteParamSnapshotToken extends RouteInjectionToken {
     param: string;
-
-    constructor(param: string) {
-        this.param = param;
-    }
 }
 
-export class RouteParamToken {
+export interface RouteParamToken extends RouteInjectionToken {
     param: string;
-
-    constructor(param: string) {
-        this.param = param;
-    }
 }
 
 export function RouteParamSnapshot(property: string): RouteParamSnapshotToken {
-    const token = new RouteParamSnapshotToken(property);
-    return token;
+    return {
+        _type: 'RouteParamSnapshotToken',
+        param: property
+    };
 }
 
 export function RouteParam(param: string): RouteParamToken {
-    const token = new RouteParamToken(param);
-    return token;
+    return {
+        _type: 'RouteParamToken',
+        param: param
+    };
 }

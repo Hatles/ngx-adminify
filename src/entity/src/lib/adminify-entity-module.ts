@@ -1,4 +1,4 @@
-import {Inject, Injector, ModuleWithProviders, NgModule, Optional, Provider} from '@angular/core';
+import {Inject, InjectionToken, Injector, ModuleWithProviders, NgModule, Optional, Provider} from '@angular/core';
 import {
     actionDataProviders,
     adminDataProviders,
@@ -31,7 +31,7 @@ const providers = [
 const adminifyRouterModuleImport =
     {
         ngModule: AdminifyRouterModule,
-        providers: provideAdminifyProviders(providers)
+        providers: [provideAdminifyProviders(providers)]
     };
 
 @NgModule({
@@ -114,31 +114,31 @@ export type EntityConfigFactory = (...deps: any[]) => Promise<EntityConfig>;
 
 export function provideEntityAsyncRoutesFactory(factory: (...deps: any[]) => Promise<EntityConfig>, deps: any[]): Provider[] {
     return [
-        provideAsyncRoutesFactory(createAsyncRoutesFromEntityConfig(factory, deps)),
+        provideAsyncRoutesFactory(createAsyncRoutesFromEntityConfig(deps)),
+        {provide: ENTITY_CONFIG_FACTORY_TOKEN, useValue: factory},
         {provide: ROUTES, multi: true, useValue: []}
     ];
 }
 
 // tslint:disable-next-line:max-line-length
-export function createAsyncRoutesFromEntityConfig(configFactory: (...deps: any[]) => Promise<EntityConfig>, deps: any[]): AsyncRoutesFactory {
-    const factory = createAsyncRoutesFromEntityConfigFactory(configFactory);
+export function createAsyncRoutesFromEntityConfig(deps: any[]): AsyncRoutesFactory {
     return {
-        factory: factory,
+        factory: createAsyncRoutesFromEntityConfigFactory,
         deps: [AdminPoolService, AdminifyEntityPoolService, Injector, ...deps]
     };
 }
 
-export function createAsyncRoutesFromEntityConfigFactory(configFactory: (...deps: any[]) => Promise<EntityConfig>) {
-    const fn = (pool: AdminPoolService, entityPool: AdminifyEntityPoolService, injector: Injector, ...fdeps: any[]) => {
-        return new Promise<Routes>(resolve => {
-            const promise: Promise<EntityConfig> = configFactory.call(null, ...fdeps.slice());
-            promise.then(result => {
-                entityPool.registerProviders(result.entities);
-                const config = processConfig(result.admin);
-                const routes = pool.buildAdmins(config, injector);
-                resolve(routes);
-            });
+export const ENTITY_CONFIG_FACTORY_TOKEN = new InjectionToken<(...deps: any[]) => Promise<EntityConfig>>('ENTITY_CONFIG_FACTORY_TOKEN');
+
+export function createAsyncRoutesFromEntityConfigFactory(pool: AdminPoolService, entityPool: AdminifyEntityPoolService, injector: Injector, ...fdeps: any[]) {
+    return new Promise<Routes>(resolve => {
+        const configFactory: (...deps: any[]) => Promise<EntityConfig> = injector.get(ENTITY_CONFIG_FACTORY_TOKEN);
+        const promise: Promise<EntityConfig> = configFactory.call(null, ...fdeps.slice());
+        promise.then(result => {
+            entityPool.registerProviders(result.entities);
+            const config = processConfig(result.admin);
+            const routes = pool.buildAdmins(config, injector);
+            resolve(routes);
         });
-    };
-    return fn;
+    });
 }

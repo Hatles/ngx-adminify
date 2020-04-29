@@ -1,7 +1,6 @@
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActionDataProperty, Admin, AdminAction, AdminDataProperty} from '@ngx-adminify/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActionDataProperty, Admin, AdminAction} from '@ngx-adminify/core';
 import {AdminifyEntityService, EntityListConfigs, EntityListConfigsToken} from '@ngx-adminify/entity';
-import {RouteData, RoutePropertySnapshot} from '@ngx-adminify/router';
 import {combineLatest, Observable, Subject, throwError} from 'rxjs';
 import {catchError, debounceTime, map, startWith, takeUntil, tap} from 'rxjs/operators';
 import {AdminActionBaseComponent} from '../../../admin/components/admin-action-base/admin-action-base.component';
@@ -32,20 +31,25 @@ export class AdminifyMatListActionComponent extends AdminActionBaseComponent imp
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
+    pageSize: number;
+    pageSizeOptions: number[];
+    sortActive: string;
+    sortDirection: SortDirection;
+
     constructor(
         admin: Admin,
         action: AdminAction,
         entity: AdminifyEntityService,
-        data: RouteData,
-        @Inject(RoutePropertySnapshot('action')) actionData: string,
-        @Inject(ActionDataProperty('pageSize', 5)) public pageSize: number,
-        @Inject(ActionDataProperty('pageSizeOptions', [5, 10, 25, 100])) public pageSizeOptions: number[],
-        @Inject(ActionDataProperty('sortActive' )) public sortActive: string,
-        @Inject(ActionDataProperty('sortDirection')) public sortDirection: SortDirection,
+        injector: Injector,
         @Inject(EntityListConfigsToken) public listConfigs: EntityListConfigs,
         protected dialog: DialogService
     ) {
         super(admin, action, entity);
+
+        this.pageSize = injector.get(ActionDataProperty('pageSize', 5));
+        this.pageSizeOptions = injector.get(ActionDataProperty('pageSizeOptions'));
+        this.sortActive = injector.get(ActionDataProperty('sortActive'));
+        this.sortDirection = injector.get(ActionDataProperty('sortDirection'));
     }
 
     ngOnInit() {

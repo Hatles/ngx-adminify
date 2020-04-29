@@ -10,6 +10,7 @@ import {ActivatedRoute} from './angular/router';
 import {InjectionToken} from '@angular/core';
 
 export const ADMINIFY_PROVIDER = new InjectionToken<AdminifyOutletRouteProvider>('ADMINIFY_PROVIDER');
+export const ADMINIFY_PROVIDER_ARRAY = new InjectionToken<AdminifyOutletRouteProviders>('ADMINIFY_PROVIDER_ARRAY');
 
 export type AdminifyOutletRouteProviders = AdminifyOutletRouteProvider[];
 

@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, Injector, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
 import {AdminAction, Admin} from '@ngx-adminify/core';
 import {AdminifyEntityService, EntityViewConfigs, EntityViewConfigsToken} from '@ngx-adminify/entity';
@@ -16,15 +16,17 @@ import {DialogService} from '../../../../dialog/dialog.service';
 export class AdminViewActionBaseComponent extends AdminActionBaseComponent implements OnInit {
 
     entityValue: Observable<any>;
+    id: Observable<string>;
 
     constructor(admin: Admin, action: AdminAction, entity: AdminifyEntityService, data: RouteData,
-                @Inject(RoutePropertySnapshot('action')) actionData: string,
                 public route: ActivatedRoute,
                 @Inject(EntityViewConfigsToken) public viewConfigs: EntityViewConfigs,
-                @Inject(RouteParam('id')) public id: Observable<string>,
+                injector: Injector,
                 protected dialog: DialogService
     ) {
         super(admin, action, entity);
+
+        this.id = injector.get(RouteParam('id'));
     }
 
     ngOnInit() {
