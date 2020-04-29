@@ -40,7 +40,6 @@ import {UrlHandlingStrategy} from "./angular/router/url_handling_strategy";
 import {Route} from "./angular/router/config";
 import {RouteReuseStrategy} from "./angular/router/route_reuse_strategy";
 import {Event} from '@angular/router';
-import {of, Subject} from "rxjs";
 
 @NgModule({
     imports: [
@@ -112,12 +111,12 @@ export class AdminifyRouterModule {
         @Optional() @Inject(ADMINIFY_PROVIDER) providers: AdminifyOutletRouteProviders = [],
         @Optional() @Inject(ADMINIFY_PROVIDER_ARRAY) providersArr: AdminifyOutletRouteProviders[] = [],
     ) {
-        if (!providers) {
-            return;
+        if (!!providers) {
+            injectorFactory.addProviders(providers);
         }
-
-        injectorFactory.addProviders(providers);
-        providersArr.forEach(ps => injectorFactory.addProviders(ps))
+        if (!!providersArr) {
+            providersArr.forEach(ps => injectorFactory.addProviders(ps))
+        }
     }
 }
 

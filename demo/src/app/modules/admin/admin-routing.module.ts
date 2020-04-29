@@ -41,7 +41,6 @@ export function buildConfigFactory(): Promise<AdminsConfig> {
 
 export function buildEntityConfigFactory(): Promise<EntityConfig> {
     return new Promise<EntityConfig>(resolve => {
-        console.log(JSON.stringify(entities));
         resolve(entities);
     });
 }

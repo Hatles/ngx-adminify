@@ -3,4 +3,4 @@
  */
 
 export * from './lib/router-barrels';
-// export * from './lib/angular/router/index';
+export * from './lib/angular/router/index';
