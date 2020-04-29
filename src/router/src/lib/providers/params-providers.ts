@@ -8,8 +8,6 @@ import {
     RouteParamsSnapshot, RouteParamToken, TypedRouteParams,
     TypedRouteParamsSnapshot
 } from '../data/route-params-snapshot';
-import {provideAdminifyProvider} from "./providers";
-import {Provider} from "@angular/core";
 
 export const routeParamsSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: RouteParamsSnapshot,
@@ -107,7 +105,7 @@ export function routeParamProviderFactory(route: ActivatedRoute, token: any): an
     return route.params.pipe(map(d => d[token.param]));
 }
 
-export const paramsProvidersList: AdminifyOutletRouteProviders = [
+export const paramsProviders: AdminifyOutletRouteProviders = [
     routeParamsSnapshotProvider,
     routeParamsProvider,
     typedRouteParamsSnapshotProvider,
@@ -116,15 +114,4 @@ export const paramsProvidersList: AdminifyOutletRouteProviders = [
     routeParamsPropertyProvider,
     routeParamSnapshotProvider,
     routeParamProvider,
-];
-
-export const paramsProviders: Provider[] = [
-    provideAdminifyProvider(routeParamsSnapshotProvider),
-    provideAdminifyProvider(routeParamsProvider),
-    provideAdminifyProvider(typedRouteParamsSnapshotProvider),
-    provideAdminifyProvider(typedRouteParamsProvider),
-    provideAdminifyProvider(routeParamsPropertySnapshotProvider),
-    provideAdminifyProvider(routeParamsPropertyProvider),
-    provideAdminifyProvider(routeParamSnapshotProvider),
-    provideAdminifyProvider(routeParamProvider),
 ];

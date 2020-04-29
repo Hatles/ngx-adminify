@@ -2,17 +2,11 @@ import {Compiler, Injectable, Injector, NgModuleFactoryLoader, NgModuleRef, OnDe
 import {Observable, Subscription, from} from 'rxjs';
 import {concatMap, filter, map, mergeAll, mergeMap} from 'rxjs/operators';
 import {RouterConfigLoaderFactory} from './router-config-loader-factory';
-import {
-    Routes,
-    Route,
-    RouteConfigLoadStart,
-    RouteConfigLoadEnd,
-    NavigationEnd
-} from '../angular/router';
 import {Router} from '../angular/router/router';
 import {PreloadingStrategy} from '../angular/router/router_preloader';
 import {RouterConfigLoader} from "../angular/router/router_config_loader";
-import {LoadedRouterConfig} from "../angular/router/config";
+import {LoadedRouterConfig, Route, Routes} from "../angular/router/config";
+import {NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart} from "../angular/router/events";
 
 
 /**

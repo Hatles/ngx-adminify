@@ -8,8 +8,6 @@ import {map} from 'rxjs/operators';
 import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {Provider} from "@angular/core";
-import {provideAdminifyProvider} from "./providers";
 
 export const routeDataSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: RouteDataSnapshot,
@@ -107,7 +105,7 @@ export function routePropertyProviderFactory(route: ActivatedRoute, token: any):
     return route.data.pipe(map(d => d[token.property] || token.defaultValue));
 }
 
-export const dataProvidersList: AdminifyOutletRouteProviders = [
+export const dataProviders: AdminifyOutletRouteProviders = [
     routeDataSnapshotProvider,
     routeDataProvider,
     typedRouteDataSnapshotProvider,
@@ -118,13 +116,3 @@ export const dataProvidersList: AdminifyOutletRouteProviders = [
     routePropertyProvider,
 ];
 
-export const dataProviders: Provider[] = [
-    provideAdminifyProvider(routeDataSnapshotProvider),
-    provideAdminifyProvider(routeDataProvider),
-    provideAdminifyProvider(typedRouteDataSnapshotProvider),
-    provideAdminifyProvider(typedRouteDataProvider),
-    provideAdminifyProvider(routeDataPropertySnapshotProvider),
-    provideAdminifyProvider(routeDataPropertyProvider),
-    provideAdminifyProvider(routePropertySnapshotProvider),
-    provideAdminifyProvider(routePropertyProvider),
-];

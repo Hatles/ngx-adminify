@@ -1,7 +1,7 @@
-import {Route} from '../angular/router';
 import {Compiler, Injectable, NgModuleFactoryLoader} from '@angular/core';
 import {IRouterConfigLoader} from './router-config-loader';
 import {RouterConfigLoader} from "../angular/router/router_config_loader";
+import {Route} from "../angular/router/config";
 
 export interface IRouterConfigLoaderFactory {
     get(onLoadStartListener?: (r: Route) => void, onLoadEndListener?: (r: Route) => void): IRouterConfigLoader | RouterConfigLoader;

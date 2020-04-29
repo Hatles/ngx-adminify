@@ -6,8 +6,8 @@
  *
  * @publicApi
  */
-import {ActivatedRoute} from './angular/router';
 import {InjectionToken} from '@angular/core';
+import {ActivatedRoute} from "./angular/router/router_state";
 
 export const ADMINIFY_PROVIDER = new InjectionToken<AdminifyOutletRouteProvider>('ADMINIFY_PROVIDER');
 export const ADMINIFY_PROVIDER_ARRAY = new InjectionToken<AdminifyOutletRouteProviders>('ADMINIFY_PROVIDER_ARRAY');

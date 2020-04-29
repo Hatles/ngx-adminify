@@ -1,30 +1,19 @@
 import {
     APP_INITIALIZER,
     ApplicationRef,
-    Compiler, Inject,
+    Inject, Injectable,
     Injector,
     ModuleWithProviders,
     NgModule,
-    NgModuleFactoryLoader,
     Optional,
     Provider
 } from '@angular/core';
 import {
-    ChildrenOutletContexts,
-    Event,
-    ExtraOptions,
-    Route,
     Router,
-    ROUTER_CONFIGURATION,
-    RouteReuseStrategy,
-    RouterPreloader,
-    ROUTES,
-    UrlHandlingStrategy,
-    UrlSerializer
-} from './angular/router';
+} from './angular/router/router';
 import {
     ADMINIFY_PROVIDER,
-    ADMINIFY_PROVIDER_ARRAY,
+    ADMINIFY_PROVIDER_ARRAY, AdminifyOutletRouteProvider,
     AdminifyOutletRouteProviders
 } from './adminify-outlet-route-provider';
 import {AdminifyOutletRouteInjectorFactory} from './services/adminify-outlet-route-injector-factory';
@@ -37,12 +26,21 @@ import {AdminifyRouter} from './services/adminify-router';
 import {AdminifyRouterPreloader} from './services/adminify-router-preloader';
 import {ASYNC_ROUTES} from './services/adminify-router-config-loader';
 import {ɵgetDOM as getDOM} from '@angular/platform-browser';
-import {Location} from '@angular/common';
+import {Location, LOCATION_INITIALIZED} from '@angular/common';
 import * as router from '@angular/router';
 import {RouterModule as ARouterModule} from '@angular/router';
 import {dataProviders} from './providers/data-providers';
 import {paramsProviders} from './providers/params-providers';
-import {provideAdminifyProviders} from "./providers/providers";
+import {ROUTES} from "./angular/router/router_config_loader";
+import {ChildrenOutletContexts} from "./angular/router/router_outlet_context";
+import {ExtraOptions, ROUTER_CONFIGURATION, RouterInitializer} from "./angular/router/router_module";
+import {RouterPreloader} from "./angular/router/router_preloader";
+import {UrlSerializer} from "./angular/router/url_tree";
+import {UrlHandlingStrategy} from "./angular/router/url_handling_strategy";
+import {Route} from "./angular/router/config";
+import {RouteReuseStrategy} from "./angular/router/route_reuse_strategy";
+import {Event} from '@angular/router';
+import {of, Subject} from "rxjs";
 
 @NgModule({
     imports: [
@@ -73,8 +71,8 @@ export class AdminifyRouterModule {
                     provide: RouterConfigLoaderFactory,
                     useClass: AdminifyRouterConfigLoaderFactory
                 },
-                dataProviders,
-                paramsProviders,
+                provideAdminifyProviders(dataProviders),
+                provideAdminifyProviders(paramsProviders),
                 provideAdminifyProviders(config.providers || []),
 
                 {provide: ROUTES, useExisting: router.ROUTES, multi: true},
@@ -93,7 +91,8 @@ export class AdminifyRouterModule {
                 },
                 {provide: router.Router, useExisting: AdminifyRouter},
                 {provide: Router, useExisting: router.Router},
-                {provide: APP_INITIALIZER, useFactory: initRouter, deps: [Injector], multi: true}
+                AdminifyRouterInitializer,
+                {provide: APP_INITIALIZER, useFactory: getAppInitializer, deps: [AdminifyRouterInitializer], multi: true}
             ]
         };
     }
@@ -121,6 +120,15 @@ export class AdminifyRouterModule {
         providersArr.forEach(ps => injectorFactory.addProviders(ps))
     }
 }
+
+export function provideAdminifyProvider(provider: AdminifyOutletRouteProvider): Provider {
+    return {provide: ADMINIFY_PROVIDER, multi: true, useValue: provider};
+}
+
+export function provideAdminifyProviders(providers: AdminifyOutletRouteProviders): Provider {
+    return {provide: ADMINIFY_PROVIDER_ARRAY, multi: true, useValue: providers};
+}
+
 export function provideAsyncRoutes(routes: AsyncRoutes): Provider[] {
     return [
         {provide: ASYNC_ROUTES, multi: true, useValue: routes},
@@ -128,11 +136,9 @@ export function provideAsyncRoutes(routes: AsyncRoutes): Provider[] {
 }
 
 export function provideAsyncRoutesByFactory(factory: (...deps) => AsyncRoutes, deps?: any[]): Provider[] {
-    const emptyRoutes = {provide: ROUTES, multi: true, useValue: []};
-
     return [
         {provide: ASYNC_ROUTES, multi: true, useFactory: factory, deps: deps},
-        emptyRoutes
+        {provide: ROUTES, multi: true, useValue: []}
     ];
 }
 
@@ -149,9 +155,7 @@ export function setupRouter(
     location: Location, injector: Injector,
     config: Route[][], opts: ExtraOptions = {}, urlHandlingStrategy?: UrlHandlingStrategy,
     routeReuseStrategy?: RouteReuseStrategy) {
-    // const router = new AdminifyRouter(factory, null, urlSerializer, contexts, location);
     const router = new AdminifyRouter(factory, null, urlSerializer, contexts, location);
-    // router.construct(factory, null, urlSerializer, contexts, location);
 
     if (urlHandlingStrategy) {
         router.urlHandlingStrategy = urlHandlingStrategy;
@@ -199,11 +203,21 @@ export function setupRouter(
     return router;
 }
 
-export function initRouter(injector: Injector) {
-    return () => new Promise(resolve => {
-        const router = injector.get(AdminifyRouter);
-        router.initRouter(injector).then(config => {
-            resolve(config);
+export function getAppInitializer(r: AdminifyRouterInitializer) {
+    return r.appInitializer.bind(r);
+}
+
+@Injectable()
+export class AdminifyRouterInitializer {
+
+    constructor(private injector: Injector) {}
+
+    appInitializer(): Promise<any> {
+        return new Promise(resolve => {
+            const router = this.injector.get(AdminifyRouter);
+            router.initRouter(this.injector).then(config => {
+                resolve(config);
+            });
         });
-    });
+    }
 }

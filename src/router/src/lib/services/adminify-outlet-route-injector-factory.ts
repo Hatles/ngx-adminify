@@ -1,5 +1,4 @@
 import {Injectable, Injector, Optional} from '@angular/core';
-import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
 import {ActivatedRoute as AActivatedRoute} from '@angular/router';
 import {
     AdminifyOutletRouteProvider,
@@ -7,6 +6,8 @@ import {
     FnAdminifyOutletRouteProvider,
     TokenAdminifyOutletRouteProvider
 } from '../adminify-outlet-route-provider';
+import {ActivatedRoute} from "../angular/router/router_state";
+import {ChildrenOutletContexts} from "../angular/router/router_outlet_context";
 
 @Injectable({providedIn: 'root'})
 export class AdminifyOutletRouteInjectorFactory {
