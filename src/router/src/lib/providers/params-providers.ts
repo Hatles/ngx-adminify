@@ -98,7 +98,7 @@ export const routeParamProvider: AdminifyOutletRouteProvider = {
 };
 
 export function routeParamProviderFn(token: any) {
-    return token === 'RouteParamToken';
+    return token._type === 'RouteParamToken';
 }
 
 export function routeParamProviderFactory(route: ActivatedRoute, token: any): any {

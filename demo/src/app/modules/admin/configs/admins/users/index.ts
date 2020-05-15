@@ -3,7 +3,7 @@ import {AdminActionBaseComponent} from '../../../components/admin-action-base/ad
 import {AdminifyMatListActionComponent} from '../../../../material/components/adminify-mat-list-action/adminify-mat-list-action.component';
 import {AdminViewActionBaseComponent} from '../../../components/admin-view-action-base/admin-view-action-base.component';
 import {AdminEditActionBaseComponent} from '../../../components/admin-edit-action-base/admin-edit-action-base.component';
-import {entityFactory} from '@ngx-adminify/entity';
+import {EntityFactory} from '@ngx-adminify/entity';
 import {userEntity} from '../../entities/users';
 
 export const userAdmin = {
@@ -55,5 +55,5 @@ export const userAdmin = {
     ],
     defaultActionName: 'dashboard',
     entityService: 'users',
-    factory: entityFactory
+    factory: new EntityFactory()
 };

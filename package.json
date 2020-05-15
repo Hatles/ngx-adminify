@@ -1,7 +1,7 @@
 {
   "name": "@ngx-adminify/common",
   "author": "Debard Etienne <etienne1995@orange.fr>",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "_version": "0.0.0-ADMINIFY-VERSION",
   "scripts": {
     "contrib:generate": "githubcontrib --owner Hatles --repo ngx-adminify --cols 6 --sortOrder desc > CONTRIBUTORS.md",
