@@ -14,7 +14,6 @@ import {FormlySelectModule} from '@ngx-formly/core/select';
 import {
     ADMIN_COMPONENT_DECLARATION,
     AdminifyModule,
-    declareAdminComponents,
     provideAdminComponentDeclaration
 } from '@ngx-adminify/core';
 import {FormEntityTypeComponent} from "./components/types/form-entity-type/form-entity-type.component";
