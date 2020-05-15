@@ -1,7 +1,7 @@
 {
   "name": "@ngx-adminify/common",
   "author": "Debard Etienne <etienne1995@orange.fr>",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "_version": "0.0.0-ADMINIFY-VERSION",
   "scripts": {
     "contrib:generate": "githubcontrib --owner Hatles --repo ngx-adminify --cols 6 --sortOrder desc > CONTRIBUTORS.md",
@@ -16,7 +16,7 @@
     "build:entity": "ng build @ngx-adminify/entity",
     "build:material": "ng build @ngx-adminify/material",
     "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
-    "copy:schematics": "cpr src/schematics dist/@ngx-adminify/schematics --delete-first --filter node_modules/",
+    "copy:schematics": "cpr src/schematics dist/@ngx-addeclareAdminFactoryminify/schematics --delete-first --filter node_modules/",
     "release": "standard-version && npm run build && node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",

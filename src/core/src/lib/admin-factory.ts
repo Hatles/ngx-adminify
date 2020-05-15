@@ -8,8 +8,8 @@ export interface IAdminFactory {
     build(injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean): Admin;
 }
 
-export type AdminFactory = (injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean) => Admin;
-
-export const defaultAdminFactory: AdminFactory = (injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean) => {
-    return new Admin(pool, injector.get(AdminComponentDictionary), config, isDefaultAdmin);
-};
+export class DefaultAdminFactory implements IAdminFactory {
+    build(injector: Injector, pool: AdminPoolService, config: AdminConfig, isDefaultAdmin: boolean): Admin {
+        return new Admin(pool, injector.get(AdminComponentDictionary), config, isDefaultAdmin);
+    }
+}

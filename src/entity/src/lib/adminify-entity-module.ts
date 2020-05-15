@@ -9,9 +9,7 @@ import {
     Provider
 } from '@angular/core';
 import {
-    actionDataProviders,
-    adminDataProviders,
-    AdminifyModule, adminifyProviders, adminsDataProviders,
+    AdminifyModule,
     provideAdminAsyncRoutes
 } from '@ngx-adminify/core';
 import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service';
@@ -22,6 +20,7 @@ import {AdminPoolService, processConfig} from '@ngx-adminify/core';
 import {Routes, ROUTES} from '@angular/router';
 import {AsyncRoutesFactory} from '@ngx-adminify/router';
 import {adminifyEntityActionProviders} from './providers/entity-action-config-providers';
+import {EntityFactory} from "./entity-factory";
 
 export function provideEntityServiceProviders(entityServiceProviders: EntityServiceProvider[]): Provider[] {
     const providers = entityServiceProviders.map(e => provideEntityServiceProvider(e));
@@ -62,7 +61,8 @@ export class AdminifyEntityModule {
         return {
             ngModule: AdminifyEntityModule,
             providers: [
-                AdminifyEntityPoolService
+                AdminifyEntityPoolService,
+                EntityFactory
             ]
         };
     }
@@ -144,10 +144,10 @@ export class EntityFactoryAsyncRouteLoader {
     constructor(private pool: AdminPoolService, private entityPool: AdminifyEntityPoolService, private injector: Injector) {
     }
 
-    getPromise(...fdeps: any[]) {
+    getPromise(fdeps: any[]) {
         return new Promise<Routes>(resolve => {
             const configFactory: (...deps: any[]) => Promise<EntityConfig> = this.injector.get(ENTITY_CONFIG_FACTORY_TOKEN);
-            const promise: Promise<EntityConfig> = configFactory.call(null, ...fdeps.slice());
+            const promise: Promise<EntityConfig> = configFactory.apply(null, fdeps.slice());
             promise.then(result => {
                 this.entityPool.registerProviders(result.entities);
                 const config = processConfig(result.admin);

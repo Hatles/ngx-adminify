@@ -1,17 +1,25 @@
-import {Inject, Injectable, InjectionToken, Optional, Provider} from '@angular/core';
-import {AdminFactory} from './admin-factory';
+import {Inject, Injectable, InjectionToken, Injector, Optional, Provider, Type} from '@angular/core';
+import {IAdminFactory} from './admin-factory';
 
 export const ADMIN_FACTORY_DECLARATION = new InjectionToken<AdminFactoryDeclaration>('ADMIN_FACTORY_DECLARATION');
 
 export interface AdminFactoryDeclaration {
     name: string;
-    factory: AdminFactory;
+    instance?: IAdminFactory;
+    factory?: Type<IAdminFactory>;
 }
 
-export function declareAdminFactory(name: string, factory: AdminFactory): Provider {
+export function declareAdminFactory(name: string, factory: Type<IAdminFactory>): Provider {
     return provideAdminFactoryDeclaration({
         name: name,
         factory: factory
+    });
+}
+
+export function declareAdminFactoryInstance(name: string, factory: IAdminFactory): Provider {
+    return provideAdminFactoryDeclaration({
+        name: name,
+        instance: factory
     });
 }
 
@@ -31,18 +39,30 @@ export function declareAdminFactories(declarations: AdminFactoryDeclaration[]): 
 export class AdminFactoryDictionary {
     private factories: AdminFactoryDeclaration[];
 
-    constructor(@Inject(ADMIN_FACTORY_DECLARATION) @Optional() factories: AdminFactoryDeclaration[]) {
+    constructor(@Inject(ADMIN_FACTORY_DECLARATION) @Optional() factories: AdminFactoryDeclaration[],
+                private injector: Injector) {
         this.factories = factories;
     }
 
-    get(factory: string): AdminFactory {
+    get(factory: string): IAdminFactory {
         const factoryDeclaration = this.factories.find(c => c.name === factory);
-        return factoryDeclaration ? factoryDeclaration.factory : undefined;
+
+        if(!factoryDeclaration.instance && factoryDeclaration.factory) {
+            factoryDeclaration.instance = this.injector.get(factoryDeclaration.factory);
+        }
+
+        return factoryDeclaration ? factoryDeclaration.instance : undefined;
     }
 
-    add(name: string, factory: AdminFactory) {
+    add(name: string, factory: Type<IAdminFactory>) {
         return this.factories.push({
             name: name, factory: factory
+        });
+    }
+
+    addInstance(name: string, factory: IAdminFactory) {
+        return this.factories.push({
+            name: name, instance: factory
         });
     }
 }

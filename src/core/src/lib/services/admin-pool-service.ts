@@ -3,7 +3,7 @@ import {Data, Route, Routes} from '@angular/router';
 import {Admin} from '../admin';
 import {AdminConfig, AdminsConfig} from '../admin-config';
 import {AdminifyEmptyOutletComponent, IDataProvider} from '@ngx-adminify/router';
-import {AdminFactory, defaultAdminFactory, IAdminFactory} from '../admin-factory';
+import {IAdminFactory, DefaultAdminFactory} from '../admin-factory';
 import {AdminGuard} from '../guards/admin-guard';
 import {AdminComponentDictionary} from '../admin-component-dictionary';
 import {AdminFactoryDictionary} from '../admin-factory-dictionary';
@@ -44,7 +44,7 @@ export class AdminPoolService implements IDataProvider {
 
     private processConfig(componentDictionary: AdminComponentDictionary, factoryDictionary: AdminFactoryDictionary) {
         if (!this.adminsConfig.defaultAdminFactory) {
-            this.adminsConfig.defaultAdminFactory = defaultAdminFactory;
+            this.adminsConfig.defaultAdminFactory = new DefaultAdminFactory();
         }
 
         if (!this.adminsConfig.adminGuards) {
@@ -74,7 +74,7 @@ export class AdminPoolService implements IDataProvider {
     }
 
     private buildAdmin(config: AdminConfig, injector: Injector, factoryDictionary: AdminFactoryDictionary): Admin {
-        let factory: AdminFactory;
+        let factory: IAdminFactory;
         if (config.factory) {
             factory = config.factory;
         } else {
@@ -87,9 +87,7 @@ export class AdminPoolService implements IDataProvider {
             }
         }
 
-        const admin = typeof factory === 'function' ?
-            factory(injector, this, config, this.adminsConfig.defaultAdminName === config.name) :
-            (factory as IAdminFactory).build(injector, this, config, this.adminsConfig.defaultAdminName === config.name);
+        const admin = factory.build(injector, this, config, this.adminsConfig.defaultAdminName === config.name);
 
         admin.resolveGuards(injector);
         this.adminsWithConfig.push({

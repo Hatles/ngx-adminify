@@ -1,7 +1,6 @@
 import {Data, Route} from '@angular/router';
 import {AdminActionConfig} from './admin-action-config';
-import {AdminFactory} from './admin-factory';
-import {Type} from '@angular/core';
+import {IAdminFactory} from './admin-factory';
 
 export interface AdminsConfig extends BaseAdminsConfig {
     // [key: string]: any;
@@ -15,7 +14,7 @@ interface BaseAdminsConfig extends Route {
     defaultRoute?: Route;
     defaultRoutePath?: string;
     defaultAdminName?: string;
-    defaultAdminFactory?: AdminFactory;
+    defaultAdminFactory?: IAdminFactory;
     defaultAdminFactoryName?: string;
     wildcardRoute?: Route;
     wildcardRedirectToAdminRoot?: boolean;
@@ -38,7 +37,7 @@ export interface BaseAdminConfig extends Route {
     actions?: AdminActionConfig[];
     adminGuards?: any[];
     actionGuards?: any[];
-    factory?: AdminFactory;
+    factory?: IAdminFactory;
     factoryName?: string;
     factoryToken?: any;
     defaultActionRouteGuards?: any[]; // CanActivate
