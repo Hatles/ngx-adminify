@@ -1,13 +1,12 @@
-import {Injectable, Injector, Optional} from '@angular/core';
-import {ActivatedRoute as AActivatedRoute} from '@angular/router';
+import {Injectable, Injector} from '@angular/core';
+import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
+import {ActivatedRoute as AActivatedRoute, ChildrenOutletContexts as AChildrenOutletContexts} from '@angular/router';
 import {
     AdminifyOutletRouteProvider,
     AdminifyOutletRouteProviders,
     FnAdminifyOutletRouteProvider,
     TokenAdminifyOutletRouteProvider
 } from '../adminify-outlet-route-provider';
-import {ActivatedRoute} from "../angular/router/router_state";
-import {ChildrenOutletContexts} from "../angular/router/router_outlet_context";
 
 @Injectable({providedIn: 'root'})
 export class AdminifyOutletRouteInjectorFactory {
@@ -16,9 +15,6 @@ export class AdminifyOutletRouteInjectorFactory {
     constructor() {
         this.providers = [];
     }
-    // constructor(providers: AdminifyOutletRouteProviders) {
-    //     this.providers = providers ? providers : [];
-    // }
 
     // tslint:disable-next-line:max-line-length
     get(route: ActivatedRoute, childContexts: ChildrenOutletContexts, parent: Injector): AdminOutletInjector {
@@ -71,7 +67,7 @@ class AdminOutletInjector implements Injector {
             return this.route;
         }
 
-        if (token === ChildrenOutletContexts) {
+        if (token === ChildrenOutletContexts || token === AChildrenOutletContexts) {
             return this.childContexts;
         }
 
