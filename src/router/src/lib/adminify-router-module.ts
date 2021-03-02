@@ -154,7 +154,7 @@ export function setupRouter(
     location: Location, injector: Injector,
     config: Route[][], opts: ExtraOptions = {}, urlHandlingStrategy?: UrlHandlingStrategy,
     routeReuseStrategy?: RouteReuseStrategy) {
-    const router = new AdminifyRouter(factory, null, urlSerializer, contexts, location);
+    const router = new AdminifyRouter(factory, null, urlSerializer, contexts, location, injector);
 
     if (urlHandlingStrategy) {
         router.urlHandlingStrategy = urlHandlingStrategy;

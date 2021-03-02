@@ -189,16 +189,9 @@ export class AdminifyRouter {
         private rootComponentType: Type<any>|null,
         private urlSerializer: UrlSerializer,
         private rootContexts: ChildrenOutletContexts,
-        private location: Location
+        private location: Location,
+        injector: Injector
     ) {
-    }
-
-    public initRouter(injector: Injector): Promise<Routes> {
-        return loadConfig(injector).pipe(map(config => this.initRouterWithConfig(injector, flatten(config).map(standardizeConfig)))).toPromise()
-    }
-
-    public initRouterWithConfig(injector: Injector, config: Routes): Routes {
-        this.config = config;
         const onStartLoad = (r: Route) => this.triggerEvent(new RouteConfigLoadStart(r));
         const onEndLoad = (r: Route) => this.triggerEvent(new RouteConfigLoadEnd(r));
 
@@ -207,12 +200,26 @@ export class AdminifyRouter {
         const ngZone = injector.get(NgZone);
         this.isNgZoneEnabled = ngZone instanceof NgZone;
 
-        this.resetConfig(config);
         this.currentUrlTree = createEmptyUrlTree();
         this.rawUrlTree = this.currentUrlTree;
         this.browserUrlTree = this.currentUrlTree;
 
         this.configLoader = this.routerConfigLoaderFactory.get(onStartLoad, onEndLoad);
+        this.routerState = createEmptyState(this.currentUrlTree, this.rootComponentType);
+    }
+
+    public initRouter(injector: Injector): Promise<Routes> {
+        return loadConfig(injector).pipe(map(config => this.initRouterWithConfig(injector, flatten(config).map(standardizeConfig)))).toPromise()
+    }
+
+    public initRouterWithConfig(injector: Injector, config: Routes): Routes {
+        this.config = config;
+
+        this.resetConfig(config);
+        this.currentUrlTree = createEmptyUrlTree();
+        this.rawUrlTree = this.currentUrlTree;
+        this.browserUrlTree = this.currentUrlTree;
+
         this.routerState = createEmptyState(this.currentUrlTree, this.rootComponentType);
 
         this.transitions = new BehaviorSubject<NavigationTransition>({

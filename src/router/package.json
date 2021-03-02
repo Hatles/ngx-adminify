@@ -4,7 +4,18 @@
     "license": "MIT",
     "homepage": "https://github.com/Hatles/ngx-adminify#readme",
     "description": "ngx-adminify is an Angular 2 module.",
-    "keywords": ["angular", "admin", "ng-adminify", "ngx-adminify", "adminify", "angular 2", "angular 2 admin", "json admin", "admin library", "dynamic-admin"],
+    "keywords": [
+        "angular",
+        "admin",
+        "ng-adminify",
+        "ngx-adminify",
+        "adminify",
+        "angular 2",
+        "angular 2 admin",
+        "json admin",
+        "admin library",
+        "dynamic-admin"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Hatles/ngx-adminify.git"
@@ -12,8 +23,7 @@
     "bugs": {
         "url": "https://github.com/Hatles/ngx-adminify/issues"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "peerDependencies": {
         "@angular/core": ">=8.0.0",
         "@angular/common": ">=8.0.0",

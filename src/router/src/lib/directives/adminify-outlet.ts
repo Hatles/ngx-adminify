@@ -21,6 +21,7 @@ import {
 import {AdminifyOutletRouteInjectorFactory} from '../services/adminify-outlet-route-injector-factory';
 import {ActivatedRoute} from "../angular/router/router_state";
 import {ChildrenOutletContexts} from "../angular/router/router_outlet_context";
+import {ChildrenOutletContexts as AChildrenOutletContexts, ActivatedRoute as AActivatedRoute} from "@angular/router";
 import {PRIMARY_OUTLET} from "../angular/router/shared";
 import {Data} from "../angular/router/config";
 
@@ -51,7 +52,7 @@ import {Data} from "../angular/router/config";
  * @publicApi
  */
 // tslint:disable-next-line:directive-selector
-@Directive({selector: 'admin-outlet', exportAs: 'adminOutlet'})
+@Directive({selector: 'admin-outlet', exportAs: 'outlet'})
 // tslint:disable-next-line:directive-class-suffix
 export class AdminifyOutlet
     // implements OnDestroy, OnInit
@@ -65,17 +66,16 @@ export class AdminifyOutlet
     @Output('activate') activateEvents = new EventEmitter<any>();
     // tslint:disable-next-line:no-output-rename
     @Output('deactivate') deactivateEvents = new EventEmitter<any>();
-    private parentContexts: ChildrenOutletContexts;
+
     constructor(
         private routeInjectorFactory: AdminifyOutletRouteInjectorFactory,
-        // private parentContexts: ChildrenOutletContexts,
+        private parentContexts: ChildrenOutletContexts,
         private location: ViewContainerRef,
         private resolver: ComponentFactoryResolver, @Attribute('name') name: string,
         private changeDetector: ChangeDetectorRef,
         private injector: Injector
     ) {
         this.name = name || PRIMARY_OUTLET;
-        this.parentContexts = injector.get(ChildrenOutletContexts);
         // tslint:disable-next-line
         this.parentContexts.onChildOutletCreated(this.name, <any>this);
     }
@@ -160,12 +160,35 @@ export class AdminifyOutlet
         const component = <any>snapshot.routeConfig !.component;
         resolver = resolver || this.resolver;
         const factory = resolver.resolveComponentFactory(component);
+
+        // !!!!!! changes from vanilla
         const childContexts = this.parentContexts.getOrCreateContext(this.name).children;
-        const injector = this.routeInjectorFactory.get(activatedRoute, childContexts, this.location.injector);
+        const routeInjector = this.routeInjectorFactory.get(activatedRoute, childContexts, this.location.injector);
+        // !!!!
+
+        const injector = new AdminifyOutletInjector(activatedRoute, childContexts, routeInjector);
         this.activated = this.location.createComponent(factory, this.location.length, injector);
         // Calling `markForCheck` to make sure we will run the change detection when the
         // `RouterOutlet` is inside a `ChangeDetectionStrategy.OnPush` component.
         this.changeDetector.markForCheck();
         this.activateEvents.emit(this.activated.instance);
+    }
+}
+
+class AdminifyOutletInjector implements Injector {
+    constructor(
+        private route: ActivatedRoute, private childContexts: ChildrenOutletContexts,
+        private parent: Injector) {}
+
+    get(token: any, notFoundValue?: any): any {
+        if (token === ActivatedRoute || token === AActivatedRoute) {
+            return this.route;
+        }
+
+        if (token === ChildrenOutletContexts || token === AChildrenOutletContexts) {
+            return this.childContexts;
+        }
+
+        return this.parent.get(token, notFoundValue);
     }
 }
