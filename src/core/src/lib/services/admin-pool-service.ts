@@ -2,11 +2,12 @@ import {Injectable, Injector} from '@angular/core';
 import {Data, Route, Routes} from '@angular/router';
 import {Admin} from '../admin';
 import {AdminConfig, AdminsConfig} from '../admin-config';
-import {AdminifyEmptyOutletComponent, IDataProvider} from '@ngx-adminify/router';
 import {IAdminFactory, DefaultAdminFactory} from '../admin-factory';
 import {AdminGuard} from '../guards/admin-guard';
 import {AdminComponentDictionary} from '../admin-component-dictionary';
 import {AdminFactoryDictionary} from '../admin-factory-dictionary';
+import {IDataProvider} from '../data/data-provider';
+import {EmptyOutletComponent} from '@ngx-adminify/router';
 
 export interface AdminWithConfig {
     admin: Admin;
@@ -186,7 +187,7 @@ export class AdminPoolService implements IDataProvider {
     private wrapWithAdminRouter(routes: Routes): Routes {
         return [{
             path: '',
-            component: AdminifyEmptyOutletComponent,
+            component: EmptyOutletComponent,
             children: routes
         }];
     }

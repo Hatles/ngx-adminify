@@ -1,6 +1,6 @@
 import {ActivatedRoute} from '@angular/router';
 
-export function getFisrtParent(route: ActivatedRoute, conditionFn: (route: ActivatedRoute) => boolean): ActivatedRoute {
+export function getFirstParent(route: ActivatedRoute, conditionFn: (route: ActivatedRoute) => boolean): ActivatedRoute {
     if (conditionFn(route)) {
         return route;
     }
@@ -15,13 +15,13 @@ export function getFisrtParent(route: ActivatedRoute, conditionFn: (route: Activ
 }
 
 export function getFisrtParentWithData(route: ActivatedRoute, dataName: string): ActivatedRoute {
-    return getFisrtParent(route, (r => r.snapshot.data.hasOwnProperty(dataName)));
+    return getFirstParent(route, (r => r.snapshot.data.hasOwnProperty(dataName)));
 }
 
-export function getFisrtParentWithDataEquals(route: ActivatedRoute, dataName: string, dataValue: any): any {
-    return getFisrtParent(route, (r => r.snapshot.data[dataName] === dataValue));
+export function getFirstParentWithDataEquals(route: ActivatedRoute, dataName: string, dataValue: any): any {
+    return getFirstParent(route, (r => r.snapshot.data[dataName] === dataValue));
 }
 
-export function getFisrtParentData(route: ActivatedRoute, dataName: string): any {
+export function getFirstParentData(route: ActivatedRoute, dataName: string): any {
     return getFisrtParentWithData(route, dataName).snapshot.data[dataName];
 }

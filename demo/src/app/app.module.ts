@@ -23,7 +23,7 @@ import {DialogModule} from './dialog/dialog.module';
         SharedModule,
         HttpClientModule,
         AdminifyModule.forRoot(),
-        AdminifyRouterModule.fotRoot(),
+        AdminifyRouterModule.forRoot(),
         AdminifyEntityModule.fotRoot(),
         EntityRestModule.forRoot({}, {root: 'https://jsonplaceholder.typicode.com', getDelay: 1000, saveDelay: 1000}),
         FormlyModule.forRoot(),

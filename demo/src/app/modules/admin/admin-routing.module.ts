@@ -12,6 +12,7 @@ import {AdminEditActionBaseComponent} from './components/admin-edit-action-base/
 import {admins} from './configs/admins';
 import {entities} from './configs/configs';
 import {AdminComponentDeclaration} from '@ngx-adminify/core';
+import {RouterModule} from '@angular/router';
 
 export const adminComponentDeclarations: AdminComponentDeclaration[] = [
     { name: 'AdminRootComponent', component: AdminRootComponent},
@@ -51,6 +52,7 @@ export function buildEntityConfigFactory(): Promise<EntityConfig> {
         AdminifyMatModule,
         // AdminifyModule.withConfig(admins),
         // AdminifyEntityModule.forChild(entities),
+        RouterModule,
         AdminifyEntityModule.withConfigFactory(buildEntityConfigFactory, []),
         // AdminifyModule.withConfigFactory(buildConfigFactory, []),
         // AdminifyModule.withBuilder({
@@ -67,7 +69,6 @@ export function buildEntityConfigFactory(): Promise<EntityConfig> {
         // })),
     ],
     exports: [
-        AdminifyModule,
     ],
     providers: []
 })

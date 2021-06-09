@@ -5,7 +5,7 @@ import {Admin} from '../admin';
 
 export const adminDataProvider: AdminifyOutletRouteProvider = {
     provide: AdminData,
-    factory: adminDataProviderFn,
+    useFactory: adminDataProviderFn,
     deps: [Admin]
 };
 export function adminDataProviderFn(route: ActivatedRoute, token: any, admin: Admin): AdminData {
@@ -14,7 +14,7 @@ export function adminDataProviderFn(route: ActivatedRoute, token: any, admin: Ad
 
 export const typedAdminDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedAdminData,
-    factory: typedAdminDataProviderFn,
+    useFactory: typedAdminDataProviderFn,
     deps: [Admin]
 };
 export function typedAdminDataProviderFn(route: ActivatedRoute, token: any, admin: Admin): TypedAdminData<any> {
@@ -23,7 +23,7 @@ export function typedAdminDataProviderFn(route: ActivatedRoute, token: any, admi
 
 export const adminDataPropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: adminDataPropertyProviderProvideFn,
-    factory: adminDataPropertyProviderFn,
+    useFactory: adminDataPropertyProviderFn,
     deps: [Admin]
 };
 export function adminDataPropertyProviderProvideFn(token: any) {

@@ -5,13 +5,13 @@ import {
     RouteDataSnapshot, RoutePropertySnapshotToken, RoutePropertyToken, TypedRouteData, TypedRouteDataSnapshot
 } from '../data/route-data-snapshot';
 import {map} from 'rxjs/operators';
-import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
+import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from './providers';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 
 export const routeDataSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: RouteDataSnapshot,
-    factory: routeDataSnapshotProviderFactory,
+    useFactory: routeDataSnapshotProviderFactory,
     deps: []
 };
 
@@ -21,7 +21,7 @@ export function routeDataSnapshotProviderFactory(route: ActivatedRoute, token: a
 
 export const routeDataProvider: AdminifyOutletRouteProvider = {
     provide: RouteData,
-    factory: routeDataProviderFactory,
+    useFactory: routeDataProviderFactory,
     deps: []
 };
 
@@ -31,7 +31,7 @@ export function routeDataProviderFactory(route: ActivatedRoute, token: any): Rou
 
 export const typedRouteDataSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: TypedRouteDataSnapshot,
-    factory: typedRouteDataSnapshotProviderFactory,
+    useFactory: typedRouteDataSnapshotProviderFactory,
     deps: []
 };
 
@@ -41,7 +41,7 @@ export function typedRouteDataSnapshotProviderFactory(route: ActivatedRoute, tok
 
 export const typedRouteDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedRouteData,
-    factory: typedRouteDataProviderFactory,
+    useFactory: typedRouteDataProviderFactory,
     deps: []
 };
 
@@ -51,7 +51,7 @@ export function typedRouteDataProviderFactory(route: ActivatedRoute, token: any)
 
 export const routeDataPropertySnapshotProvider: AdminifyOutletRouteProvider = {
     provideFn: routeDataPropertySnapshotProviderFn,
-    factory: routeDataPropertySnapshotProviderFactory,
+    useFactory: routeDataPropertySnapshotProviderFactory,
     deps: []
 };
 
@@ -65,7 +65,7 @@ export function routeDataPropertySnapshotProviderFactory(route: ActivatedRoute, 
 
 export const routeDataPropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: routeDataPropertyProviderFn,
-    factory: routeDataPropertyProviderFactory,
+    useFactory: routeDataPropertyProviderFactory,
     deps: []
 };
 
@@ -79,7 +79,7 @@ export function routeDataPropertyProviderFn(token: any): boolean {
 
 export const routePropertySnapshotProvider: AdminifyOutletRouteProvider = {
     provideFn: routePropertySnapshotProviderFn,
-    factory: routePropertySnapshotProviderFactory,
+    useFactory: routePropertySnapshotProviderFactory,
     deps: []
 };
 
@@ -93,7 +93,7 @@ export function routePropertySnapshotProviderFactory(route: ActivatedRoute, toke
 
 export const routePropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: routePropertyProviderFn,
-    factory: routePropertyProviderFactory,
+    useFactory: routePropertyProviderFactory,
     deps: []
 };
 

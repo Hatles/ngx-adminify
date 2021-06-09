@@ -14,13 +14,17 @@ import {
 } from '@ngx-adminify/core';
 import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service';
 import {ENTITY_SERVICE_PROVIDER, EntityConfig, EntityServiceProvider} from './entity-config';
-import {AdminifyRouterModule, provideAdminifyProviders, provideAsyncRoutesFactory} from '@ngx-adminify/router';
+import {
+    AdminifyRouterModule,
+    AsyncRoutesFactoryDefinition, provideAdminifyProviders,
+    provideAsyncRoutesFactory, provideAsyncRoutesInitializer
+} from '@ngx-adminify/router';
 import {adminifyEntityGenericProviders} from './providers/entity-service-generic-providers';
 import {AdminPoolService, processConfig} from '@ngx-adminify/core';
 import {Routes, ROUTES} from '@angular/router';
-import {AsyncRoutesFactory} from '@ngx-adminify/router';
 import {adminifyEntityActionProviders} from './providers/entity-action-config-providers';
-import {EntityFactory} from "./entity-factory";
+import {EntityFactory} from './entity-factory';
+import {AdminifyOutletRouteInjectorFactory} from "../../../router/src/lib/services/adminify-outlet-route-injector-factory";
 
 export function provideEntityServiceProviders(entityServiceProviders: EntityServiceProvider[]): Provider[] {
     const providers = entityServiceProviders.map(e => provideEntityServiceProvider(e));
@@ -31,21 +35,10 @@ export function provideEntityServiceProvider(provider: EntityServiceProvider): P
     return {provide: ENTITY_SERVICE_PROVIDER, multi: true, useValue: provider};
 }
 
-const providers = [
-    ...adminifyEntityGenericProviders,
-    ...adminifyEntityActionProviders
-];
-
-const adminifyRouterModuleImport =
-    {
-        ngModule: AdminifyRouterModule,
-        providers: [provideAdminifyProviders(providers)]
-    };
-
 @NgModule({
     imports: [
         AdminifyModule,
-        adminifyRouterModuleImport
+        AdminifyRouterModule
     ],
     exports: [
         AdminifyModule,
@@ -57,33 +50,39 @@ const adminifyRouterModuleImport =
 })
 export class AdminifyEntityModule {
     // save admin components with key for json config
-    static fotRoot(): ModuleWithProviders {
+    static fotRoot(): ModuleWithProviders<AdminifyEntityModule> {
         return {
             ngModule: AdminifyEntityModule,
             providers: [
                 AdminifyEntityPoolService,
-                EntityFactory
+                EntityFactory,
+
+                AdminifyOutletRouteInjectorFactory,
+                provideAdminifyProviders([
+                    ...adminifyEntityGenericProviders,
+                    ...adminifyEntityActionProviders
+                ])
             ]
         };
     }
 
-    static forChild(config: EntityConfig): ModuleWithProviders {
+    static forChild(config: EntityConfig): ModuleWithProviders<AdminifyEntityModule> {
         return {
             ngModule: AdminifyEntityModule,
             providers: [
                 AdminifyEntityPoolService,
                 ...provideEntityServiceProviders(config.entities || []),
-                provideAdminAsyncRoutes(config.admin),
+                ...provideAdminAsyncRoutes(config.admin),
             ]
         };
     }
 
-    static withConfigFactory(factory: EntityConfigFactory, deps?: any[]): ModuleWithProviders {
+    static withConfigFactory(factory: EntityConfigFactory, deps?: any[]): ModuleWithProviders<AdminifyEntityModule> {
         return {
             ngModule: AdminifyEntityModule,
             providers: [
                 AdminifyEntityPoolService,
-                provideEntityAsyncRoutesFactory(factory, deps || [])
+                ...provideEntityAsyncRoutesFactory(factory, deps || [])
             ]
         };
     }
@@ -126,12 +125,12 @@ export function provideEntityAsyncRoutesFactory(factory: (...deps: any[]) => Pro
         provideAsyncRoutesFactory(createAsyncRoutesFromEntityConfig(deps)),
         EntityFactoryAsyncRouteLoader,
         {provide: ENTITY_CONFIG_FACTORY_TOKEN, useValue: factory},
-        {provide: ROUTES, multi: true, useValue: []}
+        provideAsyncRoutesInitializer()
     ];
 }
 
 // tslint:disable-next-line:max-line-length
-export function createAsyncRoutesFromEntityConfig(deps: any[]): AsyncRoutesFactory {
+export function createAsyncRoutesFromEntityConfig(deps: any[]): AsyncRoutesFactoryDefinition {
     return {
         factory: createAsyncRoutesFromEntityConfigFactory,
         deps: [EntityFactoryAsyncRouteLoader, ...deps]
@@ -161,5 +160,5 @@ export class EntityFactoryAsyncRouteLoader {
 export const ENTITY_CONFIG_FACTORY_TOKEN = new InjectionToken<(...deps: any[]) => Promise<EntityConfig>>('ENTITY_CONFIG_FACTORY_TOKEN');
 
 export function createAsyncRoutesFromEntityConfigFactory(loader: EntityFactoryAsyncRouteLoader, ...fdeps: any[]) {
-    return loader.getPromise(fdeps)
+    return () => loader.getPromise(fdeps);
 }

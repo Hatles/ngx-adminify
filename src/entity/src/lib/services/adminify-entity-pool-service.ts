@@ -117,7 +117,10 @@ export class AdminifyEntityPoolService implements Injector {
 
         const factoryProvider = provider as EntityFactoryProvider;
         if (factoryProvider.useFactory) {
-            return this.registerService(provider.provide, factoryProvider.useFactory.apply(null, (factoryProvider.deps || []).map(d => this.get(d))));
+            return this.registerService(
+                provider.provide,
+                factoryProvider.useFactory.apply(null, (factoryProvider.deps || []).map(d => this.get(d)))
+            );
         }
 
         throw new Error('Invalid async entity provider with name :"' + provider.provide + '"');

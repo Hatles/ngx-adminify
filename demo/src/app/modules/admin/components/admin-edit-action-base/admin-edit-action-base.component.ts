@@ -2,11 +2,11 @@ import {Component, Inject, Injector, OnDestroy, OnInit} from '@angular/core';
 import {AdminActionBaseComponent} from '../admin-action-base/admin-action-base.component';
 import {Admin, AdminAction} from '@ngx-adminify/core';
 import {AdminifyEntityService, EntityEditConfigsToken, EntityEditMode, EntityEditModeToken} from '@ngx-adminify/entity';
-import {RouteData, RouteParam, RoutePropertySnapshot} from '@ngx-adminify/router';
 import {FormlyFieldConfig} from '@ngx-formly/core';
 import {Observable, Subject} from 'rxjs';
 import {switchMap, takeUntil} from 'rxjs/operators';
 import {FormGroup} from '@angular/forms';
+import {RouteParam} from '@ngx-adminify/router';
 
 @Component({
     selector: 'demo-admin-edit-action-base',
@@ -22,7 +22,7 @@ export class AdminEditActionBaseComponent extends AdminActionBaseComponent imple
     onDestroy: Subject<void> = new Subject();
     createMode: boolean;
 
-    id: Observable<string>
+    id: Observable<string>;
 
     constructor(
         admin: Admin,

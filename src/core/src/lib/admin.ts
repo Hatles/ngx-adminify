@@ -6,8 +6,8 @@ import {AdminAction} from './admin-action';
 import {Injector} from '@angular/core';
 import {AdminActionGuard} from './guards/admin-action-guard';
 import {AdminGuard} from './guards/admin-guard';
-import {IDataProvider} from '@ngx-adminify/router';
 import {AdminComponentDictionary} from './admin-component-dictionary';
+import {IDataProvider} from "./data/data-provider";
 
 export class Admin implements IDataProvider {
 

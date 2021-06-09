@@ -1,5 +1,5 @@
 import {map} from 'rxjs/operators';
-import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from '../adminify-outlet-route-provider';
+import {AdminifyOutletRouteProvider, AdminifyOutletRouteProviders} from './providers';
 import {ActivatedRoute} from '@angular/router';
 import {
     RouteParams, RouteParamSnapshotToken,
@@ -11,7 +11,7 @@ import {
 
 export const routeParamsSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: RouteParamsSnapshot,
-    factory: routeParamsSnapshotProviderFactory,
+    useFactory: routeParamsSnapshotProviderFactory,
     deps: []
 };
 
@@ -21,7 +21,7 @@ export function routeParamsSnapshotProviderFactory(route: ActivatedRoute, token:
 
 export const routeParamsProvider: AdminifyOutletRouteProvider = {
     provide: RouteParams,
-    factory: routeParamsProviderFactory,
+    useFactory: routeParamsProviderFactory,
     deps: []
 };
 
@@ -31,7 +31,7 @@ export function routeParamsProviderFactory(route: ActivatedRoute, token: any): R
 
 export const typedRouteParamsSnapshotProvider: AdminifyOutletRouteProvider = {
     provide: TypedRouteParamsSnapshot,
-    factory: typedRouteParamsSnapshotProviderFactory,
+    useFactory: typedRouteParamsSnapshotProviderFactory,
     deps: []
 };
 
@@ -41,7 +41,7 @@ export function typedRouteParamsSnapshotProviderFactory(route: ActivatedRoute, t
 
 export const typedRouteParamsProvider: AdminifyOutletRouteProvider = {
     provide: TypedRouteParams,
-    factory: typedRouteParamsProviderFactory,
+    useFactory: typedRouteParamsProviderFactory,
     deps: []
 };
 
@@ -51,7 +51,7 @@ export function typedRouteParamsProviderFactory(route: ActivatedRoute, token: an
 
 export const routeParamsPropertySnapshotProvider: AdminifyOutletRouteProvider = {
     provideFn: routeParamsPropertySnapshotProviderFn,
-    factory: routeParamsPropertySnapshotProviderFactory,
+    useFactory: routeParamsPropertySnapshotProviderFactory,
     deps: []
 };
 
@@ -65,7 +65,7 @@ export function routeParamsPropertySnapshotProviderFactory(route: ActivatedRoute
 
 export const routeParamsPropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: routeParamsPropertyProviderFn,
-    factory: routeParamsPropertyProviderFactory,
+    useFactory: routeParamsPropertyProviderFactory,
     deps: []
 };
 
@@ -79,7 +79,7 @@ export function routeParamsPropertyProviderFactory(route: ActivatedRoute, token:
 
 export const routeParamSnapshotProvider: AdminifyOutletRouteProvider = {
     provideFn: routeParamSnapshotProviderFn,
-    factory: routeParamSnapshotProviderFactory,
+    useFactory: routeParamSnapshotProviderFactory,
     deps: []
 };
 
@@ -93,7 +93,7 @@ export function routeParamSnapshotProviderFactory(route: ActivatedRoute, token: 
 
 export const routeParamProvider: AdminifyOutletRouteProvider = {
     provideFn: routeParamProviderFn,
-    factory: routeParamProviderFactory,
+    useFactory: routeParamProviderFactory,
     deps: []
 };
 

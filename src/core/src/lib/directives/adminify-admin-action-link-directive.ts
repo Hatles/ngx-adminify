@@ -9,14 +9,13 @@ import {
     OnDestroy,
     Renderer2
 } from '@angular/core';
-import {QueryParamsHandling, Router, UrlTree} from '@angular/router';
+import {NavigationEnd, QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {Admin} from '../admin';
 import {RouteParametersValues} from '../services/admin-route-builder';
 import {AdminActivatedRoute} from '../admin-activated-route';
-import {Subscription} from "rxjs";
-import {Event, NavigationEnd} from "@ngx-adminify/router";
-import {LocationStrategy} from "@angular/common";
-import {AdminRootRoute} from "../admin-root-route";
+import {Subscription} from 'rxjs';
+import {LocationStrategy} from '@angular/common';
+import {AdminRootRoute} from '../admin-root-route';
 import {AdminPoolService} from '../services/admin-pool-service';
 
 // tslint:disable-next-line:directive-selector
@@ -81,7 +80,7 @@ export class AdminifyAdminActionLinkDirective {
 
     get urlTree(): UrlTree {
         return this.router.createUrlTree(this.commands, {
-            relativeTo: <any>this.route,
+            relativeTo: this.route as any,
             queryParams: this.queryParams,
             fragment: this.fragment,
             preserveQueryParams: attrBoolValue(this.preserve),
@@ -124,7 +123,7 @@ export class AdminifyAdminActionLinkWithHrefDirective implements OnChanges, OnDe
         private pool: AdminPoolService,
         private router: Router, private rootRoute: AdminRootRoute, private route: AdminActivatedRoute,
         private locationStrategy: LocationStrategy) {
-        this.subscription = router.events.subscribe((s: Event) => {
+        this.subscription = router.events.subscribe((s) => {
             if (s instanceof NavigationEnd) {
                 this.updateTargetUrlAndHref();
             }
@@ -160,7 +159,7 @@ export class AdminifyAdminActionLinkWithHrefDirective implements OnChanges, OnDe
 
     @Input()
     set preserveQueryParams(value: boolean) {
-        if (isDevMode() && <any>console && <any>console.warn) {
+        if (isDevMode() && console as any && console.warn as any) {
             console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
         }
         this.preserve = value;
@@ -175,7 +174,7 @@ export class AdminifyAdminActionLinkWithHrefDirective implements OnChanges, OnDe
             return true;
         }
 
-        if (typeof this.target === 'string' && this.target != '_self') {
+        if (typeof this.target === 'string' && this.target !== '_self') {
             return true;
         }
 
@@ -194,7 +193,7 @@ export class AdminifyAdminActionLinkWithHrefDirective implements OnChanges, OnDe
 
     get urlTree(): UrlTree {
         return this.router.createUrlTree(this.commands, {
-            relativeTo: <any>this.rootRoute,
+            relativeTo: this.rootRoute as any,
             queryParams: this.queryParams,
             fragment: this.fragment,
             preserveQueryParams: attrBoolValue(this.preserve),

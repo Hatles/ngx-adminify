@@ -12,18 +12,13 @@ import {
     ComponentFactoryResolver,
     ComponentRef,
     Directive,
-    EventEmitter, Injector,
-    OnDestroy,
-    OnInit,
+    EventEmitter,
+    Injector, OnDestroy, OnInit,
     Output,
     ViewContainerRef
 } from '@angular/core';
 import {AdminifyOutletRouteInjectorFactory} from '../services/adminify-outlet-route-injector-factory';
-import {ActivatedRoute} from "../angular/router/router_state";
-import {ChildrenOutletContexts} from "../angular/router/router_outlet_context";
-import {ChildrenOutletContexts as AChildrenOutletContexts, ActivatedRoute as AActivatedRoute} from "@angular/router";
-import {PRIMARY_OUTLET} from "../angular/router/shared";
-import {Data} from "../angular/router/config";
+import {ActivatedRoute, ChildrenOutletContexts, Data, PRIMARY_OUTLET} from "@angular/router";
 
 /**
  * @description
@@ -54,34 +49,29 @@ import {Data} from "../angular/router/config";
 // tslint:disable-next-line:directive-selector
 @Directive({selector: 'admin-outlet', exportAs: 'outlet'})
 // tslint:disable-next-line:directive-class-suffix
-export class AdminifyOutlet
-    // implements OnDestroy, OnInit
-{
+export class AdminifyOutlet implements OnDestroy, OnInit {
     private activated: ComponentRef<any>|null = null;
-    // tslint:disable-next-line:variable-name
     private _activatedRoute: ActivatedRoute|null = null;
     private name: string;
 
-    // tslint:disable-next-line:no-output-rename
     @Output('activate') activateEvents = new EventEmitter<any>();
-    // tslint:disable-next-line:no-output-rename
     @Output('deactivate') deactivateEvents = new EventEmitter<any>();
 
     constructor(
         private routeInjectorFactory: AdminifyOutletRouteInjectorFactory,
-        private parentContexts: ChildrenOutletContexts,
-        private location: ViewContainerRef,
+        private parentContexts: ChildrenOutletContexts, private location: ViewContainerRef,
         private resolver: ComponentFactoryResolver, @Attribute('name') name: string,
-        private changeDetector: ChangeDetectorRef,
-        private injector: Injector
-    ) {
+        private changeDetector: ChangeDetectorRef) {
         this.name = name || PRIMARY_OUTLET;
-        // tslint:disable-next-line
-        this.parentContexts.onChildOutletCreated(this.name, <any>this);
+        parentContexts.onChildOutletCreated(this.name, <any>this);
     }
 
-    ngOnDestroy(): void { this.parentContexts.onChildOutletDestroyed(this.name); }
+    /** @nodoc */
+    ngOnDestroy(): void {
+        this.parentContexts.onChildOutletDestroyed(this.name);
+    }
 
+    /** @nodoc */
     ngOnInit(): void {
         if (!this.activated) {
             // If the outlet was not instantiated at the time the route got activated we need to populate
@@ -99,16 +89,21 @@ export class AdminifyOutlet
         }
     }
 
-    get isActivated(): boolean { return !!this.activated; }
+    get isActivated(): boolean {
+        return !!this.activated;
+    }
 
-    // tslint:disable-next-line:ban-types
+    /**
+     * @returns The currently activated component instance.
+     * @throws An error if the outlet is not activated.
+     */
     get component(): Object {
-        if (!this.activated) { throw new Error('Outlet is not activated'); }
+        if (!this.activated) throw new Error('Outlet is not activated');
         return this.activated.instance;
     }
 
     get activatedRoute(): ActivatedRoute {
-        if (!this.activated) { throw new Error('Outlet is not activated'); }
+        if (!this.activated) throw new Error('Outlet is not activated');
         return this._activatedRoute as ActivatedRoute;
     }
 
@@ -123,7 +118,7 @@ export class AdminifyOutlet
      * Called when the `RouteReuseStrategy` instructs to detach the subtree
      */
     detach(): ComponentRef<any> {
-        if (!this.activated) { throw new Error('Outlet is not activated'); }
+        if (!this.activated) throw new Error('Outlet is not activated');
         this.location.detach();
         const cmp = this.activated;
         this.activated = null;
@@ -155,40 +150,22 @@ export class AdminifyOutlet
             throw new Error('Cannot activate an already activated outlet');
         }
         this._activatedRoute = activatedRoute;
-        const snapshot = activatedRoute._futureSnapshot;
-        // tslint:disable-next-line:no-angle-bracket-type-assertion no-non-null-assertion whitespace
-        const component = <any>snapshot.routeConfig !.component;
+        const snapshot = (<any>activatedRoute)._futureSnapshot;
+        const component = <any>snapshot.routeConfig!.component;
         resolver = resolver || this.resolver;
         const factory = resolver.resolveComponentFactory(component);
 
         // !!!!!! changes from vanilla
+        // const childContexts = this.parentContexts.getOrCreateContext(this.name).children;
         const childContexts = this.parentContexts.getOrCreateContext(this.name).children;
-        const routeInjector = this.routeInjectorFactory.get(activatedRoute, childContexts, this.location.injector);
+        const injector = this.routeInjectorFactory.get(activatedRoute, childContexts, this.location.injector);
+        // const injector = new OutletInjector(activatedRoute, childContexts, this.location.injector);
         // !!!!
 
-        const injector = new AdminifyOutletInjector(activatedRoute, childContexts, routeInjector);
         this.activated = this.location.createComponent(factory, this.location.length, injector);
         // Calling `markForCheck` to make sure we will run the change detection when the
         // `RouterOutlet` is inside a `ChangeDetectionStrategy.OnPush` component.
         this.changeDetector.markForCheck();
         this.activateEvents.emit(this.activated.instance);
-    }
-}
-
-class AdminifyOutletInjector implements Injector {
-    constructor(
-        private route: ActivatedRoute, private childContexts: ChildrenOutletContexts,
-        private parent: Injector) {}
-
-    get(token: any, notFoundValue?: any): any {
-        if (token === ActivatedRoute || token === AActivatedRoute) {
-            return this.route;
-        }
-
-        if (token === ChildrenOutletContexts || token === AChildrenOutletContexts) {
-            return this.childContexts;
-        }
-
-        return this.parent.get(token, notFoundValue);
     }
 }

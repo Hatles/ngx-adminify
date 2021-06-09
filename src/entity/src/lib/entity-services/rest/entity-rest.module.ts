@@ -22,7 +22,7 @@ export interface EntityRestModuleConfig {
     ],
 })
 export class EntityRestModule {
-    static forRoot(config: EntityRestModuleConfig = {}, factoryConfig: RestEntityServiceConfig = undefined): ModuleWithProviders {
+    static forRoot(config: EntityRestModuleConfig = {}, factoryConfig: RestEntityServiceConfig = undefined): ModuleWithProviders<EntityRestModule> {
         return {
             ngModule: EntityRestModule,
             providers: [

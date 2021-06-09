@@ -1,28 +1,39 @@
-import {Injectable, Injector} from '@angular/core';
-import {ActivatedRoute, ChildrenOutletContexts} from '../angular/router';
-import {ActivatedRoute as AActivatedRoute, ChildrenOutletContexts as AChildrenOutletContexts} from '@angular/router';
+import {Inject, Injectable, InjectionToken, Injector, Optional, SkipSelf} from '@angular/core';
+import {ActivatedRoute, ChildrenOutletContexts} from '@angular/router';
 import {
+    ADMINIFY_PROVIDER, ADMINIFY_PROVIDER_ARRAY,
     AdminifyOutletRouteProvider,
     AdminifyOutletRouteProviders,
     FnAdminifyOutletRouteProvider,
     TokenAdminifyOutletRouteProvider
-} from '../adminify-outlet-route-provider';
+} from '../providers/providers';
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class AdminifyOutletRouteInjectorFactory {
     private providers: AdminifyOutletRouteProviders;
 
-    constructor() {
+    constructor(
+        @Optional() @SkipSelf() private parentOutletInjector: AdminifyOutletRouteInjectorFactory,
+        @Optional() @Inject(ADMINIFY_PROVIDER) providers: AdminifyOutletRouteProviders = [],
+        @Optional() @Inject(ADMINIFY_PROVIDER_ARRAY) providersArr: AdminifyOutletRouteProviders[] = []
+    ) {
         this.providers = [];
+
+        if (providers && providers.length) {
+            this.addProviders(providers);
+        }
+        if (providersArr && providersArr) {
+            providersArr.forEach(ps => this.addProviders(ps))
+        }
     }
 
     // tslint:disable-next-line:max-line-length
-    get(route: ActivatedRoute, childContexts: ChildrenOutletContexts, parent: Injector): AdminOutletInjector {
-        return new AdminOutletInjector(route, childContexts, parent, this);
+    get(route: ActivatedRoute, childContexts: ChildrenOutletContexts, parent: Injector): Injector {
+        return new AdminifyOutletInjector(route, childContexts, parent, this);
     }
 
     getProvider(token: any): AdminifyOutletRouteProvider {
-        return this.providers.find(p => {
+        const provider = this.providers.find(p => {
             const providerFn = p as FnAdminifyOutletRouteProvider;
             if (providerFn.provideFn) {
                 return providerFn.provideFn(token);
@@ -33,6 +44,16 @@ export class AdminifyOutletRouteInjectorFactory {
             }
             throw new Error('Provider must have at least a provide or a provideFn property');
         });
+
+        if (provider) {
+            return provider;
+        }
+
+        if (this.parentOutletInjector) {
+            this.parentOutletInjector.getProvider(token);
+        }
+
+        return null;
     }
 
     addProvider(provider: AdminifyOutletRouteProvider) {
@@ -55,7 +76,7 @@ export class AdminifyOutletRouteInjectorFactory {
     }
 }
 
-class AdminOutletInjector implements Injector {
+class AdminifyOutletInjector implements Injector {
     constructor(
         private route: ActivatedRoute,
         private childContexts: ChildrenOutletContexts,
@@ -63,11 +84,11 @@ class AdminOutletInjector implements Injector {
         private factory: AdminifyOutletRouteInjectorFactory) {}
 
     get(token: any, notFoundValue?: any): any {
-        if (token === ActivatedRoute || token === AActivatedRoute) {
+        if (token === ActivatedRoute || token === ActivatedRoute) {
             return this.route;
         }
 
-        if (token === ChildrenOutletContexts || token === AChildrenOutletContexts) {
+        if (token === ChildrenOutletContexts) {
             return this.childContexts;
         }
 
@@ -77,7 +98,7 @@ class AdminOutletInjector implements Injector {
 
         const provider = this.factory.getProvider(token);
         if (provider) {
-            return provider.factory.apply(undefined, [this.route, token, ...(provider.deps || []).map(dep => this.get(dep))]);
+            return provider.useFactory.apply(undefined, [this.route, token, ...(provider.deps || []).map(dep => this.get(dep))]);
         }
 
         return this.parent.get(token, notFoundValue);

@@ -2,8 +2,8 @@ import {AdminActionConfig} from './admin-action-config';
 import {AdminRouteBuilder, RouteParametersValues} from './services/admin-route-builder';
 import {Admin} from './admin';
 import {Data, Route} from '@angular/router';
-import {IDataProvider} from '@ngx-adminify/router';
 import {AdminComponentDictionary} from './admin-component-dictionary';
+import {IDataProvider} from "./data/data-provider";
 
 export class AdminAction implements IDataProvider {
 

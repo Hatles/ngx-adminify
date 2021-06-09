@@ -5,7 +5,7 @@ import {AdminAction} from '../admin-action';
 
 export const actionDataProvider: AdminifyOutletRouteProvider = {
     provide: ActionData,
-    factory: actionDataProviderFn,
+    useFactory: actionDataProviderFn,
     deps: [AdminAction]
 };
 export function actionDataProviderFn(route: ActivatedRoute, token: any, action: AdminAction): ActionData {
@@ -14,7 +14,7 @@ export function actionDataProviderFn(route: ActivatedRoute, token: any, action: 
 
 export const typedActionDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedActionData,
-    factory: typedActionDataProviderFn,
+    useFactory: typedActionDataProviderFn,
     deps: [AdminAction]
 };
 export function typedActionDataProviderFn(route: ActivatedRoute, token: any, action: AdminAction): TypedActionData<any> {
@@ -23,11 +23,11 @@ export function typedActionDataProviderFn(route: ActivatedRoute, token: any, act
 
 export const actionDataPropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: actionDataPropertyProviderProvideFn,
-    factory: actionDataPropertyProviderFn,
+    useFactory: actionDataPropertyProviderFn,
     deps: [AdminAction]
 };
 export function actionDataPropertyProviderProvideFn(token: any): boolean {
-    return token != null && token.tokenType == ActionDataPropertyTokenType;
+    return token != null && token.tokenType === ActionDataPropertyTokenType;
 }
 export function actionDataPropertyProviderFn(route: ActivatedRoute, token: ActionDataPropertyToken, action: AdminAction): any {
     return action.getData(token.property, token.defaultValue);

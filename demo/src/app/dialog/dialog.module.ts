@@ -29,7 +29,7 @@ import {DialogService} from './dialog.service';
     ]
 })
 export class DialogModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<DialogModule> {
         return {
             ngModule: DialogModule,
             providers: [

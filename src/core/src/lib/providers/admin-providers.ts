@@ -4,31 +4,31 @@ import {AdminPoolService} from '../services/admin-pool-service';
 import {AdminAction} from '../admin-action';
 import {AdminRootRoute} from '../admin-root-route';
 import {AdminActivatedRoute} from '../admin-activated-route';
-import {getFisrtParentData} from './adminify-providers-utils';
+import {getFirstParentData} from './adminify-providers-utils';
 import {ActivatedRoute} from '@angular/router';
 
 
 export const adminProvider: AdminifyOutletRouteProvider = {
     provide: Admin,
-    factory: adminProviderFn,
+    useFactory: adminProviderFn,
     deps: [AdminPoolService]
 };
 export function adminProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService) {
-    return pool.getAdmin(getFisrtParentData(route, 'admin'));
+    return pool.getAdmin(getFirstParentData(route, 'admin'));
 }
 
 export const adminActionProvider: AdminifyOutletRouteProvider = {
     provide: AdminAction,
-    factory: adminActionProviderFn,
+    useFactory: adminActionProviderFn,
     deps: [AdminPoolService]
 };
 export function adminActionProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService) {
-    return pool.getAdmin(getFisrtParentData(route, 'admin')).getAction(getFisrtParentData(route, 'action'));
+    return pool.getAdmin(getFirstParentData(route, 'admin')).getAction(getFirstParentData(route, 'action'));
 }
 
 export const adminRootRouteProvider: AdminifyOutletRouteProvider = {
     provide: AdminRootRoute,
-    factory: adminRootRouteProviderFn,
+    useFactory: adminRootRouteProviderFn,
     deps: []
 };
 export function adminRootRouteProviderFn(route: ActivatedRoute, token: any) {
@@ -49,7 +49,7 @@ export function adminRootRouteProviderFn(route: ActivatedRoute, token: any) {
 
 export const adminActivatedRouteProvider: AdminifyOutletRouteProvider = {
     provide: AdminActivatedRoute,
-        factory: adminActivatedRouteProviderFn,
+        useFactory: adminActivatedRouteProviderFn,
         deps: []
 };
 export function adminActivatedRouteProviderFn(route: ActivatedRoute, token: any) {

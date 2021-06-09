@@ -10,7 +10,7 @@ import {IAdminifyEntityService, AdminifyEntityPoolService} from '@ngx-adminify/e
     styleUrls: ['./form-entity-type.component.scss'],
 })
 export class FormEntityTypeComponent extends FieldType {
-    @ViewChild(MatSelect, <any> {static: true}) formFieldControl!: MatSelect;
+    @ViewChild(MatSelect, {static: true}) formFieldControl!: MatSelect;
 
     defaultOptions = {
         templateOptions: {

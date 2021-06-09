@@ -3,7 +3,7 @@ import {EntityAdmin} from './entity-admin';
 import {AdminComponentDictionary, IAdminFactory} from '@ngx-adminify/core';
 import {AdminPoolService} from '@ngx-adminify/core';
 import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service';
-import {Injectable, Injector} from "@angular/core";
+import {Injectable, Injector} from '@angular/core';
 
 @Injectable()
 export class EntityFactory implements IAdminFactory {

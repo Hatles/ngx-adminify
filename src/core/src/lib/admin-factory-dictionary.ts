@@ -47,7 +47,7 @@ export class AdminFactoryDictionary {
     get(factory: string): IAdminFactory {
         const factoryDeclaration = this.factories.find(c => c.name === factory);
 
-        if(!factoryDeclaration.instance && factoryDeclaration.factory) {
+        if (!factoryDeclaration.instance && factoryDeclaration.factory) {
             factoryDeclaration.instance = this.injector.get(factoryDeclaration.factory);
         }
 

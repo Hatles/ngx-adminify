@@ -17,13 +17,9 @@
             "es2018"
         ],
         "paths": {
-            "@ngx-adminify/router": [
-                "dist/@ngx-adminify/router"
-            ]
         }
     },
     "angularCompilerOptions": {
-        "annotateForClosureCompiler": true,
         "skipTemplateCodegen": true,
         "strictMetadataEmit": true,
         "fullTemplateTypeCheck": true,

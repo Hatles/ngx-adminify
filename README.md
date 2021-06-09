@@ -1,3 +1,12 @@
+# Compatibilities
+
+**Which Version to use?**
+
+| Angular version | Formly version         |
+| --------------- | ---------------------- |
+| Angular >= 9    | `@ngx-adminify/***@1.x` |
+| Angular >= 8    | `@ngx-adminify/***@0.x` |
+
 # NgxAdmin
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.10.

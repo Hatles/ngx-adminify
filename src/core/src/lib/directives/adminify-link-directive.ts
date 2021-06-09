@@ -9,12 +9,11 @@ import {
     OnDestroy,
     Renderer2
 } from '@angular/core';
-import {QueryParamsHandling, Router, UrlTree} from '@angular/router';
+import {NavigationEnd, QueryParamsHandling, Router, UrlTree} from '@angular/router';
 import {AdminPoolService} from '../services/admin-pool-service';
 import {AdminRootRoute} from '../admin-root-route';
-import {Subscription} from "rxjs";
-import {Event, NavigationEnd} from "@ngx-adminify/router";
-import {LocationStrategy} from "@angular/common";
+import {Subscription} from 'rxjs';
+import {LocationStrategy} from '@angular/common';
 
 // tslint:disable-next-line:directive-selector
 @Directive({selector: ':not(a):not(area)[adminifyLink]'})
@@ -100,7 +99,7 @@ export class AdminifyLinkWithHrefDirective implements OnChanges, OnDestroy {
     constructor(
         private router: Router, private route: AdminRootRoute, private pool: AdminPoolService,
         private locationStrategy: LocationStrategy) {
-        this.subscription = router.events.subscribe((s: Event) => {
+        this.subscription = router.events.subscribe((s) => {
             if (s instanceof NavigationEnd) {
                 this.updateTargetUrlAndHref();
             }
@@ -118,7 +117,7 @@ export class AdminifyLinkWithHrefDirective implements OnChanges, OnDestroy {
 
     @Input()
     set preserveQueryParams(value: boolean) {
-        if (isDevMode() && <any>console && <any>console.warn) {
+        if (isDevMode() && console as any && console.warn) {
             console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
         }
         this.preserve = value;
@@ -133,7 +132,7 @@ export class AdminifyLinkWithHrefDirective implements OnChanges, OnDestroy {
             return true;
         }
 
-        if (typeof this.target === 'string' && this.target != '_self') {
+        if (typeof this.target === 'string' && this.target !== '_self') {
             return true;
         }
 

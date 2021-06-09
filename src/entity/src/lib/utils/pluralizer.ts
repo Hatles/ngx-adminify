@@ -1,12 +1,12 @@
 import {Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 
 const uncountable = [
-    // 'sheep',
-    // 'fish',
-    // 'deer',
-    // 'moose',
-    // 'rice',
-    // 'species',
+    'sheep',
+    'fish',
+    'deer',
+    'moose',
+    'rice',
+    'species',
     'equipment',
     'information',
     'money',

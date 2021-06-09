@@ -5,7 +5,7 @@ import {AdminPoolService} from '../services/admin-pool-service';
 
 export const adminsDataProvider: AdminifyOutletRouteProvider = {
     provide: AdminsData,
-    factory: adminsDataProviderFn,
+    useFactory: adminsDataProviderFn,
     deps: [AdminPoolService]
 };
 export function adminsDataProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService): AdminsData {
@@ -14,7 +14,7 @@ export function adminsDataProviderFn(route: ActivatedRoute, token: any, pool: Ad
 
 export const typedAdminsDataProvider: AdminifyOutletRouteProvider = {
     provide: TypedAdminsData,
-    factory: typedAdminsDataProviderFn,
+    useFactory: typedAdminsDataProviderFn,
     deps: [AdminPoolService]
 };
 export function typedAdminsDataProviderFn(route: ActivatedRoute, token: any, pool: AdminPoolService): TypedAdminsData<any> {
@@ -23,7 +23,7 @@ export function typedAdminsDataProviderFn(route: ActivatedRoute, token: any, poo
 
 export const adminsDataPropertyProvider: AdminifyOutletRouteProvider = {
     provideFn: adminsDataPropertyProviderProvideFn,
-    factory: adminsDataPropertyProviderFn,
+    useFactory: adminsDataPropertyProviderFn,
     deps: [AdminPoolService]
 };
 export function adminsDataPropertyProviderProvideFn(token: any) {

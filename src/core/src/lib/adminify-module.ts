@@ -3,12 +3,13 @@ import {Routes, ROUTES} from '@angular/router';
 import {AdminPoolService} from './services/admin-pool-service';
 import {AdminsConfig} from './admin-config';
 import {
+    AdminifyRouterModule,
     AsyncRoutes,
     AsyncRoutesFactory,
-    AdminifyRouterModule,
+    AsyncRoutesFactoryDefinition,
+    provideAdminifyProviders,
     provideAsyncRoutesByFactory,
-    provideAsyncRoutesFactory,
-    provideAdminifyProviders
+    provideAsyncRoutesFactory, provideAsyncRoutesInitializer,
 } from '@ngx-adminify/router';
 import {AdminifyBuilder, AdminifyBuilderConfig, IAdminifyBuilder} from './services/adminify-builder';
 import {AdminifyLinkDirective, AdminifyLinkWithHrefDirective} from './directives/adminify-link-directive';
@@ -16,35 +17,23 @@ import {
     AdminifyActionLinkDirective,
     AdminifyActionLinkWithHrefDirective
 } from './directives/adminify-action-link-directive';
-import {adminifyProviders} from './providers/admin-providers';
 import {AdminRouteGuard} from './guards/admin-route-guard';
 import {AdminActionRouteGuard} from './guards/admin-action-route-guard';
-import {adminDataProviders} from './providers/admin-data-providers';
-import {adminsDataProviders} from './providers/admins-data-providers';
-import {actionDataProviders} from './providers/action-data-providers';
 import {AdminComponentDictionary} from './admin-component-dictionary';
 import {AdminFactoryDictionary} from './admin-factory-dictionary';
 import {
     AdminifyAdminActionLinkDirective,
     AdminifyAdminActionLinkWithHrefDirective
-} from "./directives/adminify-admin-action-link-directive";
-
-const providers = [
-            ...adminifyProviders,
-            ...adminsDataProviders,
-            ...adminDataProviders,
-            ...actionDataProviders
-        ];
-
-const adminifyRouterModuleImport =
-{
-    ngModule: AdminifyRouterModule,
-    providers: [provideAdminifyProviders(providers)]
-};
+} from './directives/adminify-admin-action-link-directive';
+import {adminifyProviders} from './providers/admin-providers';
+import {adminsDataProviders} from './providers/admins-data-providers';
+import {actionDataProviders} from './providers/action-data-providers';
+import {adminDataProviders} from './providers/admin-data-providers';
+import {AdminifyOutletRouteInjectorFactory} from "../../../router/src/lib/services/adminify-outlet-route-injector-factory";
 
 @NgModule({
     imports: [
-        adminifyRouterModuleImport
+        AdminifyRouterModule
     ],
     exports: [
         AdminifyRouterModule,
@@ -63,12 +52,12 @@ const adminifyRouterModuleImport =
         AdminifyAdminActionLinkDirective,
         AdminifyAdminActionLinkWithHrefDirective,
     ],
-    entryComponents: []
+    entryComponents: [],
     // No provider
 })
 export class AdminifyModule {
-    //save admin components with key for json config
-    static forRoot(): ModuleWithProviders {
+    // save admin components with key for json config
+    static forRoot(): ModuleWithProviders<AdminifyModule> {
         return {
             ngModule: AdminifyModule,
             providers: [
@@ -77,11 +66,19 @@ export class AdminifyModule {
                 AdminActionRouteGuard,
                 AdminComponentDictionary,
                 AdminFactoryDictionary,
+
+                AdminifyOutletRouteInjectorFactory,
+                provideAdminifyProviders([
+                    ...adminifyProviders,
+                    ...adminsDataProviders,
+                    ...adminDataProviders,
+                    ...actionDataProviders
+                ])
             ]
         };
     }
 
-    static forChild(): ModuleWithProviders {
+    static forChild(): ModuleWithProviders<AdminifyModule> {
         return {
             ngModule: AdminifyModule,
             providers: [
@@ -91,7 +88,7 @@ export class AdminifyModule {
         };
     }
 
-    static withConfig(config: AdminsConfig): ModuleWithProviders {
+    static withConfig(config: AdminsConfig): ModuleWithProviders<AdminifyModule> {
         return {
             ngModule: AdminifyModule,
             providers: [
@@ -100,7 +97,7 @@ export class AdminifyModule {
         };
     }
 
-    static withConfigFactory(factory: AdminConfigFactory, deps?: any[]): ModuleWithProviders {
+    static withConfigFactory(factory: AdminConfigFactory, deps?: any[]): ModuleWithProviders<AdminifyModule> {
         return {
             ngModule: AdminifyModule,
             providers: [
@@ -109,7 +106,8 @@ export class AdminifyModule {
         };
     }
 
-    static withBuilder(builderConfig: AdminifyBuilderConfig, builderFn: (builder: AdminifyBuilder) => void): ModuleWithProviders {
+    static withBuilder(builderConfig: AdminifyBuilderConfig, builderFn: (builder: AdminifyBuilder) => void):
+        ModuleWithProviders<AdminifyModule> {
         return {
             ngModule: AdminifyModule,
             providers: [
@@ -119,7 +117,7 @@ export class AdminifyModule {
     }
 
     // tslint:disable-next-line:ban-types
-    static withBuilderFactory(factory: AdminConfigFactory, deps?: any[]): ModuleWithProviders {
+    static withBuilderFactory(factory: AdminConfigFactory, deps?: any[]): ModuleWithProviders<AdminifyModule> {
         return {
             ngModule: AdminifyModule,
             providers: [
@@ -132,29 +130,29 @@ export class AdminifyModule {
 export function provideAdminAsyncRoutes(config: AdminsConfig): Provider[] {
     return [
         provideAsyncRoutesByFactory(buildConfigFactory(config), [AdminPoolService, Injector]),
-        {provide: ROUTES, multi: true, useValue: []}
+        provideAsyncRoutesInitializer()
     ];
 }
 
 export function provideAdminAsyncRoutesFactory(factory: (...deps: any[]) => Promise<AdminsConfig>, deps: any[]): Provider[] {
     return [
         provideAsyncRoutesFactory(createAsyncRoutesFromAdminsConfig(factory, deps)),
-        {provide: ROUTES, multi: true, useValue: []}
+        provideAsyncRoutesInitializer()
     ];
 }
 
 // tslint:disable-next-line:max-line-length
-export function createAsyncRoutesFromAdminsConfig(configFactory: (...deps: any[]) => Promise<AdminsConfig>, deps: any[]): AsyncRoutesFactory {
+export function createAsyncRoutesFromAdminsConfig(configFactory: (...deps: any[]) => Promise<AdminsConfig>, deps: any[]): AsyncRoutesFactoryDefinition {
     const factory = createAsyncRoutesFromAdminsConfigFn(configFactory);
     return {
         factory: factory,
         deps: [AdminPoolService, Injector, ...deps]
     };
 }
-export function createAsyncRoutesFromAdminsConfigFn(configFactory: (...deps: any[]) => Promise<AdminsConfig>) {
+export function createAsyncRoutesFromAdminsConfigFn(configFactory: (...deps: any[]) => Promise<AdminsConfig>): AsyncRoutesFactory {
 
-    const fn = (pool: AdminPoolService, injector: Injector, ...fdeps: any[]) => {
-        return new Promise<Routes>(resolve => {
+    const fn: AsyncRoutesFactory = (pool: AdminPoolService, injector: Injector, ...fdeps: any[]) => {
+        return () => new Promise<Routes>(resolve => {
             const promise: Promise<AdminsConfig> = configFactory.call(null, fdeps.slice(1));
             promise.then(result => {
                 const config = processConfig(result);
@@ -203,7 +201,7 @@ export function buildConfigFactory(config: AdminsConfig): (pool: AdminPoolServic
 }
 
 export function buildConfig(pool: AdminPoolService, injector: Injector, config: AdminsConfig): AsyncRoutes {
-    return new Promise(resolve => {
+    return () => new Promise<Routes>(resolve => {
         const routes = buildAdmins(pool, injector, config);
         resolve(routes);
     });
