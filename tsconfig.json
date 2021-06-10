@@ -16,17 +16,18 @@
         ],
         "paths": {
             "@ngx-adminify/*": [
-                "src/*/src/public_api"
+//                "src/*/src/public_api",
+                "dist/@ngx-adminify/*"
             ],
-            "@ngx-adminify/core": [
-                "src/core/src/public_api"
-            ],
-            "@ngx-adminify/entity": [
-                "src/entity/src/public_api"
-            ],
-            "@ngx-adminify/router": [
-                "src/router/src/public_api"
-            ],
+//            "@ngx-adminify/core": [
+//                "src/core/src/public_api"
+//            ],
+//            "@ngx-adminify/entity": [
+//                "src/entity/src/public_api"
+//            ],
+//            "@ngx-adminify/router": [
+//                "src/router/src/public_api"
+//            ],
             "@assets/*": [
                 "demo/src/assets/*"
             ]

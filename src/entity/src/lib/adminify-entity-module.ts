@@ -160,5 +160,9 @@ export class EntityFactoryAsyncRouteLoader {
 export const ENTITY_CONFIG_FACTORY_TOKEN = new InjectionToken<(...deps: any[]) => Promise<EntityConfig>>('ENTITY_CONFIG_FACTORY_TOKEN');
 
 export function createAsyncRoutesFromEntityConfigFactory(loader: EntityFactoryAsyncRouteLoader, ...fdeps: any[]) {
-    return () => loader.getPromise(fdeps);
+    // tslint:disable-next-line:only-arrow-functions
+    const fn = function() {
+        return loader.getPromise(fdeps);
+    };
+    return fn;
 }
