@@ -7,7 +7,7 @@ import {Injector} from '@angular/core';
 import {AdminActionGuard} from './guards/admin-action-guard';
 import {AdminGuard} from './guards/admin-guard';
 import {AdminComponentDictionary} from './admin-component-dictionary';
-import {IDataProvider} from "./data/data-provider";
+import {IDataProvider} from './data/data-provider';
 
 export class Admin implements IDataProvider {
 
@@ -21,7 +21,12 @@ export class Admin implements IDataProvider {
     adminGuards: AdminGuard[];
     actionGuards: AdminActionGuard[];
 
-    constructor(protected pool: AdminPoolService, protected componentDictionary: AdminComponentDictionary, public config: AdminConfig, public defaultAdmin: boolean = false) {
+    constructor(
+        protected pool: AdminPoolService,
+        protected componentDictionary: AdminComponentDictionary,
+        public config: AdminConfig,
+        public defaultAdmin: boolean = false
+    ) {
         this.name = this.config.name;
 
         this.processConfig();

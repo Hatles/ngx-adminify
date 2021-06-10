@@ -15,6 +15,7 @@ import {
 import {AdminifyEntityPoolService} from './services/adminify-entity-pool-service';
 import {ENTITY_SERVICE_PROVIDER, EntityConfig, EntityServiceProvider} from './entity-config';
 import {
+    AdminifyOutletRouteInjectorFactory,
     AdminifyRouterModule,
     AsyncRoutesFactoryDefinition, provideAdminifyProviders,
     provideAsyncRoutesFactory, provideAsyncRoutesInitializer
@@ -24,7 +25,6 @@ import {AdminPoolService, processConfig} from '@ngx-adminify/core';
 import {Routes, ROUTES} from '@angular/router';
 import {adminifyEntityActionProviders} from './providers/entity-action-config-providers';
 import {EntityFactory} from './entity-factory';
-import {AdminifyOutletRouteInjectorFactory} from "../../../router/src/lib/services/adminify-outlet-route-injector-factory";
 
 export function provideEntityServiceProviders(entityServiceProviders: EntityServiceProvider[]): Provider[] {
     const providers = entityServiceProviders.map(e => provideEntityServiceProvider(e));

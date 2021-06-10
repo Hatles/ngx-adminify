@@ -3,7 +3,6 @@ const execSync = require('child_process').execSync,
         'router',
         'core',
         'entity',
-        // 'material',
     ];
 
 packages.map(package => {

@@ -3,6 +3,7 @@ import {Routes, ROUTES} from '@angular/router';
 import {AdminPoolService} from './services/admin-pool-service';
 import {AdminsConfig} from './admin-config';
 import {
+    AdminifyOutletRouteInjectorFactory,
     AdminifyRouterModule,
     AsyncRoutes,
     AsyncRoutesFactory,
@@ -29,7 +30,6 @@ import {adminifyProviders} from './providers/admin-providers';
 import {adminsDataProviders} from './providers/admins-data-providers';
 import {actionDataProviders} from './providers/action-data-providers';
 import {adminDataProviders} from './providers/admin-data-providers';
-import {AdminifyOutletRouteInjectorFactory} from "../../../router/src/lib/services/adminify-outlet-route-injector-factory";
 
 @NgModule({
     imports: [

@@ -8,6 +8,7 @@ export * from './lib/async-routes';
 export * from './lib/async-initializer';
 export * from './lib/components/empty-outlet.component';
 export * from './lib/providers/providers'
+export * from './lib/services/adminify-outlet-route-injector-factory'
 
 export * from './lib/providers/data-providers';
 export * from './lib/providers/params-providers';

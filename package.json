@@ -16,7 +16,7 @@
     "build:entity": "ng build @ngx-adminify/entity",
     "build:schematics": "cd src/schematics && npm run build && cd ../.. && npm run copy:schematics",
     "copy:schematics": "cpr src/schematics dist/@ngx-addeclareAdminFactoryminify/schematics --delete-first --filter node_modules/",
-    "release": "standard-version && npm run build && node .config/publish.js",
+    "bump-prerelease": "standard-version --prerelease next",
     "publish": "node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",

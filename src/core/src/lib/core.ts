@@ -18,6 +18,7 @@ export * from './type-guard';
 export * from './data/action-data';
 export * from './data/admin-data';
 export * from './data/admins-data';
+export * from './directives/adminify-admin-action-link-directive';
 export * from './directives/adminify-action-link-directive';
 export * from './directives/adminify-link-directive';
 export * from './guards/admin-action-guard';

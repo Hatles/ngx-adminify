@@ -4,8 +4,9 @@
     "deleteDestPath": false,
     "lib": {
         "entryFile": "src/public_api.ts",
-        "externals": {
-            "@ngx-adminify/entity": "@ngx-adminify/entity"
+        "umdModuleIds": {
+            "@ngx-adminify/router": "ngx-adminify-router",
+            "@ngx-adminify/core": "ngx-adminify-core"
         }
     }
 }

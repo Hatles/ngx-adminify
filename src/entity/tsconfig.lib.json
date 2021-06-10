@@ -17,18 +17,14 @@
             "es2018"
         ],
         "paths": {
-//            "@ngx-adminify/router": [
-//                "dist/@ngx-adminify/router"
-//            ],
-//            "@ngx-adminify/core": [
-//                "dist/@ngx-adminify/core"
-//            ]
             "@ngx-adminify/router": [
-                "src/router/src/public_api"
+                "dist/@ngx-adminify/router",
+//                "src/router/src/public_api"
             ],
             "@ngx-adminify/core": [
-                "src/core/src/public_api"
-            ]
+                "dist/@ngx-adminify/core",
+//                "src/core/src/public_api"
+            ],
         }
     },
     "angularCompilerOptions": {
