@@ -2,7 +2,7 @@
 
 **Which Version to use?**
 
-| Angular version | Formly version         |
+| Angular version | Adminify version         |
 | --------------- | ---------------------- |
 | Angular >= 9    | `@ngx-adminify/***@1.x` |
 | Angular >= 8    | `@ngx-adminify/***@0.x` |
