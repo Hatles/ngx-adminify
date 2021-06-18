@@ -54,6 +54,7 @@ function fixRouterPreLoaderFactory(preloader: RouterPreloader | any, dynamicLoad
         EmptyOutletComponent
     ],
     exports: [
+        RouterModule,
         EmptyOutletComponent,
         AdminifyOutlet
     ]
@@ -101,21 +102,13 @@ export class AdminifyRouterModule {
 }
 
 export function buildProvidersFromConfig(config: AdminifyRouterConfig): Provider[] {
-    const routes = config.routes ? [provideRoutes(config.routes)] : [];
-    const asyncRoutes = config.asyncRoutes ? [provideAsyncRoutes(config.asyncRoutes)] : [];
-    const asyncRoutesFactory = config.asyncRoutesFactory ? [provideAsyncRoutesFactory(config.asyncRoutesFactory)] : [];
-    const asyncRoutesFactories = config.asyncRoutesFactories ? provideAsyncRoutesFactories(config.asyncRoutesFactories) : [];
-    const outletProviders = config.outletProviders ? [provideAdminifyProviders(config.outletProviders)] : [];
-
-    const providers = [
-        ...routes,
-        ...asyncRoutes,
-        ...asyncRoutesFactory,
-        ...asyncRoutesFactories,
-        ...outletProviders
+    return [
+        ...(config.routes ? [provideRoutes(config.routes)] : []),
+        ...(config.asyncRoutes ? [provideAsyncRoutes(config.asyncRoutes)] : []),
+        ...(config.asyncRoutesFactory ? [provideAsyncRoutesFactory(config.asyncRoutesFactory)] : []),
+        ...(config.asyncRoutesFactories ? provideAsyncRoutesFactories(config.asyncRoutesFactories) : []),
+        ...(config.outletProviders ? [provideAdminifyProviders(config.outletProviders)] : []),
     ];
-
-    return providers;
 }
 
 export function provideAdminifyProvider(provider: AdminifyOutletRouteProvider): Provider {

@@ -1,4 +1,4 @@
-import {NgModule, Type} from '@angular/core';
+import {Inject, NgModule, Type} from '@angular/core';
 import {AdminRootComponent} from './components/admin-root/admin-root.component';
 import {AdminBaseComponent} from './components/admin-base/admin-base.component';
 import {AdminActionBaseComponent} from './components/admin-action-base/admin-action-base.component';
@@ -13,6 +13,7 @@ import {admins} from './configs/admins';
 import {entities} from './configs/configs';
 import {AdminComponentDeclaration} from '@ngx-adminify/core';
 import {RouterModule} from '@angular/router';
+import {ASYNC_ITEMS, ASYNC_ROUTES, AsyncItem, AsyncRoutes, provideAsyncRoutesInitializer} from "@ngx-adminify/router";
 
 export const adminComponentDeclarations: AdminComponentDeclaration[] = [
     { name: 'AdminRootComponent', component: AdminRootComponent},
@@ -54,6 +55,7 @@ export function buildEntityConfigFactory(): Promise<EntityConfig> {
         // AdminifyEntityModule.forChild(entities),
         RouterModule,
         AdminifyEntityModule.withConfigFactory(buildEntityConfigFactory, []),
+        // provideAsyncRoutesInitializer()
         // AdminifyModule.withConfigFactory(buildConfigFactory, []),
         // AdminifyModule.withBuilder({
         //     defaultAdminActionComponent: AdminActionBaseComponent,

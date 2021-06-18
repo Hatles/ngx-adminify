@@ -23,7 +23,8 @@ export interface AsyncRoutesFactoryDefinition {
 export const ASYNC_ROUTES: InjectionToken<AsyncRoutes[]> = new InjectionToken<AsyncRoutes[]>('ASYNC_ROUTES');
 
 export function asyncRoutesInitializerFactory(registry: AsyncRoutesRegistry, asyncRoutes: AsyncRoutes[] = []): () => Observable<Route[]> {
-    return () => registry.register(asyncRoutes || []);
+    const fn = () => registry.register(asyncRoutes || []);
+    return fn;
 }
 
 export function asyncRoutesToRoutesFactory(registry: AsyncRoutesRegistry): Route[] {
@@ -35,6 +36,9 @@ export class AsyncRoutesRegistry {
     routes: Route[] = [];
 
     register(asyncRoutes: AsyncRoutes[]): Observable<Route[]> {
+        // remove default null async routes
+        asyncRoutes = asyncRoutes.filter(ar => !!ar);
+
         if (!asyncRoutes.length) {
             return of([]);
         }
@@ -79,7 +83,7 @@ export function provideAsyncRoutesInitializer(): Provider[] {
             deps: [AsyncRoutesRegistry, ASYNC_ROUTES],
             multi: true
         },
-        {provide: ASYNC_ROUTES, useValue: () => [], multi: true},
+        {provide: ASYNC_ROUTES, useValue: null, multi: true},
         {provide: ROUTES, useFactory: asyncRoutesToRoutesFactory, deps: [AsyncRoutesRegistry], multi: true},
     ];
 }

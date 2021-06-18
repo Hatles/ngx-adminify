@@ -1,7 +1,7 @@
 {
   "name": "@ngx-adminify/common",
   "author": "Debard Etienne <etienne1995@orange.fr>",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "_version": "0.0.0-ADMINIFY-VERSION",
   "scripts": {
     "contrib:generate": "githubcontrib --owner Hatles --repo ngx-adminify --cols 6 --sortOrder desc > CONTRIBUTORS.md",
@@ -20,6 +20,7 @@
     "publish": "node .config/publish.js",
     "start": "ng serve --port 4100 --open",
     "demo": "npm run start",
+    "build:demo": "ng build app --prod",
     "deploy": "node .config/deploy.js",
     "test": "ng test @ngx-adminify/router --browsers ChromeHeadless && ng test @ngx-adminify/core --browsers ChromeHeadless && ng test @ngx-adminify/entity --browsers ChromeHeadless && ng test @ngx-formly/material --browsers ChromeHeadless && cd src/schematics && npm run test",
     "test:watch": "ng test @ngx-adminify/core --watch",
