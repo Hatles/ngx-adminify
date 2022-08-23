@@ -1,13 +1,20 @@
-import {ComponentFactoryResolver, Injector, NgModuleRef, StaticProvider} from "@angular/core";
+import {
+    ComponentFactoryResolver,
+    createEnvironmentInjector,
+    EnvironmentInjector,
+    Injector,
+    NgModuleRef,
+    StaticProvider
+} from "@angular/core";
 
 export class DynamicModuleRef<T> extends NgModuleRef<T> {
 
-  private readonly _injector: Injector;
+  private readonly _injector: EnvironmentInjector;
 
   constructor(private parent: NgModuleRef<T>, providers: StaticProvider[] = []) {
     super();
 
-    this._injector = Injector.create({parent: parent.injector, providers: providers});
+    this._injector = createEnvironmentInjector(providers, parent.injector);
   }
 
   get componentFactoryResolver(): ComponentFactoryResolver {
@@ -18,7 +25,7 @@ export class DynamicModuleRef<T> extends NgModuleRef<T> {
     this.parent.destroy();
   }
 
-  get injector(): Injector {
+  get injector(): EnvironmentInjector {
     return this._injector;
   }
 

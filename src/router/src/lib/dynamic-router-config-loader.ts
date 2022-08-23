@@ -2,7 +2,6 @@ import {Injector, NgModuleFactory, NgModuleRef} from "@angular/core";
 import {LoadChildren, Route, ROUTES} from "@angular/router";
 import {from, Observable} from "rxjs";
 import {map, switchMap} from "rxjs/operators";
-import {flatten} from "@angular/compiler";
 import {DynamicModuleLoader} from "./dynamic-module-loader";
 import {standardizeConfig} from "./utils";
 
@@ -57,4 +56,11 @@ export class DynamicRouterConfigLoader implements RouterConfigLoader {
   private loadModuleFactory(loadChildren: LoadChildren): Observable<NgModuleFactory<any>> {
     return this.parent.loadModuleFactory(loadChildren);
   }
+}
+
+/**
+ * Flattens single-level nested arrays.
+ */
+function flatten<T>(arr: T[][]): T[] {
+    return Array.prototype.concat.apply([], arr);
 }

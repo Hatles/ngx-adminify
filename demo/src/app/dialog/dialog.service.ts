@@ -1,10 +1,10 @@
 import {Injectable, TemplateRef} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ComponentType} from '@angular/cdk/portal';
 import { LoadSpinnerDialogComponent } from './components/load-spinner-dialog/load-spinner-dialog.component';
 import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
+import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 
 @Injectable()
 export class DialogService {

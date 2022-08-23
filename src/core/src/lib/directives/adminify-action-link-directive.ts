@@ -27,7 +27,6 @@ export class AdminifyActionLinkDirective {
     @Input() replaceUrl: boolean;
     @Input() state?: {[k: string]: any};
     private commands: any[] = [];
-    private preserve: boolean;
 
     constructor(
         private router: Router, private route: AdminActivatedRoute, private admin: Admin,
@@ -74,7 +73,6 @@ export class AdminifyActionLinkDirective {
             relativeTo: this.route as any,
             queryParams: this.queryParams,
             fragment: this.fragment,
-            preserveQueryParams: attrBoolValue(this.preserve),
             queryParamsHandling: this.queryParamsHandling,
             preserveFragment: attrBoolValue(this.preserveFragment),
         });
@@ -104,7 +102,6 @@ export class AdminifyActionLinkWithHrefDirective implements OnChanges, OnDestroy
     @Input() state?: {[k: string]: any};
     private commands: any[] = [];
     private subscription: Subscription;
-    private preserve: boolean;
 
     // the url displayed on the anchor element.
     @HostBinding() href: string;
@@ -141,14 +138,6 @@ export class AdminifyActionLinkWithHrefDirective implements OnChanges, OnDestroy
         }
     }
 
-    @Input()
-    set preserveQueryParams(value: boolean) {
-        if (isDevMode() && console as any && console.warn as any) {
-            console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
-        }
-        this.preserve = value;
-    }
-
     ngOnChanges(changes: {}): any { this.updateTargetUrlAndHref(); }
     ngOnDestroy(): any { this.subscription.unsubscribe(); }
 
@@ -180,7 +169,6 @@ export class AdminifyActionLinkWithHrefDirective implements OnChanges, OnDestroy
             relativeTo: this.route as any,
             queryParams: this.queryParams,
             fragment: this.fragment,
-            preserveQueryParams: attrBoolValue(this.preserve),
             queryParamsHandling: this.queryParamsHandling,
             preserveFragment: attrBoolValue(this.preserveFragment),
         });

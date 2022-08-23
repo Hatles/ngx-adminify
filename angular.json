@@ -17,6 +17,7 @@
             "main": "demo/src/main.ts",
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/src/tsconfig.app.json",
+            "sourceMap": true,
             "aot": true,
             "assets": [
               "demo/src/favicon.ico",
@@ -39,7 +40,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,

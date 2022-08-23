@@ -5,9 +5,11 @@ import {combineLatest, Observable, Subject, throwError} from 'rxjs';
 import {catchError, debounceTime, map, startWith, takeUntil, tap} from 'rxjs/operators';
 import {AdminActionBaseComponent} from '../../../admin/components/admin-action-base/admin-action-base.component';
 import {UntypedFormControl} from '@angular/forms';
-import {MatPaginator, MatSort, MatTableDataSource, SortDirection} from '@angular/material';
 import {DialogService} from '../../../../dialog/dialog.service';
 import {getProperty} from './template.pipe';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, SortDirection } from "@angular/material/sort";
 
 @Component({
   selector: 'demo-adminify-mat-list-action',

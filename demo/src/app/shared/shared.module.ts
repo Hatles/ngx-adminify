@@ -8,13 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import {WithLoadingPipe} from './pipes/with-loading.pipe';
-import {
-    MatFormFieldModule,
-    MatOptionModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatPseudoCheckboxModule, MatSelectModule
-} from '@angular/material';
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatOptionModule, MatPseudoCheckboxModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
     imports: [

@@ -10,11 +10,11 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import {MatFormField, MatFormFieldControl} from '@angular/material';
 import {FieldWrapper, ɵdefineHiddenProp as defineHiddenProp, FormlyFieldConfig} from '@ngx-formly/core';
 import {Subject} from 'rxjs';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {FieldType} from '@ngx-formly/material';
+import { MatFormField, MatFormFieldControl } from "@angular/material/form-field";
 
 interface MatFormlyFieldConfig extends FormlyFieldConfig {
     _matprefix: TemplateRef<any>;

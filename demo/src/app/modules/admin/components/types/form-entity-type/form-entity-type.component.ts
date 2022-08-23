@@ -1,8 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {FieldType} from '@ngx-formly/material';
-import {MatSelect, MatSelectChange} from '@angular/material';
 import {Observable} from 'rxjs';
 import {IAdminifyEntityService, AdminifyEntityPoolService} from '@ngx-adminify/entity';
+import { MatSelect, MatSelectChange } from "@angular/material/select";
 
 @Component({
     selector: 'demo-form-entity-type',

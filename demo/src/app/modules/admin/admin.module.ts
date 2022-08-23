@@ -5,9 +5,8 @@ import {SharedModule} from '../../shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FormlyModule} from '@ngx-formly/core';
 import {FormlyMatToggleModule} from '@ngx-formly/material/toggle';
-import {MatCardModule} from '@angular/material';
-import {wrapperOptions, wrappers} from './components/wrappers/wrappers';
-import {typeOptions, types} from './components/types/types';
+import {wrapperOptions} from './components/wrappers/wrappers';
+import {typeOptions} from './components/types/types';
 import {ActiveAdminService} from './services/active-admin.service';
 import {validationMessages} from './validation-messages';
 import {FormlySelectModule} from '@ngx-formly/core/select';
@@ -23,6 +22,7 @@ import {AdminBaseComponent} from './components/admin-base/admin-base.component';
 import {AdminRootComponent} from './components/admin-root/admin-root.component';
 import {AdminActionBaseComponent} from './components/admin-action-base/admin-action-base.component';
 import {FormFieldWrapperComponent} from './components/wrappers/form-field-wrapper/form-field-wrapper.component';
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
     imports: [
