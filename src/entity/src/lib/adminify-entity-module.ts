@@ -43,10 +43,7 @@ export function provideEntityServiceProvider(provider: EntityServiceProvider): P
     exports: [
         AdminifyModule,
     ],
-    declarations: [
-    ],
-    entryComponents: []
-    // No provider
+    declarations: []
 })
 export class AdminifyEntityModule {
     // save admin components with key for json config

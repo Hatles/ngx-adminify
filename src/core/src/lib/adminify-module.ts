@@ -51,9 +51,7 @@ import {adminDataProviders} from './providers/admin-data-providers';
         AdminifyActionLinkWithHrefDirective,
         AdminifyAdminActionLinkDirective,
         AdminifyAdminActionLinkWithHrefDirective,
-    ],
-    entryComponents: [],
-    // No provider
+    ]
 })
 export class AdminifyModule {
     // save admin components with key for json config

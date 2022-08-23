@@ -12,7 +12,6 @@ import { TemplatePipe } from './components/adminify-mat-list-action/template.pip
 
 @NgModule({
     declarations: [AdminifyMatRootComponent, AdminifyMatListActionComponent, TemplatePipe],
-    entryComponents: [AdminifyMatRootComponent, AdminifyMatListActionComponent],
     exports: [AdminifyMatRootComponent, AdminifyMatListActionComponent],
     imports: [
         CommonModule,

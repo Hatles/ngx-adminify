@@ -232,7 +232,6 @@
       }
     }
   },
-  "defaultProject": "ngx-admin",
   "cli": {
     "packageManager": "npm",
     "analytics": false

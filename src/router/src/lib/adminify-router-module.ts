@@ -50,9 +50,6 @@ function fixRouterPreLoaderFactory(preloader: RouterPreloader | any, dynamicLoad
         EmptyOutletComponent,
         AdminifyOutlet
     ],
-    entryComponents: [
-        EmptyOutletComponent
-    ],
     exports: [
         RouterModule,
         EmptyOutletComponent,

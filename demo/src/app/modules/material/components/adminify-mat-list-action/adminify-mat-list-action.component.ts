@@ -4,7 +4,7 @@ import {AdminifyEntityService, EntityListConfigs, EntityListConfigsToken} from '
 import {combineLatest, Observable, Subject, throwError} from 'rxjs';
 import {catchError, debounceTime, map, startWith, takeUntil, tap} from 'rxjs/operators';
 import {AdminActionBaseComponent} from '../../../admin/components/admin-action-base/admin-action-base.component';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {MatPaginator, MatSort, MatTableDataSource, SortDirection} from '@angular/material';
 import {DialogService} from '../../../../dialog/dialog.service';
 import {getProperty} from './template.pipe';
@@ -21,7 +21,7 @@ export class AdminifyMatListActionComponent extends AdminActionBaseComponent imp
 
     entities: Observable<any[]>;
 
-    inputControl: FormControl;
+    inputControl: UntypedFormControl;
 
     actionColumns: string[];
 
@@ -53,7 +53,7 @@ export class AdminifyMatListActionComponent extends AdminActionBaseComponent imp
     }
 
     ngOnInit() {
-        this.inputControl = new FormControl('');
+        this.inputControl = new UntypedFormControl('');
         this.loading = true;
         this.entities = this.entity.getAll({}).pipe(
             tap(() => this.loading = false),

@@ -20,13 +20,7 @@ import {DialogService} from './dialog.service';
         MatDialogModule,
         MatProgressSpinnerModule
     ],
-    exports: [
-
-    ],
-    entryComponents: [
-        ConfirmDialogComponent,
-        LoadSpinnerDialogComponent,
-    ]
+    exports: []
 })
 export class DialogModule {
     static forRoot(): ModuleWithProviders<DialogModule> {

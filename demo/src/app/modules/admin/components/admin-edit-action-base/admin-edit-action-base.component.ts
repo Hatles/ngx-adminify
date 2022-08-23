@@ -5,7 +5,7 @@ import {AdminifyEntityService, EntityEditConfigsToken, EntityEditMode, EntityEdi
 import {FormlyFieldConfig} from '@ngx-formly/core';
 import {Observable, Subject} from 'rxjs';
 import {switchMap, takeUntil} from 'rxjs/operators';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {RouteParam} from '@ngx-adminify/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class AdminEditActionBaseComponent extends AdminActionBaseComponent imple
     entityValue: any;
     loading: boolean;
     submitting: boolean;
-    form: FormGroup;
+    form: UntypedFormGroup;
     onDestroy: Subject<void> = new Subject();
     createMode: boolean;
 
@@ -39,7 +39,7 @@ export class AdminEditActionBaseComponent extends AdminActionBaseComponent imple
     }
 
     ngOnInit() {
-        this.form = new FormGroup({});
+        this.form = new UntypedFormGroup({});
 
         if (!this.createMode) {
             this.id.pipe(switchMap(id => {
