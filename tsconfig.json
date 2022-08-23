@@ -7,7 +7,7 @@
         "declaration": false,
         "downlevelIteration": true,
         "experimentalDecorators": true,
-        "module": "esnext",
+        "module": "es2020",
         "moduleResolution": "node",
         "importHelpers": true,
         "target": "es2015",
@@ -16,8 +16,8 @@
         ],
         "paths": {
             "@ngx-adminify/*": [
-//                "src/*/src/public_api",
-                "dist/@ngx-adminify/*"
+                "src/*/src/public_api",
+//                "dist/@ngx-adminify/*"
             ],
 //            "@ngx-adminify/core": [
 //                "src/core/src/public_api"

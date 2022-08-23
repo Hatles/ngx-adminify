@@ -2,10 +2,11 @@
 
 **Which Version to use?**
 
-| Angular version | Adminify version         |
-| --------------- | ---------------------- |
-| Angular >= 9    | `@ngx-adminify/***@1.x` |
-| Angular >= 8    | `@ngx-adminify/***@0.x` |
+| Angular version | Adminify version        |
+|-----------------|-------------------------|
+| Angular = 10    | `@ngx-adminify/***@1.1` |
+| Angular = 9     | `@ngx-adminify/***@1.0` |
+| Angular = 8     | `@ngx-adminify/***@0.x` |
 
 # NgxAdmin
 
