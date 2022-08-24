@@ -1,6 +1,5 @@
-import {Inject, ModuleWithProviders, NgModule, Optional, Provider} from "@angular/core";
-import {Router, RouterModule, RouterPreloader, Routes, ROUTES} from "@angular/router";
-import {DynamicModuleLoader} from "./dynamic-module-loader";
+import {ModuleWithProviders, NgModule, Provider} from "@angular/core";
+import {RouterModule, Routes, ROUTES} from "@angular/router";
 import {EmptyOutletComponent} from "./components/empty-outlet.component";
 import {AsyncItemRegistry, provideAsyncInitializer} from "./async-initializer";
 import {
@@ -10,7 +9,6 @@ import {
     AsyncRoutesFactoryDefinition,
     provideAsyncRoutesInitializer
 } from "./async-routes";
-import {DynamicRouterConfigLoader, NgRouterConfigLoader, RouterConfigLoader} from "./dynamic-router-config-loader";
 import {dataProviders} from "./providers/data-providers";
 import {paramsProviders} from "./providers/params-providers";
 import {AdminifyOutlet} from "./directives/adminify-outlet";
@@ -30,20 +28,6 @@ export interface AdminifyRouterConfig {
     outletProviders?: AdminifyOutletRouteProviders
 }
 
-function fixRouterConfigLoader(loader: NgRouterConfigLoader, dynamicLoader: DynamicModuleLoader): RouterConfigLoader {
-    return new DynamicRouterConfigLoader(loader, dynamicLoader);
-}
-
-function fixRouterFactory(router: Router | any, dynamicLoader: DynamicModuleLoader): Router {
-    router.configLoader = fixRouterConfigLoader(router.configLoader, dynamicLoader);
-    return router;
-}
-
-function fixRouterPreLoaderFactory(preloader: RouterPreloader | any, dynamicLoader: DynamicModuleLoader): RouterPreloader {
-    preloader.loader = fixRouterConfigLoader(preloader.loader, dynamicLoader);
-    return preloader;
-}
-
 @NgModule({
     imports: [RouterModule],
     declarations: [
@@ -61,7 +45,6 @@ export class AdminifyRouterModule {
         return {
             ngModule: AdminifyRouterModule,
             providers: [
-                DynamicModuleLoader,
                 AdminifyOutletRouteInjectorFactory,
 
                 AsyncItemRegistry,
@@ -90,11 +73,6 @@ export class AdminifyRouterModule {
                 buildProvidersFromConfig(config)
             ],
         };
-    }
-
-    constructor(router: Router, preloader: RouterPreloader, dynamicLoader: DynamicModuleLoader, @Inject(ASYNC_ROUTES) @Optional() asyncRoutes: AsyncRoutes) {
-        fixRouterFactory(router, dynamicLoader);
-        fixRouterPreLoaderFactory(preloader, dynamicLoader);
     }
 }
 

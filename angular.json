@@ -17,8 +17,6 @@
             "main": "demo/src/main.ts",
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/src/tsconfig.app.json",
-            "sourceMap": true,
-            "aot": true,
             "assets": [
               "demo/src/favicon.ico",
               "demo/src/assets"
@@ -27,7 +25,11 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "demo/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+                  "optimization": false,
+                  "sourceMap": true,
+                  "namedChunks": false,
+                  "buildOptimizer": false
           },
           "configurations": {
             "production": {
@@ -43,6 +45,7 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
+              "aot": true,
               "buildOptimizer": true,
               "budgets": [
                 {

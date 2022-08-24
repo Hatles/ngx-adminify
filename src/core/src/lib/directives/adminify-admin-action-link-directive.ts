@@ -4,7 +4,7 @@ import {
     ElementRef,
     HostBinding,
     HostListener,
-    Input, isDevMode,
+    Input,
     OnChanges,
     OnDestroy,
     Renderer2

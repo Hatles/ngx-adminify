@@ -2,11 +2,36 @@
 
 **Which Version to use?**
 
-| Angular version | Adminify version        |
-|-----------------|-------------------------|
-| Angular = 10    | `@ngx-adminify/***@1.1` |
-| Angular = 9     | `@ngx-adminify/***@1.0` |
-| Angular = 8     | `@ngx-adminify/***@0.x` |
+| Angular version | Adminify version          |
+|-----------------|---------------------------|
+| Angular = 14    | `@ngx-adminify/***@1.4.x` |
+| Angular = 10    | `@ngx-adminify/***@1.1.x` |
+| Angular = 9     | `@ngx-adminify/***@1.0`   |
+| Angular = 8     | `@ngx-adminify/***@0.x`   |
+
+# Angular 14 breaking changes
+
+Need to use loadDynamicModule or provideDynamicRoutes when loading module using DYNAMIC_MODULE_INITIALIZERS or import AdminifyModule.
+
+```
+@NgModule({
+    imports: [
+        RouterModule.forRoot([]),
+    ],
+    exports: [
+        RouterModule,
+    ],
+    declarations: [],
+    providers: [
+        provideDynamicRoutes(() => [
+            {path: 'general', loadChildren: () => import('./modules/general/general.module').then(m => m.GeneralModule)},
+            {path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)},
+            {path: '', redirectTo: 'admin', pathMatch: 'full'},
+        ])
+    ]
+})
+...
+```
 
 # NgxAdmin
 
