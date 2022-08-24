@@ -1,7 +1,10 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "noImplicitAny": false
+        "noImplicitAny": false,
+    },
+    "angularCompilerOptions": {
+        "enableIvy": true
     },
     "include": [
         "src/**/*.ts"

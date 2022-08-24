@@ -31,7 +31,7 @@ export function loadDynamicInitializers(injector: Injector): Observable<any> {
         return forkJoin(allInits);
     }
 
-    return of();
+    return of([]);
 }
 
 export function createDynamicModuleFactory(moduleFactory: NgModuleFactory<any>, parentInjector: Injector): Promise<NgModuleFactory<any>> {
@@ -63,9 +63,6 @@ export class DynamicModuleWithProvidersFactory<T> extends NgModuleFactory<T> {
     create(parentInjector: Injector | null) {
         // const data = (parentInjector as any)._data;
         // debugger;
-        return this._module;
-
-
         // const injector = Injector.create({
         //     providers: this.moduleWithProviders.providers as StaticProvider[],
         //     parent: parentInjector
@@ -75,6 +72,7 @@ export class DynamicModuleWithProvidersFactory<T> extends NgModuleFactory<T> {
         // const factory = compiler.compileModuleSync(this.moduleType);
         //
         // return factory.create(injector);
+        return this._module;
     }
 }
 

@@ -3,10 +3,6 @@
     "dest": "../../dist/@ngx-adminify/entity",
     "deleteDestPath": false,
     "lib": {
-        "entryFile": "src/public_api.ts",
-        "umdModuleIds": {
-            "@ngx-adminify/router": "ngx-adminify-router",
-            "@ngx-adminify/core": "ngx-adminify-core"
-        }
+        "entryFile": "src/public_api.ts"
     }
 }

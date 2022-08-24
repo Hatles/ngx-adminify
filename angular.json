@@ -26,6 +26,7 @@
               "demo/src/styles.css"
             ],
             "scripts": [],
+            "aot": true,
                   "optimization": false,
                   "sourceMap": true,
                   "namedChunks": false,

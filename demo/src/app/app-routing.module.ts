@@ -1,10 +1,7 @@
-import { Compiler, inject, Injector, NgModule, NgModuleFactory, NgModuleRef, Type } from '@angular/core';
-import { LoadChildrenCallback, provideRoutes, RouterModule, ROUTES, Routes } from '@angular/router';
-import { DYNAMIC_MODULE_INITIALIZER } from "../../../src/router/src/lib/dynamic-module-initializer";
-import { forkJoin, from, Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
-import { DynamicModuleRef } from "../../../src/router/src/lib/dynamic-module-ref";
-import { loadDynamicModule, provideDynamicRoutes } from "../../../src/router/src/lib/dynamic-module-loader";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { provideDynamicRoutes } from "@ngx-adminify/router";
 
 // const routes: Routes = [
 //     {path: 'general', loadChildren: loadDynamicModule(() => import('./modules/general/general.module').then(m => m.GeneralModule))},

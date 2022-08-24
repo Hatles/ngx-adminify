@@ -2,9 +2,6 @@
     "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
     "dest": "../../dist/@ngx-adminify/core",
     "lib": {
-        "entryFile": "src/public_api.ts",
-        "umdModuleIds": {
-            "@ngx-adminify/router": "ngx-adminify-router"
-        }
+        "entryFile": "src/public_api.ts"
     }
 }
